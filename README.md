@@ -961,7 +961,7 @@ If you want to contribute to this project:
 
 - The library is licensed under [GPLv3.0](http://www.gnu.org/licenses) and [MIT](https://github.com/khoih-prog/MDNS_Generic/blob/master/LICENSE)
 
---
+---
 
 ## Copyright
 
