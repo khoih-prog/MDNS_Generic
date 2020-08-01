@@ -1,0 +1,62 @@
+#######################################
+# Syntax Coloring Map For ArduinoMDNS
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+MDNS	KEYWORD1
+
+MDNSState_t KEYWORD1
+MDNSError_t KEYWORD1
+MDNSDataInternal_t  KEYWORD1
+MDNSServiceProtocol_t KEYWORD1
+MDNSServiceProtocol KEYWORD1
+MDNSServiceRecord_t KEYWORD1
+MDNSNameFoundCallback KEYWORD1
+MDNSServiceFoundCallback  KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+#########################
+# MDNS_Generic_Impl.h
+#########################
+
+begin	KEYWORD2
+run	KEYWORD2
+setName	KEYWORD2
+addServiceRecord	KEYWORD2
+removeServiceRecord	KEYWORD2
+removeAllServiceRecords	KEYWORD2
+setNameResolvedCallback	KEYWORD2
+resolveName	KEYWORD2
+cancelResolveName	KEYWORD2
+isResolvingName	KEYWORD2
+setServiceFoundCallback	KEYWORD2
+startDiscoveringService	KEYWORD2
+stopDiscoveringService	KEYWORD2
+isDiscoveringService	KEYWORD2
+
+#########################
+# MDNS_EthernetUtil_Impl
+#########################
+
+ethutil_swaps KEYWORD2
+ethutil_swapl KEYWORD2
+ethutil_htons KEYWORD2
+ethutil_htonl KEYWORD2
+ethutil_ntohs KEYWORD2
+ethutil_ntohl KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
