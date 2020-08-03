@@ -17,7 +17,7 @@ The mDNS protocol, published as [RFC 6762](https://tools.ietf.org/html/rfc6762),
 mDNS can work in conjunction with DNS Service Discovery (DNS-SD), a companion zero-configuration networking technique specified separately in [RFC 6763](https://tools.ietf.org/html/rfc6763).
 
 
-This [MDNS_Generic library](https://github.com/khoih-prog/MDNS_Generic) is based on and modified from [Dario Pennisi's ArduinoMDNS Library](https://github.com/arduino-libraries/ArduinoMDNS) to provide support to many more boards, such as ***Arduino SAMD21, Adafruit SAMD21/SAMD51, Seeeduino SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, Teensy, SAM DUE, AVR Mega, etc.*** and enable those boards to use MDNS services. The currently supported modules/shield is ***W5x00 using Ethernet or EthernetLarge library***. The ***WiFiNINA, ENC28J60 and LAN8742A Ethernet modules/shields are not yet supported*** as library modifcations are needed.
+This [MDNS_Generic library](https://github.com/khoih-prog/MDNS_Generic) is based on and modified from [Dario Pennisi's ArduinoMDNS Library](https://github.com/arduino-libraries/ArduinoMDNS) to provide support to many more boards, such as ***Arduino SAMD21, Adafruit SAMD21/SAMD51, Seeeduino SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, Teensy, SAM DUE, AVR Mega, etc.*** and enable those boards to use MDNS services. The currently supported modules/shield is ***W5x00 using Ethernet or EthernetLarge library***. The ***WiFiNINA, ENC28J60 and LAN8742A Ethernet modules/shields are not yet supported*** as library modifications are needed.
 
 ---
 
@@ -29,7 +29,7 @@ This [MDNS_Generic library](https://github.com/khoih-prog/MDNS_Generic) is based
 4. Add support to ***Seeeduino SAMD21/SAMD51 boards (SEEED_WIO_TERMINAL, SEEED_FEMTO_M0, SEEED_XIAO_M0, Wio_Lite_MG126, WIO_GPS_BOARD, SEEEDUINO_ZERO, SEEEDUINO_LORAWAN, SEEED_GROVE_UI_WIRELESS, etc.)***
 5. Add support to all ***STM32F/L/H/G/WB/MP1 (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.)***
 6. Add support to ***Teensy (4.1, 4.0, 3.x, Teensy++ 2.0, Teensy 2.0, etc.)***
-7. Add sample Packages Patches
+7. Add sample Packages Patches for ***STM32F/L/H/G/WB/MP1***
 8. Add Library Patches for Ethernet.
 
 ---
@@ -189,6 +189,24 @@ theses files must be copied into the corresponding directory:
 - [EthernetServer.cpp](LibraryPatches/EthernetLarge/src/EthernetServer.cpp)
 - [w5100.h](LibraryPatches/EthernetLarge/src/utility/w5100.h)
 - [w5100.cpp](LibraryPatches/EthernetLarge/src/utility/w5100.cpp)
+
+4. To fix [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2), just copy these following files into the [`Ethernet2 library`](https://github.com/khoih-prog/Ethernet2) directory to overwrite the old files:
+- [Ethernet2.h](LibraryPatches/Ethernet2/src/Ethernet2.h)
+- [Ethernet2.cpp](LibraryPatches/Ethernet2/src/Ethernet2.cpp)
+
+5. To fix [`Ethernet3 library`](https://github.com/sstaub/Ethernet3), just copy these following files into the [`Ethernet3 library`](https://github.com/sstaub/Ethernet3) directory to overwrite the old files:
+- [Ethernet3.h](LibraryPatches/Ethernet3/src/Ethernet3.h)
+- [Ethernet3.cpp](LibraryPatches/Ethernet3/src/Ethernet3.cpp)
+
+6. ***To be able to compile and run on nRF52 boards with ENC28J60 using UIPEthernet library***, you have to copy these following files into the UIPEthernet `utility` directory to overwrite the old files:
+
+- [UIPEthernet.h](LibraryPatches/UIPEthernet/UIPEthernet.h)
+- [UIPEthernet.cpp](LibraryPatches/UIPEthernet/UIPEthernet.cpp)
+- [Enc28J60Network.h](LibraryPatches/UIPEthernet/utility/Enc28J60Network.h)
+- [Enc28J60Network.cpp](LibraryPatches/UIPEthernet/utility/Enc28J60Network.cpp)
+
+7. To fix [`ESP32 compile error`](https://github.com/espressif/arduino-esp32), just copy the following file into the [`ESP32`](https://github.com/espressif/arduino-esp32) cores/esp32 directory (e.g. ./arduino-1.8.12/hardware/espressif/cores/esp32) to overwrite the old file:
+- [Server.h](LibraryPatches/esp32/cores/esp32/Server.h)
 
 ---
 
@@ -925,7 +943,7 @@ The IP address for 'raspberrypi-02' is 192.168.2.112
 4. Add support to ***Seeeduino SAMD21/SAMD51 boards (SEEED_WIO_TERMINAL, SEEED_FEMTO_M0, SEEED_XIAO_M0, Wio_Lite_MG126, WIO_GPS_BOARD, SEEEDUINO_ZERO, SEEEDUINO_LORAWAN, SEEED_GROVE_UI_WIRELESS, etc.)***
 5. Add support to all ***STM32F/L/H/G/WB/MP1 (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.)***
 6. Add support to ***Teensy (4.1, 4.0, 3.x, Teensy++ 2.0, Teensy 2.0, etc.)***
-7. Add sample Packages Patches
+7. Add sample Packages Patches for ***STM32F/L/H/G/WB/MP1***
 8. Add Library Patches for Ethernet.
 
 ---
