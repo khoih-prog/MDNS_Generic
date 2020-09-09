@@ -10,50 +10,50 @@
 
 ### Why do we need this [MDNS_Generic library](https://github.com/khoih-prog/MDNS_Generic)
 
-MDNS ([***Multicast DNS***](https://en.wikipedia.org/wiki/Multicast_DNS)) is a protocol to resolve ***hostnames to IP addresses*** within small networks that do not include a local name server. It is a zero-configuration service, using essentially the same programming interfaces, packet formats and operating semantics as the unicast Domain Name System (DNS).
+MDNS ([**Multicast DNS**](https://en.wikipedia.org/wiki/Multicast_DNS)) is a protocol to resolve **hostnames to IP addresses** within small networks that do not include a local name server. It is a zero-configuration service, using essentially the same programming interfaces, packet formats and operating semantics as the unicast Domain Name System (DNS).
 
 The mDNS protocol, published as [RFC 6762](https://tools.ietf.org/html/rfc6762), uses IP multicast User Datagram Protocol (UDP) packets, and is implemented by the [Apple Bonjour](https://en.wikipedia.org/wiki/Bonjour_(software)) and open source [Avahi software packages](https://en.wikipedia.org/wiki/Avahi_(software)).
 
 mDNS can work in conjunction with DNS Service Discovery (DNS-SD), a companion zero-configuration networking technique specified separately in [RFC 6763](https://tools.ietf.org/html/rfc6763).
 
 
-This [MDNS_Generic library](https://github.com/khoih-prog/MDNS_Generic) is based on and modified from [Dario Pennisi's ArduinoMDNS Library](https://github.com/arduino-libraries/ArduinoMDNS) to provide support to many more boards, such as ***Arduino SAMD21, Adafruit SAMD21/SAMD51, Seeeduino SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, Teensy, SAM DUE, AVR Mega, etc.*** and enable those boards to use MDNS services. The currently supported modules/shield is ***W5x00 using Ethernet or EthernetLarge library***. The ***WiFiNINA, ENC28J60 and LAN8742A Ethernet modules/shields are not yet supported*** as library modifications are needed.
+This [MDNS_Generic library](https://github.com/khoih-prog/MDNS_Generic) is based on and modified from [Dario Pennisi's ArduinoMDNS Library](https://github.com/arduino-libraries/ArduinoMDNS) to provide support to many more boards, such as **Arduino SAMD21, Adafruit SAMD21/SAMD51, Seeeduino SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, Teensy, SAM DUE, AVR Mega, etc.** and enable those boards to use MDNS services. The currently supported modules/shield is **W5x00 using Ethernet or EthernetLarge library**. The **WiFiNINA, ENC28J60 and LAN8742A Ethernet modules/shields are not yet supported** as library modifications are needed.
 
 ---
 
 ### New in v1.0.0
 
-1. Add support to ***nRF52*** boards, such as ***AdaFruit Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B302_ublox, NINA_B112_ublox, etc.***.
-2. Add support to ***SAMD51 (Itsy-Bitsy M4, Metro M4, Grand Central M4, Feather M4 Express, etc.)***.
-3. Add support to ***SAMD21 (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.)***.
-4. Add support to ***Seeeduino SAMD21/SAMD51 boards (SEEED_WIO_TERMINAL, SEEED_FEMTO_M0, SEEED_XIAO_M0, Wio_Lite_MG126, WIO_GPS_BOARD, SEEEDUINO_ZERO, SEEEDUINO_LORAWAN, SEEED_GROVE_UI_WIRELESS, etc.)***
-5. Add support to all ***STM32F/L/H/G/WB/MP1 (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.)***
-6. Add support to ***Teensy (4.1, 4.0, 3.x, Teensy++ 2.0, Teensy 2.0, etc.)***
-7. Add sample Packages Patches for ***STM32F/L/H/G/WB/MP1***
+1. Add support to **nRF52** boards, such as **AdaFruit Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B302_ublox, NINA_B112_ublox, etc.**.
+2. Add support to **SAMD51 (Itsy-Bitsy M4, Metro M4, Grand Central M4, Feather M4 Express, etc.)**.
+3. Add support to **SAMD21 (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.)**.
+4. Add support to **Seeeduino SAMD21/SAMD51 boards (SEEED_WIO_TERMINAL, SEEED_FEMTO_M0, SEEED_XIAO_M0, Wio_Lite_MG126, WIO_GPS_BOARD, SEEEDUINO_ZERO, SEEEDUINO_LORAWAN, SEEED_GROVE_UI_WIRELESS, etc.)**
+5. Add support to all **STM32F/L/H/G/WB/MP1 (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.)**
+6. Add support to **Teensy (4.1, 4.0, 3.x, Teensy++ 2.0, Teensy 2.0, etc.)**
+7. Add sample Packages Patches for **STM32F/L/H/G/WB/MP1**
 8. Add Library Patches for Ethernet.
-9. Add Packages' Patches for Arduino SAMD21 to fix compiler error issue when using ***STL*** for Nano-33-IoT, ZERO, MKR, etc.
+9. Add Packages' Patches for Arduino SAMD21 to fix compiler error issue when using **STL** for Nano-33-IoT, ZERO, MKR, etc.
 
 ---
  
 ## Prerequisite
  1. [`Arduino IDE v1.8.12+` for Arduino](https://www.arduino.cc/en/Main/Software)
- 2. `Arduino AVR core v1.8.2+` for Arduino (Use Arduino Board Manager).
+ 2. [`Arduino AVR core 1.8.3+`](https://github.com/arduino/ArduinoCore-avr) for Arduino AVR boards. Use Arduino Board Manager to install.
  3. [`Teensy core v1.53+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.1, 4.0, 3.6, 3.5, 3,2, 3.1, 3.0) boards.
  6. [`Arduino SAM DUE core v1.6.12+`](https://www.arduino.cc/en/Guide/ArduinoDue) for SAM DUE ARM Cortex-M3 boards.
- 7. [`Arduino SAMD core v1.8.7+`](https://www.arduino.cc/en/Guide/ArduinoM0) for SAMD ARM Cortex-M0+ boards.
+ 7. [`Arduino SAMD core v1.8.8+`](https://www.arduino.cc/en/Guide/ArduinoM0) for SAMD ARM Cortex-M0+ boards.
  8. [`Adafruit SAMD core v1.6.0+`](https://www.adafruit.com/) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.).
- 9. [`Seeeduino SAMD core 1.7.7+`](https://www.seeedstudio.com/) for SAMD21/SAMD51 boards (XIAO M0, Wio Terminal, etc.).
+ 9. [`Seeeduino SAMD core 1.7.8+`](https://www.seeedstudio.com/) for SAMD21/SAMD51 boards (XIAO M0, Wio Terminal, etc.).
 10. [`Adafruit nRF52 v0.20.5+`](https://www.adafruit.com/) for nRF52 boards such as AdaFruit Feather nRF52840 Express, NINA_B302_ublox, NINA_B112_ublox, etc.
-11. [`Arduino Core for STM32 v1.9.0+`](https://github.com/khoih-prog/Arduino_Core_STM32) for STM32 boards. To install go to Arduino IDE, select Boards Manager, search for ***`STM32`***.
+11. [`Arduino Core for STM32 v1.9.0+`](https://github.com/khoih-prog/Arduino_Core_STM32) for STM32 boards. To install go to Arduino IDE, select Boards Manager, search for **`STM32`**.
 13. Depending on which Ethernet module/shield you're using :
-   - [`Ethernet library v2.0.0+`](https://www.arduino.cc/en/Reference/Ethernet) for W5100, W5200 and W5500. ***Ready*** from v1.0.0.
-   - [`EthernetLarge library v2.0.0+`](https://github.com/OPEnSLab-OSU/EthernetLarge) for W5100, W5200 and W5500. ***Ready*** from v1.0.0.
-   - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500 (Deprecated, use Arduino Ethernet library). ***Not yet ready*** in v1.0.0.
-   - [`Ethernet3 library v1.5.3+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip. ***Not yet ready*** in v1.0.0.
-   - [`UIPEthernet library v2.0.8+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60. ***Not yet ready*** in v1.0.0.
-   - [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in Ethernet LAN8742A on (Nucleo-144, Discovery). To be used with [`STM32duino_LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP). ***Not yet ready*** in v1.0.0.
-14. [`WiFiNINA_Generic library v1.6.2+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc. ***Not yet ready*** in v1.0.0.
-15. [`ESP_AT_Lib library v1.0.0+`](https://github.com/khoih-prog/ESP_AT_Lib) if necessary to use ESP8288/ESP32-AT shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP_AT_Lib.svg?)](https://www.ardu-badge.com/ESP_AT_Lib). ***Not yet ready*** in v1.0.0.
+   - [`Ethernet library v2.0.0+`](https://www.arduino.cc/en/Reference/Ethernet) for W5100, W5200 and W5500. **Ready** from v1.0.0.
+   - [`EthernetLarge library v2.0.0+`](https://github.com/OPEnSLab-OSU/EthernetLarge) for W5100, W5200 and W5500. **Ready** from v1.0.0.
+   - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500 (Deprecated, use Arduino Ethernet library). **Not yet ready** in v1.0.0.
+   - [`Ethernet3 library v1.5.3+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip. **Not yet ready** in v1.0.0.
+   - [`UIPEthernet library v2.0.8+`](https://github.com/UIPEthernet/UIPEthernet) for ENC28J60. **Not yet ready** in v1.0.0.
+   - [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in Ethernet LAN8742A on (Nucleo-144, Discovery). To be used with [`STM32duino_LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP). **Not yet ready** in v1.0.0.
+14. [`WiFiNINA_Generic library v1.7.1+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc. **Not yet ready** in v1.0.0.
+15. [`ESP_AT_Lib library v1.0.0+`](https://github.com/khoih-prog/ESP_AT_Lib) if necessary to use ESP8288/ESP32-AT shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP_AT_Lib.svg?)](https://www.ardu-badge.com/ESP_AT_Lib). **Not yet ready** in v1.0.0.
 
 ---
 
@@ -76,13 +76,13 @@ Another way to install is to:
 1. Install [VS Code](https://code.visualstudio.com/)
 2. Install [PlatformIO](https://platformio.org/platformio-ide)
 3. Install **MDNS_Generic** library by using [Library Manager](https://docs.platformio.org/en/latest/librarymanager/). Search for MDNS_Generic in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
-4. Use included [platformio.ini](examples/platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automatically.
+4. Use included [platformio.ini](platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automatically. Please visit documentation for the other options and examples at [Project Configuration File](https://docs.platformio.org/page/projectconf.html)
 
 ---
 
 ### Packages' Patches
 
- 1. ***To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards***, you have to copy the whole [nRF52 0.20.5](Packages_Patches/adafruit/hardware/nrf52/0.20.5) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5). 
+ 1. **To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards**, you have to copy the whole [nRF52 0.20.5](Packages_Patches/adafruit/hardware/nrf52/0.20.5) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5). 
 
 Supposing the Adafruit nRF52 version is 0.20.5. These files must be copied into the directory:
 - `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/platform.txt`
@@ -91,7 +91,7 @@ Supposing the Adafruit nRF52 version is 0.20.5. These files must be copied into 
 - `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B302_ublox/variant.cpp`
 - `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B112_ublox/variant.h`
 - `~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/variants/NINA_B112_ublox/variant.cpp`
-- ***`~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/cores/nRF5/Udp.h`***
+- **`~/.arduino15/packages/adafruit/hardware/nrf52/0.20.5/cores/nRF5/Udp.h`**
 
 Whenever a new version is installed, remember to copy these files into the new version directory. For example, new version is x.yy.z
 These files must be copied into the directory:
@@ -102,9 +102,9 @@ These files must be copied into the directory:
 - `~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/variants/NINA_B302_ublox/variant.cpp`
 - `~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/variants/NINA_B112_ublox/variant.h`
 - `~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/variants/NINA_B112_ublox/variant.cpp`
-- ***`~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/cores/nRF5/Udp.h`***
+- **`~/.arduino15/packages/adafruit/hardware/nrf52/x.yy.z/cores/nRF5/Udp.h`**
 
- 2. ***To be able to compile and run on Teensy boards***, you have to copy the file [Teensy boards.txt](Packages_Patches/hardware/teensy/avr/boards.txt) into Teensy hardware directory (./arduino-1.8.12/hardware/teensy/avr/boards.txt). 
+ 2. **To be able to compile and run on Teensy boards**, you have to copy the file [Teensy boards.txt](Packages_Patches/hardware/teensy/avr/boards.txt) into Teensy hardware directory (./arduino-1.8.12/hardware/teensy/avr/boards.txt). 
 
 Supposing the Arduino version is 1.8.12. This file must be copied into the directory:
 
@@ -115,7 +115,7 @@ This file must be copied into the directory:
 
 - `./arduino-x.yy.zz/hardware/teensy/avr/boards.txt`
 
- 3. ***To be able to compile and run on SAM DUE boards***, you have to copy the whole [SAM DUE](Packages_Patches/arduino/hardware/sam/1.6.12) directory into Arduino sam directory (~/.arduino15/packages/arduino/hardware/sam/1.6.12). 
+ 3. **To be able to compile and run on SAM DUE boards**, you have to copy the whole [SAM DUE](Packages_Patches/arduino/hardware/sam/1.6.12) directory into Arduino sam directory (~/.arduino15/packages/arduino/hardware/sam/1.6.12). 
 
 Supposing the Arduino SAM core version is 1.6.12. This file must be copied into the directory:
 
@@ -126,20 +126,20 @@ This file must be copied into the directory:
 
 - `~/.arduino15/packages/arduino/hardware/sam/x.yy.zz/platform.txt`
 
- 4. ***To be able to compile without error and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards***, you have to copy the whole [Arduino SAMD cores 1.8.7](Packages_Patches/arduino/hardware/samd/1.8.7) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.7).
+ 4. **To be able to compile without error and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards**, you have to copy the whole [Arduino SAMD cores 1.8.8](Packages_Patches/arduino/hardware/samd/1.8.8) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.8).
  
-Supposing the Arduino SAMD version is 1.8.7. These files must be copied into the directory:
-- `~/.arduino15/packages/arduino/hardware/samd/1.8.7/platform.txt`
-- ***`~/.arduino15/packages/arduino/hardware/samd/1.8.7/cores/arduino/Arduino.h`***
+Supposing the Arduino SAMD version is 1.8.8. These files must be copied into the directory:
+- `~/.arduino15/packages/arduino/hardware/samd/1.8.8/platform.txt`
+- **`~/.arduino15/packages/arduino/hardware/samd/1.8.8/cores/arduino/Arduino.h`**
 
 Whenever a new version is installed, remember to copy these files into the new version directory. For example, new version is x.yy.z
 
 These files must be copied into the directory:
 
 - `~/.arduino15/packages/arduino/hardware/samd/x.yy.z/platform.txt`
-- ***`~/.arduino15/packages/arduino/hardware/samd/x.yy.z/cores/arduino/Arduino.h`***
+- **`~/.arduino15/packages/arduino/hardware/samd/x.yy.z/cores/arduino/Arduino.h`**
  
- This is mandatory to fix the ***notorious Arduino SAMD compiler error***. See [Improve Arduino compatibility with the STL (min and max macro)](https://github.com/arduino/ArduinoCore-samd/pull/399)
+ This is mandatory to fix the **notorious Arduino SAMD compiler error**. See [Improve Arduino compatibility with the STL (min and max macro)](https://github.com/arduino/ArduinoCore-samd/pull/399)
  
 ```
  ...\arm-none-eabi\include\c++\7.2.1\bits\stl_algobase.h:243:56: error: macro "min" passed 3 arguments, but takes just 2
@@ -148,7 +148,7 @@ These files must be copied into the directory:
 
 Whenever the above-mentioned compiler error issue is fixed with the new Arduino SAMD release, you don't need to copy the `Arduino.h` file anymore.
 
- 5. ***To be able to automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards***, you have to copy the file [Adafruit SAMD platform.txt](Packages_Patches/adafruit/hardware/samd/1.6.0) into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.6.0). 
+ 5. **To be able to automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards**, you have to copy the file [Adafruit SAMD platform.txt](Packages_Patches/adafruit/hardware/samd/1.6.0) into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.6.0). 
 
 Supposing the Adafruit SAMD core version is 1.6.0. This file must be copied into the directory:
 
@@ -159,18 +159,18 @@ This file must be copied into the directory:
 
 - `~/.arduino15/packages/adafruit/hardware/samd/x.yy.zz/platform.txt`
 
- 6. ***To be able to automatically detect and display BOARD_NAME on Seeeduino SAMD (XIAO M0, Wio Terminal, etc) boards***, you have to copy the file [Seeeduino SAMD platform.txt](Packages_Patches/Seeeduino/hardware/samd/1.7.7) into Adafruit samd directory (~/.arduino15/packages/Seeeduino/hardware/samd/1.7.7). 
+ 6. **To be able to automatically detect and display BOARD_NAME on Seeeduino SAMD (XIAO M0, Wio Terminal, etc) boards**, you have to copy the file [Seeeduino SAMD platform.txt](Packages_Patches/Seeeduino/hardware/samd/1.7.8) into Adafruit samd directory (~/.arduino15/packages/Seeeduino/hardware/samd/1.7.8). 
 
-Supposing the Seeeduino SAMD core version is 1.7.7. This file must be copied into the directory:
+Supposing the Seeeduino SAMD core version is 1.7.8. This file must be copied into the directory:
 
-- `~/.arduino15/packages/Seeeduino/hardware/samd/1.7.7/platform.txt`
+- `~/.arduino15/packages/Seeeduino/hardware/samd/1.7.8/platform.txt`
 
 Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
 This file must be copied into the directory:
 
 - `~/.arduino15/packages/Seeeduino/hardware/samd/x.yy.zz/platform.txt`
 
-7. ***To use Serial1 on some STM32 boards without Serial1 definition (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.) boards***, you have to copy the files [STM32 variant.h](Packages_Patches/STM32/hardware/stm32/1.9.0) into STM32 stm32 directory (~/.arduino15/packages/STM32/hardware/stm32/1.9.0). You have to modify the files corresponding to your boards, this is just an illustration how to do.
+7. **To use Serial1 on some STM32 boards without Serial1 definition (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.) boards**, you have to copy the files [STM32 variant.h](Packages_Patches/STM32/hardware/stm32/1.9.0) into STM32 stm32 directory (~/.arduino15/packages/STM32/hardware/stm32/1.9.0). You have to modify the files corresponding to your boards, this is just an illustration how to do.
 
 Supposing the STM32 stm32 core version is 1.9.0. These files must be copied into the directory:
 
@@ -182,6 +182,7 @@ theses files must be copied into the corresponding directory:
 
 - `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/NUCLEO_F767ZI/variant.h`
 - `~/.arduino15/packages/STM32/hardware/stm32/x.yy.zz/variants/NUCLEO_L053R8/variant.h`
+
 
 ---
 
@@ -211,7 +212,7 @@ theses files must be copied into the corresponding directory:
 - [Ethernet3.h](LibraryPatches/Ethernet3/src/Ethernet3.h)
 - [Ethernet3.cpp](LibraryPatches/Ethernet3/src/Ethernet3.cpp)
 
-6. ***To be able to compile and run on nRF52 boards with ENC28J60 using UIPEthernet library***, you have to copy these following files into the UIPEthernet `utility` directory to overwrite the old files:
+6. **To be able to compile and run on nRF52 boards with ENC28J60 using UIPEthernet library**, you have to copy these following files into the UIPEthernet `utility` directory to overwrite the old files:
 
 - [UIPEthernet.h](LibraryPatches/UIPEthernet/UIPEthernet.h)
 - [UIPEthernet.cpp](LibraryPatches/UIPEthernet/UIPEthernet.cpp)
@@ -225,14 +226,14 @@ theses files must be copied into the corresponding directory:
 
 ### Important Notes
 
-1. For ***Adafruit nRF52***, use the SPI's  pin as follows:
+1. For **Adafruit nRF52**, use the SPI's  pin as follows:
 
   - SS/CS     = 10
   - SPI_MOSI  = MO(SI)
   - SPI_MISO  = MI(SO)
   - SPI_SCK   = SCK
 
-2. For ***Adafruit SAMD21/SAMD51***, use the SPI's CS/SS pin as follows:
+2. For **Adafruit SAMD21/SAMD51**, use the SPI's CS/SS pin as follows:
 
   - Itsy-Bitsy M0/M4, Feather M0 (Express), Hallowing M0 Express, Zero, Metro M0 => use CS = 16 = pin A2
   - Feather M4 (SAMD51)   => use SS/CS = 9
@@ -244,7 +245,7 @@ To know the default CS/SS pins of not listed boards, check the related `variant.
 
 `~/.arduino15/packages/adafruit/hardware/samd/x.y.zz/variants/board_name/variant.h`
 
-3. For ***Arduino SAM DUE***, use the SPI's  pin as follows:
+3. For **Arduino SAM DUE**, use the SPI's  pin as follows:
 
   - SS/CS     = 10
   - SPI_MOSI  = 75 ( pin 4 @ [ICSP connector](pics/ICSP_connector.jpg) )
@@ -330,7 +331,7 @@ mdns.startDiscoveringService(serviceName, MDNSServiceTCP, 5000);
 
 Please take a look at other examples, as well.
 
-1. File [ResolvingHostNames.ino](examples/Ethernet/ResolvingHostNames/ResolvingHostNames.ino)
+#### 1. File [ResolvingHostNames.ino](examples/Ethernet/ResolvingHostNames/ResolvingHostNames.ino)
 
 ```cpp
 //  Illustrates how to resolve host names via MDNS (Multicast DNS)
@@ -513,7 +514,7 @@ void nameFound(const char* name, IPAddress ip)
 }
 ```
 
-2. File [defines.h](examples/Ethernet/ResolvingHostNames/defines.h)
+#### 2. File [defines.h](examples/Ethernet/ResolvingHostNames/defines.h)
 
 ```cpp
 #ifndef defines_h
@@ -816,11 +817,13 @@ IPAddress ip(192, 168, 2, 222);
 
 #endif    //defines_h
 ```
+
+---
 ---
 
 ### Debug Termimal Output Samples
 
-1. This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on nRF52 ***Adafruit NRF52840_FEATHER EXPRESS with W5500 Ethernet module using EthernetLarge library.***
+1. This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on nRF52 **Adafruit NRF52840_FEATHER EXPRESS with W5500 Ethernet module using EthernetLarge library.**
 
 ```
 Starting ResolvingHostNames on NRF52840_FEATHER using W5x00/EthernetLarge Library
@@ -853,7 +856,7 @@ Resolving 'raspberrypi-01' via Multicast DNS (Bonjour)...
 The IP address for 'raspberrypi-01' is 192.168.2.120
 ```
 
-2. This is terminal debug output when running [DiscoveringServices](examples/Ethernet/DiscoveringServices) on nRF52 ***Adafruit NRF52840_FEATHER EXPRESS with W5500 Ethernet module using EthernetLarge library.***
+2. This is terminal debug output when running [DiscoveringServices](examples/Ethernet/DiscoveringServices) on nRF52 **Adafruit NRF52840_FEATHER EXPRESS with W5500 Ethernet module using EthernetLarge library.**
 
 ```
 Starting DiscoveringServices on NRF52840_FEATHER using W5x00/EthernetLarge Library
@@ -888,7 +891,7 @@ Finished discovering services of type _http
 
 ```
 
-3. This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on SAMD21 ***Seeeduino SEEED_XIAO_M0 with W5500 Ethernet module using EthernetLarge library.***
+3. This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on SAMD21 **Seeeduino SEEED_XIAO_M0 with W5500 Ethernet module using EthernetLarge library.**
 
 ```
 Starting ResolvingHostNames on SEEED_XIAO_M0 using W5x00/EthernetLarge Library
@@ -922,6 +925,7 @@ The IP address for 'raspberrypi-02' is 192.168.2.112
 ```
 
 ---
+---
 
 ### TO DO
 
@@ -937,29 +941,30 @@ The IP address for 'raspberrypi-02' is 192.168.2.112
 
 ### DONE
 
- 1. Add support to ***Arduino SAMD21 (ZERO, MKR, NANO_33_IOT, etc.)***
- 2. Add support to ***Adafruit SAMD21 (Itsy-Bitsy M0, Metro M0, Feather M0 Express, etc.)***.
- 3. Add support to ***Adafruit SAMD51 (Itsy-Bitsy M4, Metro M4, Grand Central M4, Feather M4 Express, etc.)***.
- 4. Add support to ***Seeeduino SAMD21/SAMD51: LoRaWAN, Zero, Femto M0, XIAO M0, Wio GPS Board, Wio Terminal, Grove UI Wireless, etc.***
- 5. Add support to ***Adafruit nRF52 ( Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B302_ublox, NINA_B112_ublox, etc.***.
+ 1. Add support to **Arduino SAMD21 (ZERO, MKR, NANO_33_IOT, etc.)**
+ 2. Add support to **Adafruit SAMD21 (Itsy-Bitsy M0, Metro M0, Feather M0 Express, etc.)**.
+ 3. Add support to **Adafruit SAMD51 (Itsy-Bitsy M4, Metro M4, Grand Central M4, Feather M4 Express, etc.)**.
+ 4. Add support to **Seeeduino SAMD21/SAMD51: LoRaWAN, Zero, Femto M0, XIAO M0, Wio GPS Board, Wio Terminal, Grove UI Wireless, etc.**
+ 5. Add support to **Adafruit nRF52 ( Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B302_ublox, NINA_B112_ublox, etc.**.
  6. Add support to SAM DUE.
- 7. Add support to ***STM32F/L/H/G/WB/MP1.***
- 8. Add support to ***Ethernet W5x00***, using either [`Ethernet`](https://www.arduino.cc/en/Reference/Ethernet) or [`EthernetLarge`](https://github.com/OPEnSLab-OSU/EthernetLarge) library
+ 7. Add support to **STM32F/L/H/G/WB/MP1.**
+ 8. Add support to **Ethernet W5x00**, using either [`Ethernet`](https://www.arduino.cc/en/Reference/Ethernet) or [`EthernetLarge`](https://github.com/OPEnSLab-OSU/EthernetLarge) library
  9. Add debugging feature.
 
+---
 ---
 
 ### New in v1.0.0
 
-1. Add support to ***nRF52*** boards, such as ***AdaFruit Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B302_ublox, NINA_B112_ublox, etc.***.
-2. Add support to ***SAMD51 (Itsy-Bitsy M4, Metro M4, Grand Central M4, Feather M4 Express, etc.)***.
-3. Add support to ***SAMD21 (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.)***.
-4. Add support to ***Seeeduino SAMD21/SAMD51 boards (SEEED_WIO_TERMINAL, SEEED_FEMTO_M0, SEEED_XIAO_M0, Wio_Lite_MG126, WIO_GPS_BOARD, SEEEDUINO_ZERO, SEEEDUINO_LORAWAN, SEEED_GROVE_UI_WIRELESS, etc.)***
-5. Add support to all ***STM32F/L/H/G/WB/MP1 (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.)***
-6. Add support to ***Teensy (4.1, 4.0, 3.x, Teensy++ 2.0, Teensy 2.0, etc.)***
-7. Add sample Packages Patches for ***STM32F/L/H/G/WB/MP1***
+1. Add support to **nRF52** boards, such as **AdaFruit Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B302_ublox, NINA_B112_ublox, etc.**.
+2. Add support to **SAMD51 (Itsy-Bitsy M4, Metro M4, Grand Central M4, Feather M4 Express, etc.)**.
+3. Add support to **SAMD21 (ZERO, MKR, NANO_33_IOT, M0, M0 Pro, AdaFruit CIRCUITPLAYGROUND_EXPRESS, etc.)**.
+4. Add support to **Seeeduino SAMD21/SAMD51 boards (SEEED_WIO_TERMINAL, SEEED_FEMTO_M0, SEEED_XIAO_M0, Wio_Lite_MG126, WIO_GPS_BOARD, SEEEDUINO_ZERO, SEEEDUINO_LORAWAN, SEEED_GROVE_UI_WIRELESS, etc.)**
+5. Add support to all **STM32F/L/H/G/WB/MP1 (Nucleo-144 NUCLEO_F767ZI, Nucleo-64 NUCLEO_L053R8, etc.)**
+6. Add support to **Teensy (4.1, 4.0, 3.x, Teensy++ 2.0, Teensy 2.0, etc.)**
+7. Add sample Packages Patches for **STM32F/L/H/G/WB/MP1**
 8. Add Library Patches for Ethernet.
-9. Add Packages' Patches for Arduino SAMD21 to fix compiler error issue when using ***STL*** for Nano-33-IoT, ZERO, MKR, etc.
+9. Add Packages' Patches for Arduino SAMD21 to fix compiler error issue when using **STL** for Nano-33-IoT, ZERO, MKR, etc.
 
 ---
 
@@ -980,6 +985,8 @@ Submit issues to: [MDNS_Generic issues](https://github.com/khoih-prog/MDNS_Gener
   </tr> 
 </table>
 
+---
+
 ### Contributing
 
 If you want to contribute to this project:
@@ -990,7 +997,7 @@ If you want to contribute to this project:
 
 ### License and credits ###
 
-- Most of the credits go to original authors ***Georg Kaindl***, [TrippyLighting](https://github.com/TrippyLighting) and [Dario Pennisi](https://github.com/pnndra).
+- Most of the credits go to original authors **Georg Kaindl**, [TrippyLighting](https://github.com/TrippyLighting) and [Dario Pennisi](https://github.com/pnndra).
 
 - The library is licensed under [GPLv3.0](http://www.gnu.org/licenses) and [MIT](https://github.com/khoih-prog/MDNS_Generic/blob/master/LICENSE)
 
