@@ -18,13 +18,12 @@ The mDNS protocol, published as [RFC 6762](https://tools.ietf.org/html/rfc6762),
 mDNS can work in conjunction with DNS Service Discovery (DNS-SD), a companion zero-configuration networking technique specified separately in [RFC 6763](https://tools.ietf.org/html/rfc6763).
 
 
-This [MDNS_Generic library](https://github.com/khoih-prog/MDNS_Generic) is based on and modified from [Dario Pennisi's ArduinoMDNS Library](https://github.com/arduino-libraries/ArduinoMDNS) to provide support to many more boards, such as **Arduino SAMD21, Adafruit SAMD21/SAMD51, Seeeduino SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, Teensy, SAM DUE, AVR Mega, etc.** and enable those boards to use MDNS services. The currently supported modules/shield is **W5x00 using Ethernet, EthernetLarge, Ethernet2 or Ethernet3 library**. 
+This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is based on and modified from [**Dario Pennisi's ArduinoMDNS Library**](https://github.com/arduino-libraries/ArduinoMDNS) to provide support to many more boards, such as **Arduino SAMD21, Adafruit SAMD21/SAMD51, Seeeduino SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, Teensy, SAM DUE, AVR Mega, etc.** and enable those boards to use MDNS services. The currently supported modules/shield is **W5x00 using Ethernet, EthernetLarge, Ethernet2 or Ethernet3 library**. 
 
-- **Ethernet2 Library is also supported after applying the fix to add Multicast feature**. See [Libraries' Patches](https://github.com/khoih-prog/EthernetWebServer#libraries-patches)
-  - ENC28J60 using EthernetENC or UIPEthernet library is not supported as UDP Multicast is not available by design.
-  - LAN8742A using STM32Ethernet / STM32 LwIP libraries is not supported as UDP Multicast is not enabled by design, unless you modify the code to add support.
-
-The **WiFiNINA modules/shields are not yet supported** as library modifications are needed.
+- **Ethernet2 Library is also supported after applying the fix to add Multicast feature**. See [**Libraries' Patches**](https://github.com/khoih-prog/EthernetWebServer#libraries-patches)
+- ENC28J60 using EthernetENC or UIPEthernet library is not supported as UDP Multicast is not available by design.
+- LAN8742A using STM32Ethernet / STM32 LwIP libraries is not supported as UDP Multicast is not enabled by design, unless you modify the code to add support.
+- The **WiFiNINA modules/shields are not yet supported** as library modifications are needed.
 
 ---
 
@@ -33,7 +32,7 @@ The **WiFiNINA modules/shields are not yet supported** as library modifications 
 1. Add support to **W5x00 using Ethernet2 or Ethernet3 library**
 2. Update Platform.ini to support PlatformIO 5.x owner-based dependency declaration.
 3. Update Packages' Patches.
-4. Update Libraries' Patches for Ethernet2 library to add Multicast feature necessary for this [MDNS_Generic library](https://github.com/khoih-prog/MDNS_Generic)
+4. Update Libraries' Patches for Ethernet2 library to add Multicast feature necessary for this [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic)
 5. Enhance examples.
 
 
@@ -84,7 +83,7 @@ You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/
 
 Another way to install is to:
 
-1. Navigate to [MDNS_Generic](https://github.com/khoih-prog/MDNS_Generic) page.
+1. Navigate to [**MDNS_Generic**](https://github.com/khoih-prog/MDNS_Generic) page.
 2. Download the latest release `MDNS_Generic-master.zip`.
 3. Extract the zip file to `MDNS_Generic-master` directory 
 4. Copy whole `MDNS_Generic-master` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
@@ -227,7 +226,7 @@ theses files must be copied into the corresponding directory:
 - [Ethernet2.h](LibraryPatches/Ethernet2/src/Ethernet2.h)
 - [Ethernet2.cpp](LibraryPatches/Ethernet2/src/Ethernet2.cpp)
 
-To add UDP Multicast support, necessary for this [**UPnP_Generic library**](https://github.com/khoih-prog/UPnP_Generic):
+To add UDP Multicast support, necessary for this [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic):
 
 - [EthernetUdp2.h](LibraryPatches/Ethernet2/src/EthernetUdp2.h)
 - [EthernetUdp2.cpp](LibraryPatches/Ethernet2/src/EthernetUdp2.cpp)
@@ -375,12 +374,7 @@ void setup()
   while (!Serial);
 
   Serial.print("\nStarting ResolvingHostNames on " + String(BOARD_NAME));
-
-#if USE_ETHERNET
-  Serial.println(" using W5x00/Ethernet Library");
-#elif USE_ETHERNET_LARGE
-  Serial.println(" using W5x00/EthernetLarge Library");
-#endif
+  Serial.println(" with " + String(SHIELD_TYPE));
 
   Serial.println(("========================="));
   Serial.println(("Default SPI pinout:"));
@@ -399,10 +393,24 @@ void setup()
   #define USE_THIS_SS_PIN   10    // For other boards
 #endif
 
-  Serial.print(("Unknown board setCsPin:"));
-  Serial.println(USE_THIS_SS_PIN);
+  MDNS_LOGERROR3(F("Board :"), BOARD_NAME, F(", setCsPin:"), USE_THIS_SS_PIN);
 
-  Ethernet.init (USE_THIS_SS_PIN);
+  // For other boards, to change if necessary
+  #if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 )
+    // Must use library patch for Ethernet, Ethernet2, EthernetLarge libraries
+  
+    Ethernet.init (USE_THIS_SS_PIN);
+  
+  #elif USE_ETHERNET3
+    // Use  MAX_SOCK_NUM = 4 for 4K, 2 for 8K, 1 for 16K RX/TX buffer
+    #ifndef ETHERNET3_MAX_SOCK_NUM
+      #define ETHERNET3_MAX_SOCK_NUM      4
+    #endif
+  
+    Ethernet.setCsPin (USE_THIS_SS_PIN);
+    Ethernet.init (ETHERNET3_MAX_SOCK_NUM);
+
+  #endif  //( USE_ETHERNET || USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE )
 
   // start the ethernet connection and the server:
   // Use Static IP
@@ -782,7 +790,9 @@ void nameFound(const char* name, IPAddress ip)
   #define BOARD_TYPE      "AVR Mega"
 #endif
 
-#ifndef BOARD_NAME
+#if defined(ARDUINO_BOARD)
+  #define BOARD_NAME    ARDUINO_BOARD
+#else
   #define BOARD_NAME    BOARD_TYPE
 #endif
 
@@ -795,18 +805,37 @@ void nameFound(const char* name, IPAddress ip)
 // Check @ defined(SEEED_XIAO_M0)
 //#define USE_THIS_SS_PIN   22  //21  //5 //4 //2 //15
 
-// Only one of the following to be true.
+// Only one if the following to be true
 #define USE_ETHERNET          false //true
-#define USE_ETHERNET_LARGE    true
- 
-#if USE_ETHERNET_LARGE
+#define USE_ETHERNET2         true //true
+#define USE_ETHERNET3         false //true
+#define USE_ETHERNET_LARGE    false
+
+#if USE_ETHERNET
+  #include "Ethernet.h"
+  #include "EthernetUdp.h"
+  #warning Use Ethernet lib
+  #define SHIELD_TYPE           "W5x00 using Ethernet Library" 
+#elif USE_ETHERNET_LARGE
   #include "EthernetLarge.h"
   #include "EthernetUdp.h"
   #warning Use EthernetLarge lib
+  #define SHIELD_TYPE           "W5x00 using EthernetLarge Library"
+#elif USE_ETHERNET2
+  #include "Ethernet2.h"
+  #include "EthernetUdp2.h"
+  #warning Use Ethernet2 lib
+  #define SHIELD_TYPE           "W5x00 using Ethernet2 Library"
+#elif USE_ETHERNET3
+  #include "Ethernet3.h"
+  #include "EthernetUdp3.h"
+  #warning Use Ethernet3 lib   
+  #define SHIELD_TYPE           "W5x00 using Ethernet3 Library" 
 #else
   #define USE_ETHERNET          true
   #include "Ethernet.h"
   #warning Use Ethernet lib
+  #define SHIELD_TYPE           "W5x00 using Ethernet Library"
 #endif
 
 // Enter a MAC address and IP address for your controller below.
@@ -1060,7 +1089,7 @@ The IP address for 'raspberrypi-01' is 192.168.2.110
 
 ### Issues
 
-Submit issues to: [MDNS_Generic issues](https://github.com/khoih-prog/MDNS_Generic/issues)
+Submit issues to: [**MDNS_Generic issues**](https://github.com/khoih-prog/MDNS_Generic/issues)
 
 ---
 
@@ -1090,7 +1119,7 @@ If you want to contribute to this project:
 
 ### License and credits ###
 
-- Most of the credits go to original authors **Georg Kaindl**, [TrippyLighting](https://github.com/TrippyLighting) and [Dario Pennisi](https://github.com/pnndra).
+- Most of the credits go to original authors **Georg Kaindl**, [**TrippyLighting**](https://github.com/TrippyLighting) and [**Dario Pennisi**](https://github.com/pnndra).
 
 - The library is licensed under [GPLv3.0](http://www.gnu.org/licenses) and [MIT](https://github.com/khoih-prog/MDNS_Generic/blob/master/LICENSE)
 
