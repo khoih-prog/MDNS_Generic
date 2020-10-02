@@ -876,7 +876,7 @@ IPAddress ip(192, 168, 2, 222);
 
 ### Debug Termimal Output Samples
 
-1. This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on nRF52 **Adafruit NRF52840_FEATHER EXPRESS with W5500 Ethernet module using EthernetLarge library.**
+1. This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on nRF52 **Adafruit NRF52840_FEATHER EXPRESS with W5500 Ethernet module using Ethernet2 library.**
 
 ```
 Starting ResolvingHostNames on NRF52840_FEATHER with W5x00 using Ethernet2 Library
