@@ -20,12 +20,13 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.0.0
+  Version: 1.0.1
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
+  1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
  *****************************************************************************************************************************/
 //  Illustrates how to register a service with a TXT record.
 
@@ -36,7 +37,9 @@
 EthernetUDP udp;
 MDNS mdns(udp);
 
-EthernetServer server(80);
+#define HTTP_PORT      80
+
+EthernetServer server(HTTP_PORT);
 
 void setup()
 {
@@ -44,15 +47,10 @@ void setup()
   while (!Serial);
 
   Serial.print("\nStarting RegisteringServicesWithTxtRecord on " + String(BOARD_NAME));
+  Serial.println(" with " + String(SHIELD_TYPE));
 
-#if USE_ETHERNET
-  Serial.println(" using W5x00/Ethernet Library");
-#elif USE_ETHERNET_LARGE
-  Serial.println(" using W5x00/EthernetLarge Library");
-#endif
-
-  Serial.println("=========================");
-  Serial.println("Default SPI pinout:");
+  Serial.println(("========================="));
+  Serial.println(("Default SPI pinout:"));
   Serial.print("MOSI:");
   Serial.println(MOSI);
   Serial.print("MISO:");
@@ -61,23 +59,38 @@ void setup()
   Serial.println(SCK);
   Serial.print("SS:");
   Serial.println(SS);
-  Serial.println("=========================");
+  Serial.println(("========================="));
 
   // unknown board, do nothing, use default SS = 10
 #ifndef USE_THIS_SS_PIN
   #define USE_THIS_SS_PIN   10    // For other boards
 #endif
 
-  Serial.print("Unknown board setCsPin:");
-  Serial.println(USE_THIS_SS_PIN);
+  MDNS_LOGERROR3(F("Board :"), BOARD_NAME, F(", setCsPin:"), USE_THIS_SS_PIN);
 
-  Ethernet.init (USE_THIS_SS_PIN);
+  // For other boards, to change if necessary
+  #if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 )
+    // Must use library patch for Ethernet, Ethernet2, EthernetLarge libraries
+  
+    Ethernet.init (USE_THIS_SS_PIN);
+  
+  #elif USE_ETHERNET3
+    // Use  MAX_SOCK_NUM = 4 for 4K, 2 for 8K, 1 for 16K RX/TX buffer
+    #ifndef ETHERNET3_MAX_SOCK_NUM
+      #define ETHERNET3_MAX_SOCK_NUM      4
+    #endif
+  
+    Ethernet.setCsPin (USE_THIS_SS_PIN);
+    Ethernet.init (ETHERNET3_MAX_SOCK_NUM);
+
+  #endif  //( USE_ETHERNET || USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE )
 
   // start the ethernet connection and the server:
   // Use Static IP
   //Ethernet.begin(mac, ip);
   // Use DHCP dynamic IP and random mac
   uint16_t index = millis() % NUMBER_OF_MAC;
+
   Ethernet.begin(mac[index]);
 
   // Just info to know how to connect correctly
@@ -121,18 +134,22 @@ void setup()
   // With the service registered, it will show up in a Bonjour-enabled webbrowser. As an example, if you are using Apple's Safari, you will now see
   // the service under Bookmarks -> Bonjour (Provided that you have enabled Bonjour in the "Bookmarks" preferences in Safari).
 
-  Serial.println("AddService : Arduino Bonjour Webserver Example._http");
+  String mDNS_Service = String(BOARD_NAME) + "_mDNS_Webserver._http";
   
-  mdns.addServiceRecord("Arduino Bonjour Webserver Example._http", 80, MDNSServiceTCP);
+  Serial.println("AddService : " + mDNS_Service);
+
+  mdns.addServiceRecord(mDNS_Service.c_str(), HTTP_PORT, MDNSServiceTCP);
 
   // Now we'll register a second service record: This time, we specify a TXT content as well, in order to point to a specific page on our server.
   // This is just an example to show that the mDNS library supports TXT records as well, but I won't go into detail about how they work. Check
   // out http://www.zeroconf.org/Rendezvous/txtrecords.html for an excellent primer.
   // What this does is that your browser will now show a second mDNS entry, which will take you to another page on the Arduino web server.
 
-  Serial.println("AddService : Arduino mDNS Webserver Example, Page 2._http");
+  String mDNS_Service_Page2 = String(BOARD_NAME) + "_mDNS_Webserver_Page2._http";
   
-  mdns.addServiceRecord("Arduino mDNS Webserver Example, Page 2._http", 80, MDNSServiceTCP, "\x7path=/2");
+  Serial.println("AddService : " + mDNS_Service_Page2);
+  
+  mdns.addServiceRecord(mDNS_Service_Page2.c_str(), HTTP_PORT, MDNSServiceTCP, "\x7path=/2");
 }
 
 void loop()
@@ -178,8 +195,8 @@ void loop()
           } 
           else 
           {
-            client.println("Hello from a mDNS-enabled web-server running ");
-            client.println("on your Arduino board!");
+            client.println("Hello from mDNS-enabled web-server running on ");
+            client.println(BOARD_NAME);
           }
 
           break;

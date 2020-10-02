@@ -19,12 +19,13 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour. 
   If not, see <http://www.gnu.org/licenses/>.
   
-  Version: 1.0.0
+  Version: 1.0.1
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
+  1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries                     
  ***************************************************************************************************************************************/
 
 #ifndef defines_h
@@ -268,31 +269,52 @@
   #define BOARD_TYPE      "AVR Mega"
 #endif
 
-#ifndef BOARD_NAME
+#if defined(ARDUINO_BOARD)
+  #define BOARD_NAME    ARDUINO_BOARD
+#else
   #define BOARD_NAME    BOARD_TYPE
 #endif
 
 #include <SPI.h>
 
-// UIPEthernet, Ethernet2, Ethernet3, Ethernet_Shield_W5200, EtherCard, EtherSia libraries are not supported
+// UIPEthernet, Ethernet_Shield_W5200, EtherCard, EtherSia libraries are not supported
 
 // To override the default CS/SS pin. Don't use unless you know exactly which pin to use
 // You can define here or customize for each board at same place with BOARD_TYPE
 // Check @ defined(SEEED_XIAO_M0)
 //#define USE_THIS_SS_PIN   22  //21  //5 //4 //2 //15
 
-// Only one of the following to be true.
+// Only one if the following to be true
 #define USE_ETHERNET          false //true
+#define USE_ETHERNET2         false //true
+#define USE_ETHERNET3         false //true
 #define USE_ETHERNET_LARGE    true
- 
-#if USE_ETHERNET_LARGE
+
+#if USE_ETHERNET
+  #include "Ethernet.h"
+  #include "EthernetUdp.h"
+  #warning Use Ethernet lib
+  #define SHIELD_TYPE           "W5x00 using Ethernet Library" 
+#elif USE_ETHERNET_LARGE
   #include "EthernetLarge.h"
   #include "EthernetUdp.h"
   #warning Use EthernetLarge lib
+  #define SHIELD_TYPE           "W5x00 using EthernetLarge Library"
+#elif USE_ETHERNET2
+  #include "Ethernet2.h"
+  #include "EthernetUdp2.h"
+  #warning Use Ethernet2 lib
+  #define SHIELD_TYPE           "W5x00 using Ethernet2 Library"
+#elif USE_ETHERNET3
+  #include "Ethernet3.h"
+  #include "EthernetUdp3.h"
+  #warning Use Ethernet3 lib   
+  #define SHIELD_TYPE           "W5x00 using Ethernet3 Library" 
 #else
   #define USE_ETHERNET          true
   #include "Ethernet.h"
   #warning Use Ethernet lib
+  #define SHIELD_TYPE           "W5x00 using Ethernet Library"
 #endif
 
 // Enter a MAC address and IP address for your controller below.

@@ -20,12 +20,13 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.0.0
+  Version: 1.0.1
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
+  1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
  *****************************************************************************************************************************/
 
 #ifndef MDNS_Debug_H
@@ -52,26 +53,29 @@
 
 
 #define MDNS_LOGERROR(x)        if(_MDNS_LOGLEVEL_>0) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.println(x); }
+#define MDNS_LOGERROR0(x)       if(_MDNS_LOGLEVEL_>0) { MDNS_DEBUG_OUTPUT.print(x); }
 #define MDNS_LOGERROR1(x,y)     if(_MDNS_LOGLEVEL_>0) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(y); }
-#define MDNS_LOGERROR2(x,y,z)   if(_MDNS_LOGLEVEL_>0) { MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(z); }
-#define MDNS_LOGERROR3(x,y,z,w) if(_MDNS_LOGLEVEL_>0) { MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(z); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(w); }
+#define MDNS_LOGERROR2(x,y,z)   if(_MDNS_LOGLEVEL_>0) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(z); }
+#define MDNS_LOGERROR3(x,y,z,w) if(_MDNS_LOGLEVEL_>0) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(z); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(w); }
 
 #define MDNS_LOGWARN(x)         if(_MDNS_LOGLEVEL_>1) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.println(x); }
+#define MDNS_LOGWARN0(x)        if(_MDNS_LOGLEVEL_>1) { MDNS_DEBUG_OUTPUT.print(x); }
 #define MDNS_LOGWARN1(x,y)      if(_MDNS_LOGLEVEL_>1) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(y); }
-#define MDNS_LOGWARN2(x,y,z)    if(_MDNS_LOGLEVEL_>1) { MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(z); }
-#define MDNS_LOGWARN3(x,y,z,w)    if(_MDNS_LOGLEVEL_>1) { MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(z); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(w); }
+#define MDNS_LOGWARN2(x,y,z)    if(_MDNS_LOGLEVEL_>1) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(z); }
+#define MDNS_LOGWARN3(x,y,z,w)    if(_MDNS_LOGLEVEL_>1) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(z); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(w); }
 
 #define MDNS_LOGINFO(x)         if(_MDNS_LOGLEVEL_>2) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.println(x); }
+#define MDNS_LOGINFO0(x)        if(_MDNS_LOGLEVEL_>2) { MDNS_DEBUG_OUTPUT.print(x); }
 #define MDNS_LOGINFO1(x,y)      if(_MDNS_LOGLEVEL_>2) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(y); }
-#define MDNS_LOGINFO2(x,y,z)    if(_MDNS_LOGLEVEL_>2) { MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(z); }
-#define MDNS_LOGINFO3(x,y,z,w)  if(_MDNS_LOGLEVEL_>2) { MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(z); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(w); }
+#define MDNS_LOGINFO2(x,y,z)    if(_MDNS_LOGLEVEL_>2) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(z); }
+#define MDNS_LOGINFO3(x,y,z,w)  if(_MDNS_LOGLEVEL_>2) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(z); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(w); }
 
 
-#define MDNS_LOGDEBUG(x)        if(_MDNS_LOGLEVEL_>3) { MDNS_DEBUG_OUTPUT.println(x); }
+#define MDNS_LOGDEBUG(x)        if(_MDNS_LOGLEVEL_>3) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.println(x); }
 #define MDNS_LOGDEBUG0(x)       if(_MDNS_LOGLEVEL_>3) { MDNS_DEBUG_OUTPUT.print(x); }
-#define MDNS_LOGDEBUG1(x,y)     if(_MDNS_LOGLEVEL_>3) { MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(y); }
-#define MDNS_LOGDEBUG2(x,y,z)   if(_MDNS_LOGLEVEL_>3) { MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(z); }
-#define MDNS_LOGDEBUG3(x,y,z,w) if(_MDNS_LOGLEVEL_>3) { MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(z); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(w); }
+#define MDNS_LOGDEBUG1(x,y)     if(_MDNS_LOGLEVEL_>3) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(y); }
+#define MDNS_LOGDEBUG2(x,y,z)   if(_MDNS_LOGLEVEL_>3) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(z); }
+#define MDNS_LOGDEBUG3(x,y,z,w) if(_MDNS_LOGLEVEL_>3) { MDNS_DEBUG_OUTPUT.print("[MDNS] "); MDNS_DEBUG_OUTPUT.print(x); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(y); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.print(z); MDNS_DEBUG_OUTPUT.print(" "); MDNS_DEBUG_OUTPUT.println(w); }
 
 
 #endif    // MDNS_Debug_H

@@ -20,12 +20,13 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour. 
   If not, see <http://www.gnu.org/licenses/>.
   
-  Version: 1.0.0
+  Version: 1.0.1
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
+  1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
  *****************************************************************************************************************************/
 //
 
@@ -47,12 +48,7 @@ void setup()
   while (!Serial);
 
   Serial.print("\nStarting DiscoveringServices on " + String(BOARD_NAME));
-  
-#if USE_ETHERNET
-  Serial.println(" using W5x00/Ethernet Library");
-#elif USE_ETHERNET_LARGE
-  Serial.println(" using W5x00/EthernetLarge Library");
-#endif
+  Serial.println(" with " + String(SHIELD_TYPE));
 
   Serial.println(("========================="));
   Serial.println(("Default SPI pinout:"));
@@ -71,17 +67,31 @@ void setup()
   #define USE_THIS_SS_PIN   10    // For other boards
 #endif
 
-  Serial.print(("Unknown board setCsPin:"));
-  Serial.println(USE_THIS_SS_PIN);
+  MDNS_LOGERROR3(F("Board :"), BOARD_NAME, F(", setCsPin:"), USE_THIS_SS_PIN);
 
-  Ethernet.init (USE_THIS_SS_PIN);
+  // For other boards, to change if necessary
+  #if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 )
+    // Must use library patch for Ethernet, Ethernet2, EthernetLarge libraries
+  
+    Ethernet.init (USE_THIS_SS_PIN);
+  
+  #elif USE_ETHERNET3
+    // Use  MAX_SOCK_NUM = 4 for 4K, 2 for 8K, 1 for 16K RX/TX buffer
+    #ifndef ETHERNET3_MAX_SOCK_NUM
+      #define ETHERNET3_MAX_SOCK_NUM      4
+    #endif
+  
+    Ethernet.setCsPin (USE_THIS_SS_PIN);
+    Ethernet.init (ETHERNET3_MAX_SOCK_NUM);
+
+  #endif  //( USE_ETHERNET || USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE )
 
   // start the ethernet connection and the server:
   // Use Static IP
   //Ethernet.begin(mac, ip);
   // Use DHCP dynamic IP and random mac
   uint16_t index = millis() % NUMBER_OF_MAC;
-  
+
   Ethernet.begin(mac[index]);
 
   // Just info to know how to connect correctly

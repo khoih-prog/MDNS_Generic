@@ -20,12 +20,13 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.0.0
+  Version: 1.0.1
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
+  1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
  *****************************************************************************************************************************/
 
 #ifndef __MDNS_GENERIC_IMPL_H__
@@ -54,7 +55,10 @@
 //#define  _BROKEN_MALLOC_   1
 #undef _USE_MALLOC_
 
-static uint8_t mdnsMulticastIPAddr[] = { 224, 0, 0, 251 };
+//static uint8_t mdnsMulticastIPAddr[] = { 224, 0, 0, 251 };
+
+static IPAddress mdnsMulticastIPAddr = IPAddress(224, 0, 0, 251);
+
 //static uint8_t mdnsHWAddr[] = { 0x01, 0x00, 0x5e, 0x00, 0x00, 0xfb };
 
 typedef enum _MDNSPacketType_t 
@@ -167,7 +171,7 @@ int MDNS::begin(const IPAddress& ip, const char* name)
     statusCode = this->_udp->beginMulticast(mdnsMulticastIPAddr, MDNS_SERVER_PORT);
     
     // KH debug
-    MDNS_LOGDEBUG1("MDNS::begin: UDP beginMulticast statusCode=", (statusCode == 1) ? "OK" : "Error");    
+    MDNS_LOGDEBUG1("::begin: UDP beginMulticast statusCode=", (statusCode == 1) ? "OK" : "Error");    
   }
 
   return statusCode;
@@ -232,7 +236,7 @@ int MDNS::resolveName(const char* name, unsigned long timeout)
   strcat(n, MDNS_TLD);
   
   // KH debug
-  MDNS_LOGDEBUG1("MDNS::resolveName: name=", n);
+  MDNS_LOGINFO1("::resolveName: name=", n);
 
   return this->_initQuery(0, n, timeout);
 }
@@ -351,6 +355,14 @@ MDNSError_t MDNS::_sendMDNSMessage(uint32_t /*peerAddress*/, uint32_t xid, int t
 
   this->_udp->beginPacket(mdnsMulticastIPAddr, MDNS_SERVER_PORT);
   this->_udp->write((uint8_t*)dnsHeader, sizeof(DNSHeader_t));
+  
+  // KH debug
+  MDNS_LOGDEBUG1("::_sendMDNSMessage: xid=", dnsHeader->xid);
+  MDNS_LOGDEBUG1("::_sendMDNSMessage: queryCount=", dnsHeader->queryCount);
+  MDNS_LOGDEBUG1("::_sendMDNSMessage: answerCount=", dnsHeader->answerCount);
+  MDNS_LOGDEBUG1("::_sendMDNSMessage: authorityCount=", dnsHeader->authorityCount);
+  MDNS_LOGDEBUG1("::_sendMDNSMessage: additionalCount=", dnsHeader->additionalCount);
+  //////
 
   ptr += sizeof(DNSHeader_t);
   buf = (uint8_t*)dnsHeader;
@@ -523,7 +535,7 @@ errorReturn:
 #endif
 
   // KH debug
-  MDNS_LOGDEBUG1("MDNS::_sendMDNSMessage: statusCode =", statusCode);
+  MDNS_LOGDEBUG1("::_sendMDNSMessage: statusCode =", statusCode);
   
   return statusCode;
 }
@@ -552,15 +564,15 @@ MDNSError_t MDNS::_processMDNSQuery()
   uint8_t * udpBuffer = NULL;
   uintptr_t ptr;
 
-  memset(recordsAskedFor, 0, sizeof(uint8_t) * (NumMDNSServiceRecords + 2));
-  memset(recordsFound, 0, sizeof(uint8_t) * 2);
+  memset(recordsAskedFor, 0, sizeof(recordsAskedFor));
+  memset(recordsFound, 0, sizeof(recordsFound));
 
   udp_len = this->_udp->parsePacket();
   
   // KH Debug
   if (udp_len != 0)
   {
-    MDNS_LOGDEBUG1("MDNS::_processMDNSQuery: UDP parsePacket len=", udp_len);
+    MDNS_LOGINFO1("::_processMDNSQuery: UDP parsePacket len=", udp_len);
   }
   
   if (0 == udp_len) 
@@ -579,6 +591,24 @@ MDNSError_t MDNS::_processMDNSQuery()
   }
   
   this->_udp->read((uint8_t*) udpBuffer, udp_len);//read _remaining UDP packet from W5100/W5200 into memory
+  
+  // KH
+  MDNS_LOGINFO1("::_processMDNSQuery: UDP parsePacket len=", udp_len);
+
+  MDNS_LOGINFO("buffer======");
+  for (int i = 0; i < udp_len; i++)
+  {
+    MDNS_LOGINFO0(String(udpBuffer[i], HEX));
+    MDNS_LOGINFO0(", ");
+    
+    if (( i > 0 ) && ( (i + 1) % 20 == 0 ))
+      MDNS_LOGINFO0("\n");
+  }
+  
+  MDNS_LOGINFO0("\n");
+  MDNS_LOGINFO("=====");
+  //////
+  
   ptr = (uintptr_t)udpBuffer;
 
 #if defined(_USE_MALLOC_)
@@ -920,7 +950,7 @@ MDNSError_t MDNS::_processMDNSQuery()
                   if (48 == udp_len)
                   {
                     // KH debug
-                    MDNS_LOGDEBUG1("MDNS::_processMDNSQuery: to report IP, buf =", String((uint8_t) buf[0]));
+                    MDNS_LOGINFO1("::_processMDNSQuery: to report IP, buf =", String((uint8_t) buf[0]));
                   
                     this->_finishedResolvingName((char*)this->_resolveNames[0], (const byte*)buf);
                   }
@@ -1188,7 +1218,7 @@ void MDNS::run()
   if (statusCode != MDNSTryLater /*3*/)
   {
     // KH debug
-    //MDNS_LOGDEBUG1("MDNS::run: statusCode=", (int) statusCode);
+    //MDNS_LOGDEBUG1("::run: statusCode=", (int) statusCode);
   }
   // first, look for MDNS queries to handle
   //(void)_processMDNSQuery();
@@ -1204,18 +1234,18 @@ void MDNS::run()
         (void)this->_sendMDNSMessage(0, 0, (0 == i) ? MDNSPacketTypeNameQuery : MDNSPacketTypeServiceQuery, 0);
         
         // KH debug
-        MDNS_LOGDEBUG3("MDNS::run: _sendMDNSMessage, now =", now, ", _resolveLastSendMillis =", this->_resolveLastSendMillis[i] );
+        MDNS_LOGDEBUG3("::run: _sendMDNSMessage, now =", now, ", _resolveLastSendMillis =", this->_resolveLastSendMillis[i] );
       }
 
       if (this->_resolveTimeouts[i] > 0 && now > this->_resolveTimeouts[i]) 
       {      
         // KH debug
-        MDNS_LOGDEBUG1("MDNS::run: _resolveTimeouts =", this->_resolveTimeouts[i]);
+        MDNS_LOGDEBUG1("::run: _resolveTimeouts =", this->_resolveTimeouts[i]);
         
         if (i == 0)
         {
           // KH debug
-          MDNS_LOGWARN("MDNS::run: to report IP, NULL");
+          MDNS_LOGWARN("::run: to report IP, NULL");
                   
           this->_finishedResolvingName((char*)this->_resolveNames[0], NULL);
         }

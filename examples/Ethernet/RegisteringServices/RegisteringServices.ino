@@ -20,12 +20,13 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.0.0
+  Version: 1.0.1
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
+  1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
  *****************************************************************************************************************************/
 
 //  Illustrates how to register a Bonjour service.
@@ -37,7 +38,9 @@
 EthernetUDP udp;
 MDNS mdns(udp);
 
-EthernetServer server(80);
+#define HTTP_PORT      80
+
+EthernetServer server(HTTP_PORT);
 
 void setup()
 {
@@ -45,12 +48,7 @@ void setup()
   while (!Serial);
 
   Serial.print("\nStarting RegisteringServices on " + String(BOARD_NAME));
-
-#if USE_ETHERNET
-  Serial.println(" using W5x00/Ethernet Library");
-#elif USE_ETHERNET_LARGE
-  Serial.println(" using W5x00/EthernetLarge Library");
-#endif
+  Serial.println(" with " + String(SHIELD_TYPE));
 
   Serial.println(("========================="));
   Serial.println(("Default SPI pinout:"));
@@ -69,10 +67,24 @@ void setup()
   #define USE_THIS_SS_PIN   10    // For other boards
 #endif
 
-  Serial.print(("Unknown board setCsPin:"));
-  Serial.println(USE_THIS_SS_PIN);
+  MDNS_LOGERROR3(F("Board :"), BOARD_NAME, F(", setCsPin:"), USE_THIS_SS_PIN);
 
-  Ethernet.init (USE_THIS_SS_PIN);
+  // For other boards, to change if necessary
+  #if ( USE_ETHERNET || USE_ETHERNET_LARGE || USE_ETHERNET2 )
+    // Must use library patch for Ethernet, Ethernet2, EthernetLarge libraries
+  
+    Ethernet.init (USE_THIS_SS_PIN);
+  
+  #elif USE_ETHERNET3
+    // Use  MAX_SOCK_NUM = 4 for 4K, 2 for 8K, 1 for 16K RX/TX buffer
+    #ifndef ETHERNET3_MAX_SOCK_NUM
+      #define ETHERNET3_MAX_SOCK_NUM      4
+    #endif
+  
+    Ethernet.setCsPin (USE_THIS_SS_PIN);
+    Ethernet.init (ETHERNET3_MAX_SOCK_NUM);
+
+  #endif  //( USE_ETHERNET || USE_ETHERNET2 || USE_ETHERNET3 || USE_ETHERNET_LARGE )
 
   // start the ethernet connection and the server:
   // Use Static IP
@@ -122,9 +134,11 @@ void setup()
   // With the service registered, it will show up in a Bonjour-enabled webbrowser. As an example, if you are using Apple's Safari, you will now see
   // the service under Bookmarks -> Bonjour (Provided that you have enabled Bonjour in the "Bookmarks" preferences in Safari).
 
-  Serial.println("AddService : Arduino mDNS Webserver Example._http");
+  String mDNS_Service = String(BOARD_NAME) + "_mDNS_Webserver._http";
+  
+  Serial.println("AddService : " + mDNS_Service);
 
-  mdns.addServiceRecord("Arduino mDNS Webserver Example._http", 80, MDNSServiceTCP);
+  mdns.addServiceRecord(mDNS_Service.c_str(), HTTP_PORT, MDNSServiceTCP);
 }
 
 void loop()
@@ -156,7 +170,7 @@ void loop()
           client.println("Content-Type: text/html");
           client.println();
 
-          client.println("Hello from a mDNS-enabled web-server running on ");
+          client.println("Hello from mDNS-enabled web-server running on ");
           client.println(BOARD_NAME);
 
           break;
