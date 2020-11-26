@@ -1,35 +1,67 @@
 {
-  "name": "MDNS_Generic",
-  "version": "1.0.1",
-  "keywords": "Communication, mDNS, Ethernet, EthernetLarge, Arduino, Teensy, SAMD21, SAMD51, SAM DUE, AVR, Mega, nRF52, W5100, W5200, W5500, Ethernet shield",
-  "description": "mDNS Library for nRF52, SAMD21, SAMD51, SAM DUE, STM32F/L/H/G/WB/MP1, AVR Mega, etc. boards using Ethernet W5x00. Supports mDNS (Registering Services) and DNS-SD (Service Discovery)",
-  "authors": [
-    {
-      "name":  "Georg Kaindl",
-      "url":   "https://github.com/arduino-libraries/ArduinoMDNS",
-      "email": "info@gkaindl.com"
-    },
-    {
-      "name":  "Khoi Hoang",
-      "url":   "https://github.com/khoih-prog/MDNS_Generic",
-      "email": "khoih.prog@gmail.com",
-      "maintainer": true
-    }
-  ],
+  "name": "BlynkEthernet_STM32_WM",
+  "version": "1.0.4",
+  "description": "Build a smartphone app for your project in minutes. Blynk allows creating IoT solutions easily. It supports  WiFi, BLE, Bluetooth, Ethernet, GSM, USB, Serial. Works with many boards like ESP8266, ESP32, Arduino UNO, Nano, Due, Mega, Zero, MKR100, Yun, Raspberry Pi, Particle, Energia, ARM mbed, Intel Edison/Galileo/Joule, BBC micro:bit, DFRobot, RedBearLab, Microduino, LinkIt ONE ...",
+  "keywords": "sensors, control, device, smartphone, mobile, app, web, cloud, communication, protocol, iot, m2m, wifi, ble, bluetooth, ethernet, usb, serial, gsm, gprs, 3g, data, esp8266, http",
+  "authors":
+  {
+    "name":  "Khoi Hoang",
+    "url":   "https://github.com/khoih-prog",
+    "maintainer": true
+  },
   "repository":
   {
     "type": "git",
-    "url": "https://github.com/khoih-prog/MDNS_Generic"
+    "url": "//https://github.com/khoih-prog/BlynkEthernet_STM32_WM"
   },
-  "homepage": "https://github.com/khoih-prog/MDNS_Generic",
+  "homepage": "https://github.com/khoih-prog/BlynkEthernet_STM32_WM",
   "export": {
     "exclude": [
       "linux",
       "extras",
       "tests"
     ]
-  },  
+  },
+  "dependencies": 
+  [
+    {
+      "owner": "blynkkk",
+      "name": "Blynk",
+      "version": "^0.6.1",
+      "platforms": ["*"]
+    },
+    {
+      "owner": "stm32duino",
+      "name": "STM32duino LwIP",
+      "version": "^2.1.2",
+      "platforms": ["ststm32", "stm32"]
+    },
+    {
+      "owner": "stm32duino",
+      "name": "STM32Ethernet",
+      "version": "^1.2.0",
+      "platforms": ["ststm32", "stm32"]
+    },
+    {
+      "owner": "khoih.prog",
+      "name": "EthernetWebServer_STM32",
+      "version": "^1.1.0",
+      "platforms": ["ststm32", "stm32"]
+    },
+    {
+      "owner": "uipethernet",
+      "name": "UIPEthernet",
+      "version": "^2.0.8",
+      "platforms": ["*"]
+    },
+    {
+      "owner": "arduino-libraries",
+      "name": "Ethernet",
+      "version": "^2.0.0",
+      "platforms": ["*"]
+    }
+  ],
   "frameworks": "*",
-  "platforms": "*",
+  "platforms": "stm32,ststm32",
   "examples": "examples/*/*/*.ino"
 }
