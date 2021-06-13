@@ -20,13 +20,14 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.0.1
+  Version: 1.1.0
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
   1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
+  1.1.0   K Hoang      12/06/2021 Add support to RP2040-based boards
  *****************************************************************************************************************************/
 //  Illustrates how to register a service with a TXT record.
 
@@ -46,8 +47,9 @@ void setup()
   Serial.begin(115200);
   while (!Serial);
 
-  Serial.print("\nStarting RegisteringServicesWithTxtRecord on " + String(BOARD_NAME));
-  Serial.println(" with " + String(SHIELD_TYPE));
+  Serial.print("\nStart RegisteringServicesWithTxtRecord on "); Serial.print(BOARD_NAME);
+  Serial.print(" using "); Serial.println(SHIELD_TYPE);
+  Serial.println(MDNS_GENERIC_VERSION);
 
   Serial.println(("========================="));
   Serial.println(("Default SPI pinout:"));

@@ -17,15 +17,7 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
   
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour. 
-  If not, see <http://www.gnu.org/licenses/>.
-  
-  Version: 1.0.1
-  
-  Version Modified By   Date      Comments
-  ------- -----------  ---------- -----------
-  1.0.0   K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
-                                  Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
-  1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries                     
+  If not, see <http://www.gnu.org/licenses/>.             
  ***************************************************************************************************************************************/
 
 #ifndef defines_h
@@ -70,6 +62,13 @@
     #undef ETHERNET_USE_STM32
   #endif
   #define ETHERNET_USE_STM32        true
+#endif
+
+#if ( defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_RASPBERRY_PI_PICO) || defined(ARDUINO_ADAFRUIT_FEATHER_RP2040) || defined(ARDUINO_GENERIC_RP2040) )
+  #if defined(ETHERNET_USE_RP2040)
+    #undef ETHERNET_USE_RP2040
+  #endif
+  #define ETHERNET_USE_RP2040      true
 #endif
 
 #if defined(ETHERNET_USE_SAMD)
@@ -264,6 +263,41 @@
     #define BOARD_TYPE  "STM32 Unknown"
   #endif
 
+#elif ETHERNET_USE_RP2040
+  
+  // Default pin 5 (in Mbed) or 17 to SS/CS
+  #if defined(ARDUINO_ARCH_MBED)
+    // For RPI Pico using Arduino Mbed RP2040 core
+    // SCK: GPIO2,  MOSI: GPIO3, MISO: GPIO4, SS/CS: GPIO5
+    
+    #define USE_THIS_SS_PIN       5
+
+    #if defined(BOARD_NAME)
+      #undef BOARD_NAME
+    #endif
+
+    #if defined(ARDUINO_RASPBERRY_PI_PICO) 
+      #define BOARD_TYPE      "MBED RASPBERRY_PI_PICO"
+    #elif defined(ARDUINO_ADAFRUIT_FEATHER_RP2040)
+      #define BOARD_TYPE      "MBED DAFRUIT_FEATHER_RP2040"
+    #elif defined(ARDUINO_GENERIC_RP2040)
+      #define BOARD_TYPE      "MBED GENERIC_RP2040"
+    #else
+      #define BOARD_TYPE      "MBED Unknown RP2040"
+    #endif
+    
+  #else
+    // For RPI Pico using E. Philhower RP2040 core
+    // SCK: GPIO18,  MOSI: GPIO19, MISO: GPIO16, SS/CS: GPIO17
+    #define USE_THIS_SS_PIN       17
+
+  #endif
+    
+  #define SS_PIN_DEFAULT        USE_THIS_SS_PIN
+
+  // For RPI Pico
+  #warning Use RPI-Pico RP2040 architecture
+  
 #else
   // For Mega
   #define BOARD_TYPE      "AVR Mega"
@@ -271,7 +305,7 @@
 
 #if defined(ARDUINO_BOARD)
   #define BOARD_NAME    ARDUINO_BOARD
-#else
+#elif !defined(BOARD_NAME)
   #define BOARD_NAME    BOARD_TYPE
 #endif
 

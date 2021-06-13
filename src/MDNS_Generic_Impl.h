@@ -20,13 +20,14 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.0.1
+  Version: 1.1.0
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
   1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
+  1.1.0   K Hoang      12/06/2021 Add support to RP2040-based boards
  *****************************************************************************************************************************/
 
 #ifndef __MDNS_GENERIC_IMPL_H__
@@ -38,9 +39,14 @@
 #include <string.h>
 #include <stdlib.h>
 //#include <Arduino.h>
-#include <Udp.h>
 
-#include "MDNS_EthernetUtil_Impl.h"
+#if MDNS_USING_WIFININA
+  #include <WiFiUdp_Generic.h>
+  #include "MDNS_EthernetUtil_Impl.h"
+#else
+  #include <Udp.h>
+  #include "MDNS_EthernetUtil_Impl.h"
+#endif
 
 #define  MDNS_DEFAULT_NAME       "arduino"
 #define  MDNS_TLD                ".local"
@@ -576,7 +582,7 @@ MDNSError_t MDNS::_processMDNSQuery()
   }
   
   if (0 == udp_len) 
-  {
+  {   
     statusCode = MDNSTryLater;
     goto errorReturn;
   }
@@ -585,6 +591,8 @@ MDNSError_t MDNS::_processMDNSQuery()
   
   if (NULL == udpBuffer) 
   {
+    MDNS_LOGDEBUG("::_processMDNSQuery: NULL udpBuffer");
+    
     this->_udp->flush();
     statusCode = MDNSOutOfMemory;
     goto errorReturn;
