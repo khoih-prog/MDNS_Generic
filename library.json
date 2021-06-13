@@ -58,6 +58,5 @@
   ],
   "frameworks": "*",
   "platforms": "*",
-  "examples": "examples/*/*/*.ino",
-  "license": "GPL-3.0-or-later"
+  "examples": "examples/*/*/*.ino"
 }
