@@ -160,7 +160,7 @@ void setup()
   Serial.begin(115200);
   while (!Serial);
   
-  Serial.print("Start WiFiResolvingHostNames on "); Serial.println(BOARD_NAME);
+  Serial.print("\nStart WiFiResolvingHostNames on "); Serial.println(BOARD_NAME);
   Serial.println(MDNS_GENERIC_VERSION);
 
 #if ( WIFI_NETWORK_WIFININA || WIFI_NETWORK_WIFI101 )
