@@ -276,10 +276,12 @@
       #undef BOARD_NAME
     #endif
 
-    #if defined(ARDUINO_RASPBERRY_PI_PICO) 
+    #if defined(ARDUINO_NANO_RP2040_CONNECT)
+      #define BOARD_TYPE      "MBED NANO_RP2040_CONNECT"
+    #elif defined(ARDUINO_RASPBERRY_PI_PICO) 
       #define BOARD_TYPE      "MBED RASPBERRY_PI_PICO"
     #elif defined(ARDUINO_ADAFRUIT_FEATHER_RP2040)
-      #define BOARD_TYPE      "MBED DAFRUIT_FEATHER_RP2040"
+      #define BOARD_TYPE      "MBED ADAFRUIT_FEATHER_RP2040"
     #elif defined(ARDUINO_GENERIC_RP2040)
       #define BOARD_TYPE      "MBED GENERIC_RP2040"
     #else

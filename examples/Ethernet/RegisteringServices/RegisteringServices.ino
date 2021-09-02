@@ -20,7 +20,7 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.1.0
+  Version: 1.2.0
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -28,6 +28,7 @@
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
   1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
   1.1.0   K Hoang      12/06/2021 Add support to RP2040-based boards
+  1.2.0   K Hoang      01/09/2021 Add support to generic boards using WiFi or WiFiNINA
  *****************************************************************************************************************************/
 
 //  Illustrates how to register a Bonjour service.
@@ -120,12 +121,13 @@ void setup()
   // Initialize the mDNS library. You can now reach or ping this Arduino via the host name "arduino.local", provided that your operating
   // system is mDNS/Bonjour-enabled (such as MacOS X). Always call this before any other method!
   String hostname = String(BOARD_NAME) + "_" + String(index);
-  hostname.toLowerCase();
-  hostname.replace(" ", "_");
+  hostname.toUpperCase();
+  hostname.replace(" ",  "-");
   
-  Serial.println("Register host name: " + hostname + ".local");
+  Serial.print("Registering mDNS hostname: "); Serial.println(hostname);
+  Serial.print("To access, using "); Serial.print(hostname); Serial.println(".local");
 
-  mdns.begin(Ethernet.localIP(), hostname.c_str() /*"arduino"*/);
+  mdns.begin(Ethernet.localIP(), hostname.c_str());
 
   // Now let's register the service we're offering (a web service) via mDNS! To do so, we call the addServiceRecord() method. The first argument is the
   // name of our service instance and its type, separated by a dot. In this case, the service type is _http. There are many other service types, use

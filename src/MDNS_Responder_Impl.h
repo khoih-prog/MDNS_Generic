@@ -1,6 +1,5 @@
 /****************************************************************************************************************************
   MDNS_Responder_Impl.h
-
   mDNS library to support mDNS (registering services) and DNS-SD (service discovery).
 
   Based on and modified from https://github.com/arduino-libraries/ArduinoMDNS
@@ -20,7 +19,7 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.1.0
+  Version: 1.2.0
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -28,7 +27,9 @@
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
   1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
   1.1.0   K Hoang      12/06/2021 Add support to RP2040-based boards
+  1.2.0   K Hoang      01/09/2021 Add support to generic boards using WiFi or WiFiNINA
  *****************************************************************************************************************************/
+
 // Port of CC3000 MDNS Responder to WINC1500.
 // Author: Tony DiCola
 //
@@ -55,9 +56,12 @@
 #ifndef MDNS_RESPONDER_IMPL_H
 #define MDNS_RESPONDER_IMPL_H
 
-#include <avr/pgmspace.h>
+#if !(ESP32 || ESP8266)
+  #include <avr/pgmspace.h>
+#endif
+
 #ifndef ARDUINO_ARCH_AVR
-#include <strings.h>
+  #include <strings.h>
 #endif
 
 #include "Arduino.h"
@@ -68,9 +72,9 @@
 // - DNS request and response: http://www.ietf.org/rfc/rfc1035.txt
 // - Multicast DNS: http://www.ietf.org/rfc/rfc6762.txt
 
-#define HEADER_SIZE 12
-#define TTL_OFFSET 4
-#define IP_OFFSET 10
+#define HEADER_SIZE     12
+#define TTL_OFFSET      4
+#define IP_OFFSET       10
 
 const uint8_t expectedRequestHeader[HEADER_SIZE] = 
 {

@@ -17,64 +17,42 @@
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
   
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour. 
-  If not, see <http://www.gnu.org/licenses/>.             
- ***************************************************************************************************************************************/
+  If not, see <http://www.gnu.org/licenses/>.
+ *****************************************************************************************************************************/
 
 #ifndef defines_h
 #define defines_h
 
-#define MDNS_DEBUG_PORT       Serial
+#define SYSTEM_ENDIAN           _ENDIAN_BIG_
 
+#define MDNS_DEBUG_PORT         Serial
+#define _MDNS_LOGLEVEL_         1
+
+#define DEBUG_WIFININA_PORT     Serial
 // Debug Level from 0 to 4
-#define _MDNS_LOGLEVEL_       1
+#define _WIFININA_LOGLEVEL_     1
+
+#if defined(ESP32) || defined(ESP8266)
+  #define BOARD_TYPE        ARDUINO_BOARD
+
+  #if defined(ESP32)
+    #define ESP_getChipId()   ((uint32_t)ESP.getEfuseMac())
+  #else
+    #define ESP_getChipId()   (ESP.getChipId())
+  #endif
+#endif
 
 #if    ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
       || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) \
       || defined(ARDUINO_SAMD_MKRGSM1400) || defined(ARDUINO_SAMD_MKRNB1500) || defined(ARDUINO_SAMD_MKRVIDOR4000) || defined(__SAMD21G18A__) \
       || defined(ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS) || defined(__SAMD21E18A__) || defined(__SAMD51__) || defined(__SAMD51J20A__) || defined(__SAMD51J19A__) \
       || defined(__SAMD51G19A__) || defined(__SAMD51P19A__) || defined(__SAMD21G18A__) )
-  #if defined(ETHERNET_USE_SAMD)
-    #undef ETHERNET_USE_SAMD
+  #if defined(WIFININA_USE_SAMD)
+    #undef WIFININA_USE_SAMD
   #endif
-  #define ETHERNET_USE_SAMD      true
-  #endif
+  #define WIFININA_USE_SAMD      true
 
-#if ( defined(NRF52840_FEATHER) || defined(NRF52832_FEATHER) || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT) || \
-        defined(NRF52840_FEATHER_SENSE) || defined(NRF52840_ITSYBITSY) || defined(NRF52840_CIRCUITPLAY) || defined(NRF52840_CLUE) || \
-        defined(NRF52840_METRO) || defined(NRF52840_PCA10056) || defined(PARTICLE_XENON) || defined(NINA_B302_ublox) || defined(NINA_B112_ublox) )
-  #if defined(ETHERNET_USE_NRF528XX)
-    #undef ETHERNET_USE_NRF528XX
-  #endif
-  #define ETHERNET_USE_NRF528XX      true
-#endif
-
-#if ( defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__) )
-  #if defined(ETHERNET_USE_SAM_DUE)
-    #undef ETHERNET_USE_SAM_DUE
-  #endif
-  #define ETHERNET_USE_SAM_DUE      true
-#endif
-
-#if ( defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)  ||defined(STM32F4) || defined(STM32F7) || \
-       defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32H7)  ||defined(STM32G0) || defined(STM32G4) || \
-       defined(STM32WB) || defined(STM32MP1) )
-  #if defined(ETHERNET_USE_STM32)
-    #undef ETHERNET_USE_STM32
-  #endif
-  #define ETHERNET_USE_STM32        true
-#endif
-
-#if ( defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_RASPBERRY_PI_PICO) || defined(ARDUINO_ADAFRUIT_FEATHER_RP2040) || defined(ARDUINO_GENERIC_RP2040) )
-  #if defined(ETHERNET_USE_RP2040)
-    #undef ETHERNET_USE_RP2040
-  #endif
-  #define ETHERNET_USE_RP2040      true
-#endif
-
-#if defined(ETHERNET_USE_SAMD)
-  // For SAMD
-  
-  #if ( defined(ARDUINO_SAMD_ZERO) && !defined(SEEED_XIAO_M0) )
+  #if defined(ARDUINO_SAMD_ZERO)
     #define BOARD_TYPE      "SAMD Zero"
   #elif defined(ARDUINO_SAMD_MKR1000)
     #define BOARD_TYPE      "SAMD MKR1000"
@@ -142,8 +120,6 @@
     #define BOARD_TYPE      "SAMD SEEED_FEMTO_M0"
   #elif defined(SEEED_XIAO_M0)
     #define BOARD_TYPE      "SAMD SEEED_XIAO_M0"
-    #define USE_THIS_SS_PIN       A1
-    #warning define SEEED_XIAO_M0 USE_THIS_SS_PIN == A1
   #elif defined(Wio_Lite_MG126)
     #define BOARD_TYPE      "SAMD SEEED Wio_Lite_MG126"
   #elif defined(WIO_GPS_BOARD)
@@ -162,6 +138,8 @@
     #define BOARD_TYPE      "SAMD51G19A"
   #elif defined(__SAMD51J19A__)
     #define BOARD_TYPE      "SAMD51J19A"
+  #elif defined(__SAMD51P19A__)
+    #define BOARD_TYPE      "__SAMD51P19A__"
   #elif defined(__SAMD51J20A__)
     #define BOARD_TYPE      "SAMD51J20A"
   #elif defined(__SAM3X8E__)
@@ -174,40 +152,129 @@
     #define BOARD_TYPE      "SAMD Unknown"
   #endif
 
-#elif (ETHERNET_USE_SAM_DUE)
-  #define BOARD_TYPE      "SAM DUE"
+#endif
 
-#elif (ETHERNET_USE_NRF528XX)
+#if ( defined(NRF52840_FEATHER) || defined(NRF52832_FEATHER) || defined(NRF52_SERIES) || defined(ARDUINO_NRF52_ADAFRUIT) || \
+      defined(NRF52840_FEATHER_SENSE) || defined(NRF52840_ITSYBITSY) || defined(NRF52840_CIRCUITPLAY) || defined(NRF52840_CLUE) || \
+      defined(NRF52840_METRO) || defined(NRF52840_PCA10056) || defined(PARTICLE_XENON) || defined(NINA_B302_ublox) || defined(NINA_B112_ublox) )
+  #if defined(WIFININA_USE_NRF52)
+    #undef WIFININA_USE_NRF52
+  #endif
+  #define WIFININA_USE_NRF52     true
 
   #if defined(NRF52840_FEATHER)
-    #define BOARD_TYPE      "NRF52840_FEATHER"
+    #define BOARD_TYPE      "NRF52840_FEATHER_EXPRESS"
   #elif defined(NRF52832_FEATHER)
     #define BOARD_TYPE      "NRF52832_FEATHER"
   #elif defined(NRF52840_FEATHER_SENSE)
     #define BOARD_TYPE      "NRF52840_FEATHER_SENSE"
   #elif defined(NRF52840_ITSYBITSY)
-    #define BOARD_TYPE      "NRF52840_ITSYBITSY"
+    #define BOARD_TYPE      "NRF52840_ITSYBITSY_EXPRESS"
   #elif defined(NRF52840_CIRCUITPLAY)
-    #define BOARD_TYPE      "NRF52840_CIRCUITPLAY"
+    #define BOARD_TYPE      "NRF52840_CIRCUIT_PLAYGROUND"
   #elif defined(NRF52840_CLUE)
     #define BOARD_TYPE      "NRF52840_CLUE"
   #elif defined(NRF52840_METRO)
-    #define BOARD_TYPE      "NRF52840_METRO"
+    #define BOARD_TYPE      "NRF52840_METRO_EXPRESS"
   #elif defined(NRF52840_PCA10056)
-    #define BOARD_TYPE      "NRF52840_PCA10056"
+    #define BOARD_TYPE      "NORDIC_NRF52840DK"
   #elif defined(NINA_B302_ublox)
     #define BOARD_TYPE      "NINA_B302_ublox"
   #elif defined(NINA_B112_ublox)
     #define BOARD_TYPE      "NINA_B112_ublox"
   #elif defined(PARTICLE_XENON)
     #define BOARD_TYPE      "PARTICLE_XENON"
+  #elif defined(MDBT50Q_RX)
+    #define BOARD_TYPE      "RAYTAC_MDBT50Q_RX"
   #elif defined(ARDUINO_NRF52_ADAFRUIT)
     #define BOARD_TYPE      "ARDUINO_NRF52_ADAFRUIT"
   #else
     #define BOARD_TYPE      "nRF52 Unknown"
   #endif
 
-#elif ( defined(CORE_TEENSY) )
+#endif
+
+#if ( defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__) )
+  #if defined(WIFININA_USE_SAMDUE)
+    #undef WIFININA_USE_SAMDUE
+  #endif
+  #define WIFININA_USE_SAMDUE      true
+
+  // For SAM DUE
+  #if defined(ARDUINO_SAM_DUE)
+    #define BOARD_TYPE      "SAM DUE"
+  #elif defined(__SAM3X8E__)
+    #define BOARD_TYPE      "SAM SAM3X8E"
+  #else
+    #define BOARD_TYPE      "SAM Unknown"
+  #endif
+
+#endif
+
+#if ( defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)  ||defined(STM32F4) || defined(STM32F7) || \
+       defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32H7)  ||defined(STM32G0) || defined(STM32G4) || \
+       defined(STM32WB) || defined(STM32MP1) )
+  #if defined(WIFININA_USE_STM32)
+    #undef WIFININA_USE_STM32
+  #endif
+  #define WIFININA_USE_STM32      true
+
+  #if defined(STM32F0)
+    #warning STM32F0 board selected
+    #define BOARD_TYPE  "STM32F0"
+  #elif defined(STM32F1)
+    #warning STM32F1 board selected
+    #define BOARD_TYPE  "STM32F1"
+  #elif defined(STM32F2)
+    #warning STM32F2 board selected
+    #define BOARD_TYPE  "STM32F2"
+  #elif defined(STM32F3)
+    #warning STM32F3 board selected
+    #define BOARD_TYPE  "STM32F3"
+  #elif defined(STM32F4)
+    #warning STM32F4 board selected
+    #define BOARD_TYPE  "STM32F4"
+  #elif defined(STM32F7)
+    #warning STM32F7 board selected
+    #define BOARD_TYPE  "STM32F7"
+  #elif defined(STM32L0)
+    #warning STM32L0 board selected
+    #define BOARD_TYPE  "STM32L0"
+  #elif defined(STM32L1)
+    #warning STM32L1 board selected
+    #define BOARD_TYPE  "STM32L1"
+  #elif defined(STM32L4)
+    #warning STM32L4 board selected
+    #define BOARD_TYPE  "STM32L4"
+  #elif defined(STM32H7)
+    #warning STM32H7 board selected
+    #define BOARD_TYPE  "STM32H7"
+  #elif defined(STM32G0)
+    #warning STM32G0 board selected
+    #define BOARD_TYPE  "STM32G0"
+  #elif defined(STM32G4)
+    #warning STM32G4 board selected
+    #define BOARD_TYPE  "STM32G4"
+  #elif defined(STM32WB)
+    #warning STM32WB board selected
+    #define BOARD_TYPE  "STM32WB"
+  #elif defined(STM32MP1)
+    #warning STM32MP1 board selected
+    #define BOARD_TYPE  "STM32MP1"
+  #else
+    #warning STM32 unknown board selected
+    #define BOARD_TYPE  "STM32 Unknown"
+  #endif
+
+#endif
+
+#ifdef CORE_TEENSY
+
+  #if defined(WIFININA_USE_TEENSY)
+    #undef WIFININA_USE_TEENSY
+  #endif
+  #define WIFININA_USE_TEENSY      true
+  
   #if defined(__IMXRT1062__)
     // For Teensy 4.1/4.0
     #define BOARD_TYPE      "TEENSY 4.1/4.0"
@@ -230,40 +297,13 @@
     #define BOARD_TYPE      "Unknown Teensy Board"
   #endif
 
-#elif (ETHERNET_USE_STM32)
-  #if defined(STM32F0)
-    #define BOARD_TYPE  "STM32F0"
-  #elif defined(STM32F1)
-    #define BOARD_TYPE  "STM32F1"
-  #elif defined(STM32F2)
-    #define BOARD_TYPE  "STM32F2"
-  #elif defined(STM32F3)
-    #define BOARD_TYPE  "STM32F3"
-  #elif defined(STM32F4)
-    #define BOARD_TYPE  "STM32F4"
-  #elif defined(STM32F7)
-    #define BOARD_TYPE  "STM32F7"
-  #elif defined(STM32L0)
-    #define BOARD_TYPE  "STM32L0"
-  #elif defined(STM32L1)
-    #define BOARD_TYPE  "STM32L1"
-  #elif defined(STM32L4)
-    #define BOARD_TYPE  "STM32L4"
-  #elif defined(STM32H7)
-    #define BOARD_TYPE  "STM32H7"
-  #elif defined(STM32G0)
-    #define BOARD_TYPE  "STM32G0"
-  #elif defined(STM32G4)
-    #define BOARD_TYPE  "STM32G4"
-  #elif defined(STM32WB)
-    #define BOARD_TYPE  "STM32WB"
-  #elif defined(STM32MP1)
-    #define BOARD_TYPE  "STM32MP1"
-  #else
-    #define BOARD_TYPE  "STM32 Unknown"
-  #endif
+#endif
 
-#elif ETHERNET_USE_RP2040
+#if ( defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_RASPBERRY_PI_PICO) || defined(ARDUINO_ADAFRUIT_FEATHER_RP2040) || defined(ARDUINO_GENERIC_RP2040) )
+  #if defined(WIFININA_USE_RP2040)
+    #undef WIFININA_USE_RP2040
+  #endif
+  #define WIFININA_USE_RP2040      true
   
   // Default pin 5 (in Mbed) or 17 to SS/CS
   #if defined(ARDUINO_ARCH_MBED)
@@ -299,88 +339,11 @@
 
   // For RPI Pico
   #warning Use RPI-Pico RP2040 architecture
-  
-#else
-  // For Mega
-  #define BOARD_TYPE      "AVR Mega"
 #endif
 
-#if defined(ARDUINO_BOARD)
-  #define BOARD_NAME    ARDUINO_BOARD
-#elif !defined(BOARD_NAME)
+
+#ifndef BOARD_NAME
   #define BOARD_NAME    BOARD_TYPE
 #endif
 
-#include <SPI.h>
-
-// UIPEthernet, Ethernet_Shield_W5200, EtherCard, EtherSia libraries are not supported
-
-// To override the default CS/SS pin. Don't use unless you know exactly which pin to use
-// You can define here or customize for each board at same place with BOARD_TYPE
-// Check @ defined(SEEED_XIAO_M0)
-//#define USE_THIS_SS_PIN   22  //21  //5 //4 //2 //15
-
-// Only one if the following to be true
-#define USE_ETHERNET          false
-#define USE_ETHERNET2         false
-#define USE_ETHERNET3         false //true
-#define USE_ETHERNET_LARGE    true
-
-#if USE_ETHERNET
-  #include "Ethernet.h"
-  #include "EthernetUdp.h"
-  #warning Use Ethernet lib
-  #define SHIELD_TYPE           "W5x00 using Ethernet Library" 
-#elif USE_ETHERNET_LARGE
-  #include "EthernetLarge.h"
-  #include "EthernetUdp.h"
-  #warning Use EthernetLarge lib
-  #define SHIELD_TYPE           "W5x00 using EthernetLarge Library"
-#elif USE_ETHERNET2
-  #include "Ethernet2.h"
-  #include "EthernetUdp2.h"
-  #warning Use Ethernet2 lib
-  #define SHIELD_TYPE           "W5x00 using Ethernet2 Library"
-#elif USE_ETHERNET3
-  #include "Ethernet3.h"
-  #include "EthernetUdp3.h"
-  #warning Use Ethernet3 lib   
-  #define SHIELD_TYPE           "W5x00 using Ethernet3 Library" 
-#else
-  #define USE_ETHERNET          true
-  #include "Ethernet.h"
-  #warning Use Ethernet lib
-  #define SHIELD_TYPE           "W5x00 using Ethernet Library"
-#endif
-
-// Enter a MAC address and IP address for your controller below.
-#define NUMBER_OF_MAC      20
-
-byte mac[][NUMBER_OF_MAC] =
-{
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x01 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x02 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x03 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x04 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x05 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x06 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x07 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x08 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x09 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x0A },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x0B },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x0C },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x0D },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x0E },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x0F },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x10 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x11 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x12 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0x13 },
-  { 0xDE, 0xAD, 0xBE, 0xEF, 0xBE, 0x14 },
-};
-
-// Select the IP address according to your local network
-IPAddress ip(192, 168, 2, 222);
-
-#endif    //defines_h
+#endif      //defines_h

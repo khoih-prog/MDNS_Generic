@@ -17,6 +17,7 @@
   * [Currently supported Boards](#currently-supported-boards)
   * [Currently supported Ethernet shields/modules](#currently-supported-ethernet-shieldsmodules)
 * [Changelog](#changelog)
+  * [Releases v1.2.0](#releases-v120)
   * [Releases v1.1.0](#releases-v110)
   * [Releases v1.0.1](#releases-v101)
   * [Releases v1.0.0](#releases-v100)
@@ -57,10 +58,16 @@
   * [ 5. To register a service via mDNS](#5-to-register-a-service-via-mdns)
   * [ 6. To discover services](#6-to-discover-services)
 * [Examples](#examples)
-  * [ 1. DiscoveringServices](examples/Ethernet/DiscoveringServices)
-  * [ 2. RegisteringServices](examples/Ethernet/RegisteringServices)
-  * [ 3. RegisteringServicesWithTxtRecord](examples/Ethernet/RegisteringServicesWithTxtRecord)
-  * [ 4. ResolvingHostNames](examples/Ethernet/ResolvingHostNames)
+  * [Ethernet](#ethernet)
+    * [ 1. DiscoveringServices](examples/Ethernet/DiscoveringServices)
+    * [ 2. RegisteringServices](examples/Ethernet/RegisteringServices)
+    * [ 3. RegisteringServicesWithTxtRecord](examples/Ethernet/RegisteringServicesWithTxtRecord)
+    * [ 4. ResolvingHostNames](examples/Ethernet/ResolvingHostNames)
+  * [WiFi](#wifi)
+    * [ 1. WiFiDiscoveringServices](examples/WiFi/WiFiDiscoveringServices)
+    * [ 2. WiFiRegisteringServices](examples/WiFi/WiFiRegisteringServices)
+    * [ 3. WiFiRegisteringServicesWithTxtRecord](examples/WiFi/WiFiRegisteringServicesWithTxtRecord)
+    * [ 4. WiFiResolvingHostNames](examples/WiFi/WiFiResolvingHostNames)
 * [Example ResolvingHostNames](#example-resolvinghostnames)
   * [1. File ResolvingHostNames.ino](#1-file-resolvinghostnamesino)
   * [2. File defines.h](#2-file-definesh) 
@@ -72,6 +79,10 @@
   * [ 5. ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet2 Library](#5-resolvinghostnames-on-nucleo_f767zi-with-w5x00-using-ethernet2-library)
   * [ 6. ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library](#6-resolvinghostnames-on-raspberry_pi_pico-with-w5x00-using-ethernetlarge-library)
   * [ 7. DiscoveringServices on MBED RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library](#7-discoveringservices-on-mbed-raspberry_pi_pico-with-w5x00-using-ethernetlarge-library)
+  * [ 8. WiFiRegisteringServices on MBED NANO_RP2040_CONNECT](#8-wifiregisteringservices-on-mbed-nano_rp2040_connect)
+    * [ 8.1 PING Terminal](#81-ping-terminal)
+  * [ 9. WiFiRegisteringServices on ESP32_DEV](#9-wifiregisteringservices-on-esp32_dev)
+    * [ 9.1 PING Terminal](#91-ping-terminal)
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
 * [Releases](#releases)
@@ -99,10 +110,13 @@ mDNS can work in conjunction with DNS Service Discovery (DNS-SD), a companion ze
 
 This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is based on and modified from [**Dario Pennisi's ArduinoMDNS Library**](https://github.com/arduino-libraries/ArduinoMDNS) to provide support to many more boards, such as **Arduino SAMD21, Adafruit SAMD21/SAMD51, Seeeduino SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, Teensy, SAM DUE, AVR Mega, RP2040-based boards, etc.** and enable those boards to use MDNS services. The currently supported modules/shield is **W5x00 using Ethernet, EthernetLarge, Ethernet2 or Ethernet3 library**. 
 
+- The **WiFiNINA modules/shields are currently supported from v1.2.0**, using [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
+- The **WiFi101 modules/shields are currently supported from v1.2.0**, using [WiFi101 Library](https://github.com/arduino-libraries/WiFi101)
+
 - **Ethernet2 Library is also supported only after applying the fix to add Multicast feature**. See [**Libraries' Patches**](https://github.com/khoih-prog/EthernetWebServer#libraries-patches)
 - ENC28J60 using EthernetENC or UIPEthernet library is not supported as UDP Multicast is not available by design.
 - LAN8742A using STM32Ethernet / STM32 LwIP libraries is not supported as UDP Multicast is not enabled by design, unless you modify the code to add support.
-- The **WiFiNINA modules/shields are not yet supported** as library modifications are needed.
+
 
 ---
 
@@ -127,14 +141,33 @@ This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is b
 
   - **W5x00's using Ethernet, EthernetLarge or Ethernet3 Library.**
   - **Ethernet2 Library is also supported only after applying the fix to add Multicast feature**. See [Libraries' Patches](https://github.com/khoih-prog/EthernetWebServer#libraries-patches)
-  - ENC28J60 using EthernetENC and UIPEthernet library are not supported as UDP Multicast is not available by design.
+  - ENC28J60 using EthernetENC and UIPEthernet library is not supported as UDP Multicast is not available by design.
   - LAN8742A using STM32Ethernet / STM32 LwIP libraries is not supported as UDP Multicast is not enabled by design, unless you modify the code to add support.
   
+#### Currently supported WiFi shields/modules
+
+1. WiFiNINA using [`WiFiNINA_Generic library`](https://github.com/khoih-prog/WiFiNINA_Generic)
+2. WiFi101 using [`WiFi101 library`](https://github.com/arduino-libraries/WiFi101)
+3. U-Blox W101, W102 using [`WiFiNINA_Generic library`](https://github.com/khoih-prog/WiFiNINA_Generic)
+4. ESP826-AT command using [`WiFiEspAT library`](https://github.com/jandrassy/WiFiEspAT)
+5. ESP8266/ESP32 using native WiFi
   
 ---
 ---
 
 ## Changelog
+
+### Releases v1.2.0
+
+ 1. Add support to RP2040-based boards, such as **Nano_RP2040_Connect, RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Arduino-mbed RP2040** core](https://github.com/arduino/ArduinoCore-mbed) using WiFi / [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
+ 2. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico** core](https://github.com/earlephilhower/arduino-pico) using WiFi / [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
+ 3. Add support to ESP32 and ESP8266 boards using native ESP WiFi
+ 4. Add support to Generic boards, such as **MKR WiFi1010**, using [WiFi101 Library](https://github.com/arduino-libraries/WiFi101)
+ 5. Add WiFi-related examples. 
+ 6. Modify hostname from easily-duplicated `arduino` to board-related hostname to fix issue caused by duplicated hostname, such as [mDNS stops working after two minutes #5](https://github.com/khoih-prog/MDNS_Generic/issues/5)
+ 7. Verify issue [**mDNS stops working after two minutes** #5](https://github.com/khoih-prog/MDNS_Generic/issues/5) is fixed, using Nano_RP2040_Connect, WiFiNINA FW 1.4.8 and [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
+ 8. Change License from `MIT` to [GPLv3](https://github.com/khoih-prog/MDNS_Generic/blob/master/LICENSE)
+
 
 ### Releases v1.1.0
 
@@ -172,29 +205,29 @@ This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is b
 
  1. [`Arduino IDE v1.8.15+`](https://www.arduino.cc/en/Main/Software)
  2. [`Arduino AVR core 1.8.3+`](https://github.com/arduino/ArduinoCore-avr) for Arduino (Use Arduino Board Manager) for AVR boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-avr.svg)](https://github.com/arduino/ArduinoCore-avr/releases/latest)
- 3. [`Teensy core v1.53+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.1, 4.0, 3.6, 3.5, 3,2, 3.1, 3.0) boards.
+ 3. [`Teensy core v1.54+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.1, 4.0, 3.6, 3.5, 3,2, 3.1, 3.0) boards.
  4. [`Arduino SAM DUE core v1.6.12+`](https://github.com/arduino/ArduinoCore-sam) for SAM DUE ARM Cortex-M3 boards.
  5. [`Arduino SAMD core 1.8.11+`](https://github.com/arduino/ArduinoCore-samd) for SAMD ARM Cortex-M0+ boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-samd.svg)](https://github.com/arduino/ArduinoCore-samd/releases/latest)
- 6. [`Adafruit SAMD core 1.7.2+`](https://github.com/adafruit/ArduinoCore-samd) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.). [![GitHub release](https://img.shields.io/github/release/adafruit/ArduinoCore-samd.svg)](https://github.com/adafruit/ArduinoCore-samd/releases/latest)
+ 6. [`Adafruit SAMD core 1.7.5+`](https://github.com/adafruit/ArduinoCore-samd) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.). [![GitHub release](https://img.shields.io/github/release/adafruit/ArduinoCore-samd.svg)](https://github.com/adafruit/ArduinoCore-samd/releases/latest)
  7. [`Seeeduino SAMD core 1.8.1+`](https://github.com/Seeed-Studio/ArduinoCore-samd) for SAMD21/SAMD51 boards (XIAO M0, Wio Terminal, etc.). [![Latest release](https://img.shields.io/github/release/Seeed-Studio/ArduinoCore-samd.svg)](https://github.com/Seeed-Studio/ArduinoCore-samd/releases/latest/)
- 
- 8. [`Adafruit nRF52 v0.21.0`](https://github.com/adafruit/Adafruit_nRF52_Arduino) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, **NINA_B302_ublox**, etc. [![GitHub release](https://img.shields.io/github/release/adafruit/Adafruit_nRF52_Arduino.svg)](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/latest)
- 
- **Warnings** : Use [`Adafruit nRF52 v0.22.0+`](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/tag/0.22.0) will create **compiler errors** to some boards. If so, please use the [`Adafruit nRF52 v0.21.0`](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/tag/0.21.0) until the issue fixed.
- 
+ 8. [`Adafruit nRF52 v1.0.0`](https://github.com/adafruit/Adafruit_nRF52_Arduino) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, **NINA_B302_ublox**, etc. [![GitHub release](https://img.shields.io/github/release/adafruit/Adafruit_nRF52_Arduino.svg)](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/latest) 
+ 9. [`Arduino mbed_rp2040 core 2.4.1+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino (Use Arduino Board Manager) RP2040-based boards, such as **Arduino Nano RP2040 Connect, RASPBERRY_PI_PICO, etc.**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
+10. [`Earle Philhower's arduino-pico core v1.9.4+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest) 
 11. [`Arduino Core for STM32 v2.0.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32F/L/H/G/WB/MP1 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
-
-13. Depending on which Ethernet module/shield you're using :
+12. [`ESP8266 Core 3.0.2+`](https://github.com/esp8266/Arduino) for ESP8266-based boards. [![Latest release](https://img.shields.io/github/release/esp8266/Arduino.svg)](https://github.com/esp8266/Arduino/releases/latest/)
+13. [`ESP32 Core 2.0.0+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
+ 
+14. Depending on which Ethernet module/shield you're using :
    - [`Ethernet library v2.0.0+`](https://github.com/arduino-libraries/Ethernet) for W5100, W5200 and W5500.  [![GitHub release](https://img.shields.io/github/release/arduino-libraries/Ethernet.svg)](https://github.com/arduino-libraries/Ethernet/releases/latest)
    - [`EthernetLarge library v2.0.0+`](https://github.com/OPEnSLab-OSU/EthernetLarge) for W5100, W5200 and W5500.
    - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500. [![GitHub release](https://img.shields.io/github/release/adafruit/Ethernet2.svg)](https://github.com/adafruit/Ethernet2/releases/latest)
    - [`Ethernet3 library v1.5.5+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip. [![GitHub release](https://img.shields.io/github/release/sstaub/Ethernet3.svg)](https://github.com/sstaub/Ethernet3/releases/latest)
    
-14. [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/STM32Ethernet.svg)](https://github.com/stm32duino/STM32Ethernet/releases/latest). To be used with [`LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP). [![GitHub release](https://img.shields.io/github/release/stm32duino/LwIP.svg)](https://github.com/stm32duino/LwIP/releases/latest). **Not yet ready** in v1.1.0.
+15. [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/STM32Ethernet.svg)](https://github.com/stm32duino/STM32Ethernet/releases/latest). To be used with [`LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP). [![GitHub release](https://img.shields.io/github/release/stm32duino/LwIP.svg)](https://github.com/stm32duino/LwIP/releases/latest). **Not yet ready** in v1.2.0.
    
-15. [`WiFiNINA_Generic library v1.8.10-1+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc. **Not yet ready** in v1.1.0.
-
-16. [`ESP_AT_Lib library v1.30.0+`](https://github.com/khoih-prog/ESP_AT_Lib) if necessary to use ESP8288/ESP32-AT shields. To install, check [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP_AT_Lib.svg?)](https://www.ardu-badge.com/ESP_AT_Lib). **Not yet ready** in v1.1.0
+16. [`WiFiNINA_Generic library v1.8.13+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc. **Ready** from v1.2.0.
+17. [`WiFi101 library v0.16.1+`](https://github.com/arduino-libraries/WiFi101) if using WINC1500/WiFi101 shields (MKR1000, MKR1010, etc.). [![GitHub release](https://img.shields.io/github/release/arduino-libraries/WiFi101.svg)](https://github.com/arduino-libraries/WiFi101/releases/latest)
+18. [`WiFiEspAT library v1.3.1+`](https://github.com/jandrassy/WiFiEspAT) if using ESP8288/ESP32-AT shields. [![GitHub release](https://img.shields.io/github/release/jandrassy/WiFiEspAT.svg)](https://github.com/jandrassy/WiFiEspAT/releases/latest)
 
 ---
 ---
@@ -229,18 +262,16 @@ Another way to install is to:
 
 #### 1. For Adafruit nRF52840 and nRF52832 boards
 
-**Don't use v0.22.0+ yet because of compiler error. To be fixed.**
+**To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards**, you have to copy the whole [nRF52 0.24.0](Packages_Patches/adafruit/hardware/nrf52/0.24.0) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/0.24.0). 
 
-**To be able to compile, run and automatically detect and display BOARD_NAME on nRF52840/nRF52832 boards**, you have to copy the whole [nRF52 0.21.0](Packages_Patches/adafruit/hardware/nrf52/0.21.0) directory into Adafruit nRF52 directory (~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0). 
-
-Supposing the Adafruit nRF52 version is 0.21.0. These files must be copied into the directory:
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/platform.txt`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/boards.txt`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B302_ublox/variant.h`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B302_ublox/variant.cpp`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B112_ublox/variant.h`
-- `~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/variants/NINA_B112_ublox/variant.cpp`
-- **`~/.arduino15/packages/adafruit/hardware/nrf52/0.21.0/cores/nRF5/Udp.h`**
+Supposing the Adafruit nRF52 version is 0.24.0. These files must be copied into the directory:
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.24.0/platform.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.24.0/boards.txt`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.24.0/variants/NINA_B302_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.24.0/variants/NINA_B302_ublox/variant.cpp`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.24.0/variants/NINA_B112_ublox/variant.h`
+- `~/.arduino15/packages/adafruit/hardware/nrf52/0.24.0/variants/NINA_B112_ublox/variant.cpp`
+- **`~/.arduino15/packages/adafruit/hardware/nrf52/0.24.0/cores/nRF5/Udp.h`**
 
 Whenever a new version is installed, remember to copy these files into the new version directory. For example, new version is x.yy.z
 These files must be copied into the directory:
@@ -326,11 +357,11 @@ Whenever the above-mentioned compiler error issue is fixed with the new Arduino 
 
 #### 5. For Adafruit SAMD boards
  
- ***To be able to automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards***, you have to copy the file [Adafruit SAMD platform.txt](Packages_Patches/adafruit/hardware/samd/1.7.1) into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.7.1). 
+ ***To be able to automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards***, you have to copy the file [Adafruit SAMD platform.txt](Packages_Patches/adafruit/hardware/samd/1.7.5) into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.7.5). 
 
-Supposing the Adafruit SAMD core version is 1.7.1. This file must be copied into the directory:
+Supposing the Adafruit SAMD core version is 1.7.5. This file must be copied into the directory:
 
-- `~/.arduino15/packages/adafruit/hardware/samd/1.7.1/platform.txt`
+- `~/.arduino15/packages/adafruit/hardware/samd/1.7.5/platform.txt`
 
 Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
 This file must be copied into the directory:
@@ -582,10 +613,20 @@ mdns.startDiscoveringService(serviceName, MDNSServiceTCP, 5000);
 
 ### Examples
 
+#### Ethernet
+
 1. [DiscoveringServices](examples/Ethernet/DiscoveringServices)
 2. [RegisteringServices](examples/Ethernet/RegisteringServices)
 3. [RegisteringServicesWithTxtRecord](examples/Ethernet/RegisteringServicesWithTxtRecord)
 4. [ResolvingHostNames](examples/Ethernet/ResolvingHostNames)
+
+#### WiFi
+
+1. [WiFiDiscoveringServices](examples/WiFi/WiFiDiscoveringServices)
+2. [WiFiRegisteringServices](examples/WiFi/WiFiRegisteringServices)
+3. [WiFiRegisteringServicesWithTxtRecord](examples/WiFi/WiFiRegisteringServicesWithTxtRecord)
+4. [WiFiResolvingHostNames](examples/WiFi/WiFiResolvingHostNames)
+
 
 ---
 
@@ -683,12 +724,13 @@ void setup()
   // system is mDNS/Bonjour-enabled (such as MacOS X).
   // Always call this before any other method!
   String hostname = String(BOARD_NAME) + "_" + String(index);
-  hostname.toLowerCase();
-  hostname.replace(" ", "_");
+  hostname.toUpperCase();
+  hostname.replace(" ",  "-");
   
-  Serial.println("Register host name: " + hostname + ".local");
+  Serial.print("Registering mDNS hostname: "); Serial.println(hostname);
+  Serial.print("To access, using "); Serial.print(hostname); Serial.println(".local");
 
-  mdns.begin(Ethernet.localIP(), hostname.c_str() /*"arduino"*/);
+  mdns.begin(Ethernet.localIP(), hostname.c_str());
 
   // We specify the function that the mDNS library will call when it
   // resolves a host name. In this case, we will call the function named
@@ -1044,10 +1086,12 @@ void nameFound(const char* name, IPAddress ip)
       #undef BOARD_NAME
     #endif
 
-    #if defined(ARDUINO_RASPBERRY_PI_PICO) 
+    #if defined(ARDUINO_NANO_RP2040_CONNECT)
+      #define BOARD_TYPE      "MBED NANO_RP2040_CONNECT"
+    #elif defined(ARDUINO_RASPBERRY_PI_PICO) 
       #define BOARD_TYPE      "MBED RASPBERRY_PI_PICO"
     #elif defined(ARDUINO_ADAFRUIT_FEATHER_RP2040)
-      #define BOARD_TYPE      "MBED DAFRUIT_FEATHER_RP2040"
+      #define BOARD_TYPE      "MBED ADAFRUIT_FEATHER_RP2040"
     #elif defined(ARDUINO_GENERIC_RP2040)
       #define BOARD_TYPE      "MBED GENERIC_RP2040"
     #else
@@ -1087,8 +1131,8 @@ void nameFound(const char* name, IPAddress ip)
 //#define USE_THIS_SS_PIN   22  //21  //5 //4 //2 //15
 
 // Only one if the following to be true
-#define USE_ETHERNET          false //true
-#define USE_ETHERNET2         false //true
+#define USE_ETHERNET          false
+#define USE_ETHERNET2         false
 #define USE_ETHERNET3         false //true
 #define USE_ETHERNET_LARGE    true
 
@@ -1164,7 +1208,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on NRF52840_FEATHER with W5x00 using Ethernet2 Library
-MDNS_Generic v1.1.0
+MDNS_Generic v1.2.0
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1182,7 +1226,8 @@ SS:10
 =========================
 Using mac index = 15
 Connected! IP address: 192.168.2.158
-Register host name: nrf52840_feather_19.local
+Registering mDNS hostname: NRF52840_FEATHER_15
+To access, using NRF52840_FEATHER_15.local
 Enter a mDNS host name via the Arduino Serial Monitor to have it resolved.
 Do not postfix the name with ".local"
 Resolving 'raspberrypi-02' via Multicast DNS (Bonjour)...
@@ -1199,7 +1244,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Starting DiscoveringServices on NRF52840_FEATHER with W5x00 using EthernetLarge Library
-MDNS_Generic v1.1.0
+MDNS_Generic v1.2.0
 =========================
 Default SPI pinout:
 MOSI:25
@@ -1220,7 +1265,8 @@ SS:5
 =========================
 Using mac index = 16
 Connected! IP address: 192.168.2.160
-Register host name: nrf52840_feather_16.local
+Registering mDNS hostname: NRF52840_FEATHER_16
+To access, using NRF52840_FEATHER_16.local
 Enter a mDNS service name via Serial Monitor to discover instances on the network.
 Examples are "_http", "_afpovertcp" or "_ssh" (Note the underscores).
 Discovering services of type '_http' via Multi-Cast DNS (Bonjour)...
@@ -1239,7 +1285,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on SEEED_XIAO_M0 with W5x00 using EthernetLarge Library
-MDNS_Generic v1.1.0
+MDNS_Generic v1.2.0
 =========================
 Default SPI pinout:
 MOSI:10
@@ -1260,7 +1306,8 @@ SS:4
 =========================
 Using mac index = 0
 Connected! IP address: 192.168.2.165
-Register host name: seeed_xiao_m0_0.local
+Registering mDNS hostname: SEEED_XIAO_M0_0
+To access, using SEEED_XIAO_M0_0.local
 Enter a mDNS host name via the Arduino Serial Monitor to have it resolved.
 Do not postfix the name with ".local"
 Resolving 'raspberrypi-01' via Multicast DNS (Bonjour)...
@@ -1277,7 +1324,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Starting DiscoveringServices on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
-MDNS_Generic v1.1.0
+MDNS_Generic v1.2.0
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1295,7 +1342,8 @@ SS:10
 =========================
 Using mac index = 15
 Connected! IP address: 192.168.2.98
-Register host name: nucleo_f767zi_15.local
+Registering mDNS hostname: NUCLEO_F767ZI_15
+To access, using NUCLEO_F767ZI_15.local
 Enter a mDNS service name via Serial Monitor to discover instances on the network.
 Examples are "_http", "_afpovertcp" or "_ssh" (Note the underscores).
 Discovering services of type '_http' via Multi-Cast DNS (Bonjour)...
@@ -1312,7 +1360,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
-MDNS_Generic v1.1.0
+MDNS_Generic v1.2.0
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1330,7 +1378,8 @@ SS:10
 =========================
 Using mac index = 15
 Connected! IP address: 192.168.2.98
-Register host name: nucleo_f767zi_15.local
+Registering mDNS hostname: NUCLEO_F767ZI_15
+To access, using NUCLEO_F767ZI_15.local
 Enter a mDNS host name via the Arduino Serial Monitor to have it resolved.
 Do not postfix the name with ".local"
 Resolving 'raspberrypi-02' via Multicast DNS (Bonjour)...
@@ -1347,7 +1396,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library
-MDNS_Generic v1.1.0
+MDNS_Generic v1.2.0
 =========================
 Default SPI pinout:
 MOSI:19
@@ -1368,7 +1417,8 @@ SS:17
 =========================
 Using mac index = 6
 Connected! IP address: 192.168.2.115
-Register host name: raspberry_pi_pico_6.local
+Registering mDNS hostname: MBED_RASPBERRY_PI_PICO_6
+To access, using MBED_RASPBERRY_PI_PICO_6.local
 Enter a mDNS host name via the Arduino Serial Monitor to have it resolved.
 Do not postfix the name with ".local"
 Resolving 'raspberrypi-01' via Multicast DNS (Bonjour)...
@@ -1385,7 +1435,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Start DiscoveringServices on MBED RASPBERRY_PI_PICO using W5x00 using EthernetLarge Library
-MDNS_Generic v1.1.0
+MDNS_Generic v1.2.0
 =========================
 Default SPI pinout:
 MOSI:3
@@ -1406,13 +1456,95 @@ SS:5
 =========================
 Using mac index = 13
 Connected! IP address: 192.168.2.93
-Register host name: mbed_raspberry_pi_pico_13.local
+Registering mDNS hostname: MBED_RASPBERRY_PI_PICO_13
+To access, using MBED_RASPBERRY_PI_PICO_13.local
 Enter a mDNS service name via Serial Monitor to discover instances on the network.
 Examples are "_http", "_afpovertcp" or "_ssh" (Note the underscores).
 Discovering services of type '_http' via Multi-Cast DNS (Bonjour)...
 Found: 'Linksys08398' at 192.168.2.14, port 80 (TCP)
 Found: 'Linksys07265' at 192.168.2.12, port 80 (TCP)
 ```
+
+---
+
+#### 8. WiFiRegisteringServices on MBED NANO_RP2040_CONNECT
+
+This is terminal debug output when running [WiFiRegisteringServices](examples/WiFi/WiFiRegisteringServices) on **MBED NANO_RP2040_CONNECT using WiFiNINA_Generic Library.**
+
+```
+Start WiFiRegisteringServices on MBED NANO_RP2040_CONNECT
+MDNS_Generic v1.2.0
+Used/default SPI pinout:
+MOSI:11
+MISO:12
+SCK:13
+SS:10
+Attempting to connect to SSID: HueNet1
+SSID: HueNet1
+Local IP address: 192.168.2.111
+Signal strength (RSSI):-21 dBm
+Registering mDNS hostname: MBED-NANO_RP2040_CONNECT
+To access, using MBED-NANO_RP2040_CONNECT.local
+```
+
+##### 8.1 PING Terminal
+
+```
+kh@kh-Inspiron-3593:~$ ping arduino.local
+PING arduino.local (192.168.2.111) 56(84) bytes of data.
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=1 ttl=255 time=65.1 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=2 ttl=255 time=48.6 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=3 ttl=255 time=70.8 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=4 ttl=255 time=93.0 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=5 ttl=255 time=116 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=6 ttl=255 time=35.8 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=7 ttl=255 time=37.2 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=8 ttl=255 time=8.45 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=9 ttl=255 time=36.5 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=10 ttl=255 time=59.5 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=11 ttl=255 time=29.0 ms
+64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=12 ttl=255 time=48.7 ms
+```
+
+---
+
+#### 9. WiFiRegisteringServices on ESP32_DEV
+
+This is terminal debug output when running [WiFiRegisteringServices](examples/WiFi/WiFiRegisteringServices) on **ESP32_DEV**
+
+```
+Start WiFiRegisteringServices on ESP32_DEV
+MDNS_Generic v1.2.0
+Attempting to connect to SSID: HueNet1
+SSID: HueNet1
+Local IP address: 192.168.2.80
+Signal strength (RSSI):-25 dBm
+Registering mDNS hostname: ESP_9ABF498
+To access, using ESP_9ABF498.local
+```
+
+##### 9.1 PING Terminal
+
+```
+kh@kh-Inspiron-3593:~$ ping arduino.local
+PING arduino.local (192.168.2.80) 56(84) bytes of data.
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=1 ttl=255 time=29.4 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=2 ttl=255 time=49.3 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=3 ttl=255 time=20.7 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=4 ttl=255 time=42.5 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=5 ttl=255 time=13.5 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=6 ttl=255 time=43.4 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=7 ttl=255 time=12.4 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=8 ttl=255 time=30.0 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=9 ttl=255 time=59.5 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=10 ttl=255 time=24.5 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=11 ttl=255 time=47.2 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=12 ttl=255 time=18.5 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=13 ttl=255 time=39.7 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=14 ttl=255 time=10.9 ms
+64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=15 ttl=255 time=33.5 ms
+```
+
 
 ---
 ---
@@ -1443,6 +1575,18 @@ Sometimes, the library will only work if you update the core to the newer or old
 
 ## Releases
 
+### Releases v1.2.0
+
+ 1. Add support to RP2040-based boards, such as **Nano_RP2040_Connect, RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Arduino-mbed RP2040** core](https://github.com/arduino/ArduinoCore-mbed) using WiFi / [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
+ 2. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico** core](https://github.com/earlephilhower/arduino-pico) using WiFi / [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
+ 3. Add support to ESP32 and ESP8266 boards using native ESP WiFi
+ 4. Add support to Generic boards, such as **MKR WiFi1010**, using [WiFi101 Library](https://github.com/arduino-libraries/WiFi101)
+ 5. Add WiFi-related examples. 
+ 6. Modify hostname from easily-duplicated `arduino` to board-related hostname to fix issue caused by duplicated hostname, such as [mDNS stops working after two minutes #5](https://github.com/khoih-prog/MDNS_Generic/issues/5)
+ 7. Verify issue [**mDNS stops working after two minutes** #5](https://github.com/khoih-prog/MDNS_Generic/issues/5) is fixed, using Nano_RP2040_Connect, WiFiNINA FW 1.4.8 and [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
+ 8. Change License from `MIT` to [GPLv3](https://github.com/khoih-prog/MDNS_Generic/blob/master/LICENSE)
+ 
+ 
 ### Releases v1.1.0
 
  1. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico** core](https://github.com/earlephilhower/arduino-pico).
@@ -1485,12 +1629,10 @@ Submit issues to: [**MDNS_Generic issues**](https://github.com/khoih-prog/MDNS_G
 ### TO DO
 
  1. Support more boards.
- 2. Support WiFiNINA.
- 3. Support ENC28J60 Ethernet.
- 4. Support LAN8742A Ethernet.
- 5. Support ESP8266/ESP32-AT shields.
- 6. Support more non-compatible Ethernet Libraries such as Ethernet_Shield_W5200, EtherCard, EtherSia
- 7. Add more examples
+ 2. Support ENC28J60 Ethernet.
+ 3. Support LAN8742A Ethernet.
+ 4. Support more non-compatible Ethernet Libraries such as Ethernet_Shield_W5200, EtherCard, EtherSia
+ 5. Add more examples
 
 ---
 
@@ -1509,7 +1651,10 @@ Submit issues to: [**MDNS_Generic issues**](https://github.com/khoih-prog/MDNS_G
 11. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico core**](https://github.com/earlephilhower/arduino-pico).
 12. Add support to RP2040-based boards, such as **NANO_RP2040_CONNECT, RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Arduino-mbed RP2040** core](https://github.com/arduino/ArduinoCore-mbed).
 13. Add Version String and Table of Contents
-
+14. Add support to RP2040-based boards, such as **Nano_RP2040_Connect, RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Arduino-mbed RP2040** core](https://github.com/arduino/ArduinoCore-mbed) using WiFi / [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
+15. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico** core](https://github.com/earlephilhower/arduino-pico) using WiFi / [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
+16. Add support to ESP32 and ESP8266 boards using native ESP WiFi
+17. Add support to Generic boards, such as **MKR WiFi1010**, using [WiFi101 Library](https://github.com/arduino-libraries/WiFi101)
 
 ---
 ---
@@ -1542,7 +1687,7 @@ If you want to contribute to this project:
 
 - Most of the credits go to original authors **Georg Kaindl**, [**TrippyLighting**](https://github.com/TrippyLighting) and [**Dario Pennisi**](https://github.com/pnndra).
 
-- The library is licensed under [MIT](https://github.com/khoih-prog/MDNS_Generic/blob/master/LICENSE)
+- The library is licensed under [GPLv3](https://github.com/khoih-prog/MDNS_Generic/blob/master/LICENSE)
 
 ---
 
