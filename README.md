@@ -2,6 +2,7 @@
 
 [![arduino-library-badge](https://www.ardu-badge.com/badge/MDNS_Generic.svg?)](https://www.ardu-badge.com/MDNS_Generic)
 [![GitHub release](https://img.shields.io/github/release/khoih-prog/MDNS_Generic.svg)](https://github.com/khoih-prog/MDNS_Generic/releases)
+[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/khoih-prog/MDNS_Generic/blob/master/LICENSE)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/MDNS_Generic.svg)](http://github.com/khoih-prog/MDNS_Generic/issues)
 [![star this repo](https://githubbadges.com/star.svg?user=khoih-prog&repo=MDNS_Generic)](https://github.com/khoih-prog/MDNS_Generic)
@@ -16,6 +17,7 @@
   * [Currently supported Boards](#currently-supported-boards)
   * [Currently supported Ethernet shields/modules](#currently-supported-ethernet-shieldsmodules)
 * [Changelog](#changelog)
+  * [Releases v1.2.1](#releases-v121)
   * [Releases v1.2.0](#releases-v120)
   * [Releases v1.1.0](#releases-v110)
   * [Releases v1.0.1](#releases-v101)
@@ -107,7 +109,7 @@ The mDNS protocol, published as [RFC 6762](https://tools.ietf.org/html/rfc6762),
 mDNS can work in conjunction with DNS Service Discovery (DNS-SD), a companion zero-configuration networking technique specified separately in [RFC 6763](https://tools.ietf.org/html/rfc6763).
 
 
-This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is based on and modified from [**Dario Pennisi's ArduinoMDNS Library**](https://github.com/arduino-libraries/ArduinoMDNS) to provide support to many more boards, such as **Arduino SAMD21, Adafruit SAMD21/SAMD51, Seeeduino SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, Teensy, SAM DUE, AVR Mega, RP2040-based boards, etc.** and enable those boards to use MDNS services. The currently supported modules/shield is **W5x00 using Ethernet, EthernetLarge, Ethernet2 or Ethernet3 library**. 
+This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is based on and modified from [**Dario Pennisi's ArduinoMDNS Library**](https://github.com/arduino-libraries/ArduinoMDNS) to provide support to many more boards, such as **ESP32, Arduino SAMD21, Adafruit SAMD21/SAMD51, Seeeduino SAMD21/SAMD51, nRF52, STM32F/L/H/G/WB/MP1, Teensy, SAM DUE, AVR Mega, RP2040-based boards, etc.** and enable those boards to use MDNS services. The currently supported modules/shield is **W5x00 using Ethernet, EthernetLarge, Ethernet2 or Ethernet3 library**. 
 
 - The **WiFiNINA modules/shields are currently supported from v1.2.0**, using [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
 - The **WiFi101 modules/shields are currently supported from v1.2.0**, using [WiFi101 Library](https://github.com/arduino-libraries/WiFi101)
@@ -121,7 +123,6 @@ This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is b
 
 #### Currently Supported Boards
 
-  - **ESP8266**
   - **ESP32**
   - **AdaFruit Feather nRF52832, nRF52840 Express, BlueFruit Sense, Itsy-Bitsy nRF52840 Express, Metro nRF52840 Express, NINA_B302_ublox, NINA_B112_ublox etc.**.
   - **Arduino SAMD21 (ZERO, MKR, NANO_33_IOT, etc.)**.
@@ -148,13 +149,17 @@ This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is b
 1. WiFiNINA using [`WiFiNINA_Generic library`](https://github.com/khoih-prog/WiFiNINA_Generic)
 2. WiFi101 using [`WiFi101 library`](https://github.com/arduino-libraries/WiFi101)
 3. U-Blox W101, W102 using [`WiFiNINA_Generic library`](https://github.com/khoih-prog/WiFiNINA_Generic)
-4. ESP826-AT command using [`WiFiEspAT library`](https://github.com/jandrassy/WiFiEspAT)
-5. ESP8266/ESP32 using native WiFi
+4. ESP8266-AT command using [`WiFiEspAT library`](https://github.com/jandrassy/WiFiEspAT)
+5. ESP32 using native WiFi
   
 ---
 ---
 
 ## Changelog
+
+### Releases v1.2.1
+
+ 1. Remove support to ESP8266 to use native [**ESP8266mDNS** library](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266mDNS)
 
 ### Releases v1.2.0
 
@@ -213,20 +218,19 @@ This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is b
  9. [`Arduino mbed_rp2040 core 2.4.1+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino (Use Arduino Board Manager) RP2040-based boards, such as **Arduino Nano RP2040 Connect, RASPBERRY_PI_PICO, etc.**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
 10. [`Earle Philhower's arduino-pico core v1.9.4+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest) 
 11. [`Arduino Core for STM32 v2.0.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32F/L/H/G/WB/MP1 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
-12. [`ESP8266 Core 3.0.2+`](https://github.com/esp8266/Arduino) for ESP8266-based boards. [![Latest release](https://img.shields.io/github/release/esp8266/Arduino.svg)](https://github.com/esp8266/Arduino/releases/latest/)
-13. [`ESP32 Core 2.0.0+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
+12. [`ESP32 Core 2.0.0+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
  
-14. Depending on which Ethernet module/shield you're using :
+13. Depending on which Ethernet module/shield you're using :
    - [`Ethernet library v2.0.0+`](https://github.com/arduino-libraries/Ethernet) for W5100, W5200 and W5500.  [![GitHub release](https://img.shields.io/github/release/arduino-libraries/Ethernet.svg)](https://github.com/arduino-libraries/Ethernet/releases/latest)
    - [`EthernetLarge library v2.0.0+`](https://github.com/OPEnSLab-OSU/EthernetLarge) for W5100, W5200 and W5500.
    - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500. [![GitHub release](https://img.shields.io/github/release/adafruit/Ethernet2.svg)](https://github.com/adafruit/Ethernet2/releases/latest)
    - [`Ethernet3 library v1.5.5+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip. [![GitHub release](https://img.shields.io/github/release/sstaub/Ethernet3.svg)](https://github.com/sstaub/Ethernet3/releases/latest)
    
-15. [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/STM32Ethernet.svg)](https://github.com/stm32duino/STM32Ethernet/releases/latest). To be used with [`LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP). [![GitHub release](https://img.shields.io/github/release/stm32duino/LwIP.svg)](https://github.com/stm32duino/LwIP/releases/latest). **Not yet ready** in v1.2.0.
+14. [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/STM32Ethernet.svg)](https://github.com/stm32duino/STM32Ethernet/releases/latest). To be used with [`LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP). [![GitHub release](https://img.shields.io/github/release/stm32duino/LwIP.svg)](https://github.com/stm32duino/LwIP/releases/latest). **Not yet ready** in v1.2.0.
    
-16. [`WiFiNINA_Generic library v1.8.13+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc. **Ready** from v1.2.0.
-17. [`WiFi101 library v0.16.1+`](https://github.com/arduino-libraries/WiFi101) if using WINC1500/WiFi101 shields (MKR1000, MKR1010, etc.). [![GitHub release](https://img.shields.io/github/release/arduino-libraries/WiFi101.svg)](https://github.com/arduino-libraries/WiFi101/releases/latest)
-18. [`WiFiEspAT library v1.3.1+`](https://github.com/jandrassy/WiFiEspAT) if using ESP8288/ESP32-AT shields. [![GitHub release](https://img.shields.io/github/release/jandrassy/WiFiEspAT.svg)](https://github.com/jandrassy/WiFiEspAT/releases/latest)
+15. [`WiFiNINA_Generic library v1.8.13+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc. **Ready** from v1.2.0.
+16. [`WiFi101 library v0.16.1+`](https://github.com/arduino-libraries/WiFi101) if using WINC1500/WiFi101 shields (MKR1000, MKR1010, etc.). [![GitHub release](https://img.shields.io/github/release/arduino-libraries/WiFi101.svg)](https://github.com/arduino-libraries/WiFi101/releases/latest)
+17. [`WiFiEspAT library v1.3.1+`](https://github.com/jandrassy/WiFiEspAT) if using ESP8288/ESP32-AT shields. [![GitHub release](https://img.shields.io/github/release/jandrassy/WiFiEspAT.svg)](https://github.com/jandrassy/WiFiEspAT/releases/latest)
 
 ---
 ---
@@ -457,7 +461,7 @@ With core after v1.5.0, this step is not necessary anymore thanks to the PR [Add
 
 #### 1. For application requiring 2K+ HTML page
 
-If your application requires 2K+ HTML page, the current [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) must be modified if you are using W5200/W5500 Ethernet shields. W5100 is not supported for 2K+ buffer. If you use boards requiring different CS/SS pin for W5x00 Ethernet shield, for example ESP32, ESP8266, nRF52, etc., you also have to modify the following libraries to be able to specify the CS/SS pin correctly.
+If your application requires 2K+ HTML page, the current [`Ethernet library`](https://www.arduino.cc/en/Reference/Ethernet) must be modified if you are using W5200/W5500 Ethernet shields. W5100 is not supported for 2K+ buffer. If you use boards requiring different CS/SS pin for W5x00 Ethernet shield, for example ESP32, nRF52, etc., you also have to modify the following libraries to be able to specify the CS/SS pin correctly.
 
 #### 2. For Ethernet library
 
@@ -1207,7 +1211,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on NRF52840_FEATHER with W5x00 using Ethernet2 Library
-MDNS_Generic v1.2.0
+MDNS_Generic v1.2.1
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1243,7 +1247,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Starting DiscoveringServices on NRF52840_FEATHER with W5x00 using EthernetLarge Library
-MDNS_Generic v1.2.0
+MDNS_Generic v1.2.1
 =========================
 Default SPI pinout:
 MOSI:25
@@ -1284,7 +1288,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on SEEED_XIAO_M0 with W5x00 using EthernetLarge Library
-MDNS_Generic v1.2.0
+MDNS_Generic v1.2.1
 =========================
 Default SPI pinout:
 MOSI:10
@@ -1323,7 +1327,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Starting DiscoveringServices on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
-MDNS_Generic v1.2.0
+MDNS_Generic v1.2.1
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1359,7 +1363,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
-MDNS_Generic v1.2.0
+MDNS_Generic v1.2.1
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1395,7 +1399,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library
-MDNS_Generic v1.2.0
+MDNS_Generic v1.2.1
 =========================
 Default SPI pinout:
 MOSI:19
@@ -1434,7 +1438,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Start DiscoveringServices on MBED RASPBERRY_PI_PICO using W5x00 using EthernetLarge Library
-MDNS_Generic v1.2.0
+MDNS_Generic v1.2.1
 =========================
 Default SPI pinout:
 MOSI:3
@@ -1472,7 +1476,7 @@ This is terminal debug output when running [WiFiRegisteringServices](examples/Wi
 
 ```
 Start WiFiRegisteringServices on MBED NANO_RP2040_CONNECT
-MDNS_Generic v1.2.0
+MDNS_Generic v1.2.1
 Used/default SPI pinout:
 MOSI:11
 MISO:12
@@ -1513,7 +1517,7 @@ This is terminal debug output when running [WiFiRegisteringServices](examples/Wi
 
 ```
 Start WiFiRegisteringServices on ESP32_DEV
-MDNS_Generic v1.2.0
+MDNS_Generic v1.2.1
 Attempting to connect to SSID: HueNet1
 SSID: HueNet1
 Local IP address: 192.168.2.80
@@ -1573,6 +1577,10 @@ Sometimes, the library will only work if you update the core to the newer or old
 ---
 
 ## Releases
+
+### Releases v1.2.1
+
+ 1. Remove support to ESP8266 to use native [**ESP8266mDNS** library](https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266mDNS)
 
 ### Releases v1.2.0
 
@@ -1652,7 +1660,7 @@ Submit issues to: [**MDNS_Generic issues**](https://github.com/khoih-prog/MDNS_G
 13. Add Version String and Table of Contents
 14. Add support to RP2040-based boards, such as **Nano_RP2040_Connect, RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Arduino-mbed RP2040** core](https://github.com/arduino/ArduinoCore-mbed) using WiFi / [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
 15. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico** core](https://github.com/earlephilhower/arduino-pico) using WiFi / [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
-16. Add support to ESP32 and ESP8266 boards using native ESP WiFi
+16. Add support to ESP32 boards using native ESP WiFi
 17. Add support to Generic boards, such as **MKR WiFi1010**, using [WiFi101 Library](https://github.com/arduino-libraries/WiFi101)
 
 ---

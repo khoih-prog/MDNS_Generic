@@ -20,7 +20,7 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour. 
   If not, see <http://www.gnu.org/licenses/>.
   
-  Version: 1.2.0
+  Version: 1.2.1
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -29,6 +29,7 @@
   1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
   1.1.0   K Hoang      12/06/2021 Add support to RP2040-based boards
   1.2.0   K Hoang      01/09/2021 Add support to generic boards using WiFi or WiFiNINA
+  1.2.1   K Hoang      02/09/2021 Remove support to ESP8266 to use native ESP8266mDNS library
  *****************************************************************************************************************************/
 
 //  Illustrates how to discover Bonjour services on your network.
@@ -36,7 +37,7 @@
 #include "defines.h"
 #include "arduino_secrets.h"
 
-#if defined(ESP32) || defined(ESP8266)
+#if defined(ESP32)
 
   #define WIFI_NETWORK_WIFININA   false
   #define WIFI_NETWORK_WIFI101    false
@@ -46,6 +47,7 @@
   String hostname = "ESP_" + String(ESP_getChipId(), HEX);
 
 #else
+
   // Select one to be true, but WIFI_NETWORK_ESP
   #define WIFI_NETWORK_WIFININA   true
   #define WIFI_NETWORK_WIFI101    false
@@ -82,6 +84,7 @@
 #elif WIFI_NETWORK_ESP
   #include <WiFi.h>
   #include <WiFiUdp.h>
+  
   #warning WIFI_NETWORK_TYPE == NETWORK_WIFI_ESP
   WiFiUDP udp;
   WiFiServer server(80);

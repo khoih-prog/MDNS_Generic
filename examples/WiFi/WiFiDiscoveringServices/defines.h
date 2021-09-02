@@ -32,14 +32,13 @@
 // Debug Level from 0 to 4
 #define _WIFININA_LOGLEVEL_     1
 
-#if defined(ESP32) || defined(ESP8266)
-  #define BOARD_TYPE        ARDUINO_BOARD
+#if defined(ESP32)
 
-  #if defined(ESP32)
-    #define ESP_getChipId()   ((uint32_t)ESP.getEfuseMac())
-  #else
-    #define ESP_getChipId()   (ESP.getChipId())
-  #endif
+  #define BOARD_TYPE        ARDUINO_BOARD
+  #define ESP_getChipId()   ((uint32_t)ESP.getEfuseMac())
+  
+#elif defined(ESP8266)
+    #error ESP8266 not supported. Please use native ESP8266mDNS library
 #endif
 
 #if    ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \

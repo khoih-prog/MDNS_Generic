@@ -20,7 +20,7 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.2.0
+  Version: 1.2.1
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -29,6 +29,7 @@
   1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
   1.1.0   K Hoang      12/06/2021 Add support to RP2040-based boards
   1.2.0   K Hoang      01/09/2021 Add support to generic boards using WiFi or WiFiNINA
+  1.2.1   K Hoang      02/09/2021 Remove support to ESP8266 to use native ESP8266mDNS library
  *****************************************************************************************************************************/
 
 #ifndef __MDNS_GENERIC_IMPL_H__
@@ -39,15 +40,11 @@
 
 #include <string.h>
 #include <stdlib.h>
-//#include <Arduino.h>
-
 
 #if MDNS_USING_WIFININA
   #include <WiFiUdp_Generic.h>
-  #include "MDNS_EthernetUtil_Impl.h"
 #else
   #include <Udp.h>
-  #include "MDNS_EthernetUtil_Impl.h"
 #endif
 
 #include "MDNS_EthernetUtil_Impl.h"
