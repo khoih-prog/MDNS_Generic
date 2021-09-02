@@ -84,6 +84,8 @@
     * [ 8.1 PING Terminal](#81-ping-terminal)
   * [ 9. WiFiRegisteringServices on ESP32_DEV](#9-wifiregisteringservices-on-esp32_dev)
     * [ 9.1 PING Terminal](#91-ping-terminal)
+  * [10. RegisteringServices on NRF52840_FEATHER with W5x00 using EthernetLarge Library](#10-registeringservices-on-nrf52840_feather-with-w5x00-using-ethernetlarge-library)
+    * [10.1 PING Terminal](#101-ping-terminal)
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
 * [Releases](#releases)
@@ -1493,7 +1495,7 @@ To access, using MBED-NANO_RP2040_CONNECT.local
 ##### 8.1 PING Terminal
 
 ```
-kh@kh-Inspiron-3593:~$ ping arduino.local
+kh@kh-Inspiron-3593:~$ ping MBED-NANO_RP2040_CONNECT.local
 PING arduino.local (192.168.2.111) 56(84) bytes of data.
 64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=1 ttl=255 time=65.1 ms
 64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=2 ttl=255 time=48.6 ms
@@ -1507,6 +1509,7 @@ PING arduino.local (192.168.2.111) 56(84) bytes of data.
 64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=10 ttl=255 time=59.5 ms
 64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=11 ttl=255 time=29.0 ms
 64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=12 ttl=255 time=48.7 ms
+...
 ```
 
 ---
@@ -1529,7 +1532,7 @@ To access, using ESP_9ABF498.local
 ##### 9.1 PING Terminal
 
 ```
-kh@kh-Inspiron-3593:~$ ping arduino.local
+kh@kh-Inspiron-3593:~$ ping ESP_9ABF498.local
 PING arduino.local (192.168.2.80) 56(84) bytes of data.
 64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=1 ttl=255 time=29.4 ms
 64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=2 ttl=255 time=49.3 ms
@@ -1546,8 +1549,56 @@ PING arduino.local (192.168.2.80) 56(84) bytes of data.
 64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=13 ttl=255 time=39.7 ms
 64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=14 ttl=255 time=10.9 ms
 64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=15 ttl=255 time=33.5 ms
+...
 ```
 
+---
+
+#### 10. RegisteringServices on NRF52840_FEATHER with W5x00 using EthernetLarge Library
+
+This is terminal debug output when running [RegisteringServices](examples/WiFi/RegisteringServices) on **NRF52840_FEATHER with W5x00 using EthernetLarge Library**
+
+
+```
+Start RegisteringServices on NRF52840_FEATHER using W5x00 using EthernetLarge Library
+MDNS_Generic v1.2.1
+=========================
+Default SPI pinout:
+MOSI:25
+MISO:24
+SCK:26
+SS:5
+=========================
+[MDNS] Board : NRF52840_FEATHER , setCsPin: 10
+_pinCS = 0
+W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
+W5100::init: W5500, SSIZE =8192
+=========================
+Currently Used SPI pinout:
+MOSI:25
+MISO:24
+SCK:26
+SS:5
+=========================
+Using mac index = 11
+Connected! IP address: 192.168.2.106
+Registering mDNS hostname: NRF52840_FEATHER_11
+To access, using NRF52840_FEATHER_11.local
+AddService : NRF52840_FEATHER_mDNS_Webserver._http
+```
+
+
+##### 10.1 PING Terminal
+
+```
+kh@kh-Inspiron-3593:~$ ping NRF52840_FEATHER_11.local
+PING NRF52840_FEATHER_11.local (192.168.2.106) 56(84) bytes of data.
+64 bytes from WIZnetEFBE0C (192.168.2.106): icmp_seq=1 ttl=128 time=0.253 ms
+64 bytes from WIZnetEFBE0C (192.168.2.106): icmp_seq=2 ttl=128 time=0.303 ms
+64 bytes from WIZnetEFBE0C (192.168.2.106): icmp_seq=3 ttl=128 time=0.289 ms
+64 bytes from WIZnetEFBE0C (192.168.2.106): icmp_seq=4 ttl=128 time=0.256 ms
+...
+```
 
 ---
 ---
