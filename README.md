@@ -1229,7 +1229,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on NRF52840_FEATHER with W5x00 using Ethernet2 Library
-MDNS_Generic v1.3.0
+MDNS_Generic v1.3.0-b1
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1265,7 +1265,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Starting DiscoveringServices on NRF52840_FEATHER with W5x00 using EthernetLarge Library
-MDNS_Generic v1.3.0
+MDNS_Generic v1.3.0-b1
 =========================
 Default SPI pinout:
 MOSI:25
@@ -1306,7 +1306,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on SEEED_XIAO_M0 with W5x00 using EthernetLarge Library
-MDNS_Generic v1.3.0
+MDNS_Generic v1.3.0-b1
 =========================
 Default SPI pinout:
 MOSI:10
@@ -1345,7 +1345,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Starting DiscoveringServices on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
-MDNS_Generic v1.3.0
+MDNS_Generic v1.3.0-b1
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1381,7 +1381,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
-MDNS_Generic v1.3.0
+MDNS_Generic v1.3.0-b1
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1417,7 +1417,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library
-MDNS_Generic v1.3.0
+MDNS_Generic v1.3.0-b1
 =========================
 Default SPI pinout:
 MOSI:19
@@ -1456,7 +1456,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Start DiscoveringServices on MBED RASPBERRY_PI_PICO using W5x00 using EthernetLarge Library
-MDNS_Generic v1.3.0
+MDNS_Generic v1.3.0-b1
 =========================
 Default SPI pinout:
 MOSI:3
@@ -1494,7 +1494,7 @@ This is terminal debug output when running [WiFiRegisteringServices](examples/Wi
 
 ```
 Start WiFiRegisteringServices on MBED NANO_RP2040_CONNECT
-MDNS_Generic v1.3.0
+MDNS_Generic v1.3.0-b1
 Used/default SPI pinout:
 MOSI:11
 MISO:12
@@ -1536,7 +1536,7 @@ This is terminal debug output when running [WiFiRegisteringServices](examples/Wi
 
 ```
 Start WiFiRegisteringServices on ESP32_DEV
-MDNS_Generic v1.3.0
+MDNS_Generic v1.3.0-b1
 Attempting to connect to SSID: HueNet1
 SSID: HueNet1
 Local IP address: 192.168.2.80
@@ -1577,7 +1577,7 @@ This is terminal debug output when running [RegisteringServices](examples/WiFi/R
 
 ```
 Start RegisteringServices on NRF52840_FEATHER using W5x00 using EthernetLarge Library
-MDNS_Generic v1.3.0
+MDNS_Generic v1.3.0-b1
 =========================
 Default SPI pinout:
 MOSI:25
