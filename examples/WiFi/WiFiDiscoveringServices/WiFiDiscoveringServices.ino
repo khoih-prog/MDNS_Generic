@@ -20,16 +20,17 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour. 
   If not, see <http://www.gnu.org/licenses/>.
   
-  Version: 1.2.1
+  Version: 1.3.0-beta1
   
-  Version Modified By   Date      Comments
-  ------- -----------  ---------- -----------
-  1.0.0   K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
+  Version  Modified By   Date      Comments
+  -------  -----------  ---------- -----------
+  1.0.0    K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
-  1.0.1   K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
-  1.1.0   K Hoang      12/06/2021 Add support to RP2040-based boards
-  1.2.0   K Hoang      01/09/2021 Add support to generic boards using WiFi or WiFiNINA
-  1.2.1   K Hoang      02/09/2021 Remove support to ESP8266 to use native ESP8266mDNS library
+  1.0.1    K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
+  1.1.0    K Hoang      12/06/2021 Add support to RP2040-based boards
+  1.2.0    K Hoang      01/09/2021 Add support to generic boards using WiFi or WiFiNINA
+  1.2.1    K Hoang      02/09/2021 Remove support to ESP8266 to use native ESP8266mDNS library
+  1.3.0-b1 K Hoang      13/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
  *****************************************************************************************************************************/
 
 //  Illustrates how to discover Bonjour services on your network.
@@ -39,26 +40,26 @@
 
 #if defined(ESP32)
 
-  #define WIFI_NETWORK_WIFININA   false
-  #define WIFI_NETWORK_WIFI101    false
-  #define WIFI_NETWORK_ESPAT      false
-  #define WIFI_NETWORK_ESP        true
-
   String hostname = "ESP_" + String(ESP_getChipId(), HEX);
 
 #else
-
-  // Select one to be true, but WIFI_NETWORK_ESP
-  #define WIFI_NETWORK_WIFININA   true
-  #define WIFI_NETWORK_WIFI101    false
-  #define WIFI_NETWORK_ESPAT      false
-  #define WIFI_NETWORK_ESP        false
+  #if !defined(WIFI_NETWORK_TYPE)
+    // Select one, but WIFI_NETWORK_ESP
+    #warning You have to select a WiFi Network here, or default will be used => possibly creating error.
+    
+    #define WIFI_NETWORK_TYPE           NETWORK_WIFI_DEFAULT
+    //#define WIFI_NETWORK_TYPE           WIFI_NETWORK_WIFININA
+    //#define WIFI_NETWORK_TYPE           WIFI_NETWORK_WIFI101
+    //#define WIFI_NETWORK_TYPE           WIFI_NETWORK_ESPAT
+    //#define WIFI_NETWORK_TYPE           WIFI_NETWORK_ESP
+    //#define WIFI_NETWORK_TYPE           WIFI_NETWORK_PORTENTA_H7
+  #endif
 
   String hostname = BOARD_TYPE;
 
 #endif
 
-#if WIFI_NETWORK_WIFININA
+#if (WIFI_NETWORK_TYPE == WIFI_NETWORK_WIFININA)
   #include <SPI.h>
   #include <WiFiNINA_Generic.h>
   #include <WiFiUdp_Generic.h>
@@ -66,7 +67,7 @@
   WiFiUDP udp;
   WiFiServer server(80);
 
-#elif WIFI_NETWORK_WIFI101
+#elif (WIFI_NETWORK_TYPE == WIFI_NETWORK_WIFI101)
   #include <SPI.h>
   #include <WiFi101.h>
   #include <WiFiUdp.h>
@@ -74,23 +75,42 @@
   WiFiUDP udp;
   WiFiServer server(80);
 
-#elif WIFI_NETWORK_ESPAT
+#elif (WIFI_NETWORK_TYPE == WIFI_NETWORK_ESPAT)
   #include <WiFiEspAT.h>
   #include <WiFiUdp.h>
   #warning WIFI_NETWORK_TYPE == NETWORK_WIFI_ESPAT
   WiFiUDP udp;
   WiFiServer server(80);
 
-#elif WIFI_NETWORK_ESP
+#elif (WIFI_NETWORK_TYPE == WIFI_NETWORK_ESP)
   #include <WiFi.h>
   #include <WiFiUdp.h>
   
   #warning WIFI_NETWORK_TYPE == NETWORK_WIFI_ESP
   WiFiUDP udp;
   WiFiServer server(80);
+
+#elif (WIFI_NETWORK_TYPE == WIFI_NETWORK_PORTENTA_H7)
+  #include <WiFi.h>
+  #include <WiFiUdp.h>
   
+  #warning WIFI_NETWORK_TYPE == NETWORK_WIFI_PORTENTA_H7
+  WiFiUDP udp;
+  WiFiServer server(80);
+
+#elif (WIFI_NETWORK_TYPE == NETWORK_WIFI_DEFAULT)
+  //#error You must select a WiFi network type
+  #include <WiFi.h>
+  #include <WiFiUdp.h>
+  
+  #warning WIFI_NETWORK_TYPE == NETWORK_WIFI_DEFAULT
+  WiFiUDP udp;
+  WiFiServer server(80);
+
 #else
-  #error You must select a WiFi network type
+
+  #error You have to select an appropriate WiFi network type from the list
+  
 #endif
 
 #include <MDNS_Generic.h>
@@ -245,8 +265,10 @@ void setup()
 
   printWifiStatus();
 
-  hostname.toUpperCase();
+  //hostname.toUpperCase();
+  hostname.toLowerCase();
   hostname.replace(" ",  "-");
+  hostname.replace("_",  "-");
 
   Serial.print("Registering mDNS hostname: "); Serial.println(hostname);
   Serial.print("To access, using "); Serial.print(hostname); Serial.println(".local");

@@ -20,7 +20,7 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.2.1
+  Version: 1.3.0
   
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -30,6 +30,7 @@
   1.1.0   K Hoang      12/06/2021 Add support to RP2040-based boards
   1.2.0   K Hoang      01/09/2021 Add support to generic boards using WiFi or WiFiNINA
   1.2.1   K Hoang      02/09/2021 Remove support to ESP8266 to use native ESP8266mDNS library
+  1.3.0   K Hoang      13/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
  *****************************************************************************************************************************/
 
 #ifndef MDNS_Debug_H

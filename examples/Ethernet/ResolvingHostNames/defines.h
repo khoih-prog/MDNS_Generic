@@ -71,7 +71,22 @@
   #define ETHERNET_USE_RP2040      true
 #endif
 
-#if defined(ETHERNET_USE_SAMD)
+
+#if ( defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4) )
+
+  #if defined(BOARD_NAME)
+    #undef BOARD_NAME
+  #endif
+
+  #if defined(CORE_CM7)
+    #warning Using Portenta H7 M7 core
+    #define BOARD_NAME              "PORTENTA_H7_M7"
+  #else
+    #warning Using Portenta H7 M4 core
+    #define BOARD_NAME              "PORTENTA_H7_M4"
+  #endif
+
+#elif defined(ETHERNET_USE_SAMD)
   // For SAMD
   
   #if ( defined(ARDUINO_SAMD_ZERO) && !defined(SEEED_XIAO_M0) )
@@ -299,7 +314,7 @@
 
   // For RPI Pico
   #warning Use RPI-Pico RP2040 architecture
-  
+
 #else
   // For Mega
   #define BOARD_TYPE      "AVR Mega"
@@ -321,12 +336,20 @@
 //#define USE_THIS_SS_PIN   22  //21  //5 //4 //2 //15
 
 // Only one if the following to be true
-#define USE_ETHERNET          false
-#define USE_ETHERNET2         false
-#define USE_ETHERNET3         false //true
-#define USE_ETHERNET_LARGE    true
+#define USE_ETHERNET              false //true
+#define USE_ETHERNET2             false //true
+#define USE_ETHERNET3             false //true
+#define USE_ETHERNET_LARGE        false
+#define USE_ETHERNET_PORTENTA_H7  true
 
-#if USE_ETHERNET
+#if USE_ETHERNET_PORTENTA_H7
+  //#include "PortentaEthernet.h"
+  #include "Ethernet.h"
+  #include "EthernetUdp.h"
+  #warning Using Portenta_Ethernet lib for Portenta_H7.
+  #define SHIELD_TYPE       "Ethernet using Portenta_Ethernet Library"
+
+#elif USE_ETHERNET
   #include "Ethernet.h"
   #include "EthernetUdp.h"
   #warning Use Ethernet lib

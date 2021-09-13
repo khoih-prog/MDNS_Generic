@@ -26,7 +26,7 @@
 #define SYSTEM_ENDIAN           _ENDIAN_BIG_
 
 #define MDNS_DEBUG_PORT         Serial
-#define _MDNS_LOGLEVEL_         1
+#define _MDNS_LOGLEVEL_         4
 
 #define DEBUG_WIFININA_PORT     Serial
 // Debug Level from 0 to 4
@@ -34,9 +34,12 @@
 
 #if defined(ESP32)
 
-  #define BOARD_TYPE        ARDUINO_BOARD
-  #define ESP_getChipId()   ((uint32_t)ESP.getEfuseMac())
-  
+  #define BOARD_TYPE              ARDUINO_BOARD
+  #define ESP_getChipId()         ((uint32_t)ESP.getEfuseMac())
+
+  #define WIFI_NETWORK_ESP        true
+  #define WIFI_NETWORK_TYPE       WIFI_NETWORK_ESP
+    
 #elif defined(ESP8266)
     #error ESP8266 not supported. Please use native ESP8266mDNS library
 #endif
@@ -52,13 +55,17 @@
   #define WIFININA_USE_SAMD      true
 
   #if defined(ARDUINO_SAMD_ZERO)
-    #define BOARD_TYPE      "SAMD Zero"
+    #define BOARD_TYPE                  "SAMD Zero"
   #elif defined(ARDUINO_SAMD_MKR1000)
-    #define BOARD_TYPE      "SAMD MKR1000"
+    #define BOARD_TYPE                  "SAMD MKR1000"
   #elif defined(ARDUINO_SAMD_MKRWIFI1010)
-    #define BOARD_TYPE      "SAMD MKRWIFI1010"
+    #define BOARD_TYPE                  "SAMD MKRWIFI1010"
+    #define WIFI_NETWORK_WIFI101        true
+    #define WIFI_NETWORK_TYPE           WIFI_NETWORK_WIFI101
   #elif defined(ARDUINO_SAMD_NANO_33_IOT)
     #define BOARD_TYPE      "SAMD NANO_33_IOT"
+    #define WIFI_NETWORK_WIFININA       true
+    #define WIFI_NETWORK_TYPE           WIFI_NETWORK_WIFININA
   #elif defined(ARDUINO_SAMD_MKRFox1200)
     #define BOARD_TYPE      "SAMD MKRFox1200"
   #elif ( defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) )
@@ -212,7 +219,7 @@
 
 #if ( defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)  ||defined(STM32F4) || defined(STM32F7) || \
        defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32H7)  ||defined(STM32G0) || defined(STM32G4) || \
-       defined(STM32WB) || defined(STM32MP1) )
+       defined(STM32WB) || defined(STM32MP1) ) && !( defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4) )
   #if defined(WIFININA_USE_STM32)
     #undef WIFININA_USE_STM32
   #endif
@@ -316,15 +323,17 @@
     #endif
 
     #if defined(ARDUINO_NANO_RP2040_CONNECT)
-      #define BOARD_TYPE      "MBED NANO_RP2040_CONNECT"
+      #define BOARD_TYPE                  "MBED NANO_RP2040_CONNECT"
+      #define WIFI_NETWORK_WIFININA       true
+      #define WIFI_NETWORK_TYPE           WIFI_NETWORK_WIFININA
     #elif defined(ARDUINO_RASPBERRY_PI_PICO) 
-      #define BOARD_TYPE      "MBED RASPBERRY_PI_PICO"
+      #define BOARD_TYPE                  "MBED RASPBERRY_PI_PICO"
     #elif defined(ARDUINO_ADAFRUIT_FEATHER_RP2040)
-      #define BOARD_TYPE      "MBED ADAFRUIT_FEATHER_RP2040"
+      #define BOARD_TYPE                  "MBED ADAFRUIT_FEATHER_RP2040"
     #elif defined(ARDUINO_GENERIC_RP2040)
-      #define BOARD_TYPE      "MBED GENERIC_RP2040"
+      #define BOARD_TYPE                  "MBED GENERIC_RP2040"
     #else
-      #define BOARD_TYPE      "MBED Unknown RP2040"
+      #define BOARD_TYPE                  "MBED Unknown RP2040"
     #endif
     
   #else
@@ -340,6 +349,31 @@
   #warning Use RPI-Pico RP2040 architecture
 #endif
 
+#if ( defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4) )
+
+  #if defined(BOARD_NAME)
+    #undef BOARD_NAME
+  #endif
+
+  #if defined(CORE_CM7)
+    #warning Using Portenta H7 M7 core
+    #define BOARD_TYPE                "PORTENTA_H7_M7"
+  #else
+    #warning Using Portenta H7 M4 core
+    #define BOARD_TYPE                "PORTENTA_H7_M4"
+  #endif
+
+  #define WIFI_NETWORK_PORTENTA_H7    true
+  #define WIFI_NETWORK_TYPE           WIFI_NETWORK_PORTENTA_H7
+ 
+#elif (ESP32)
+
+  #define USE_WIFI_NINA           false
+
+  // To use the default WiFi library here 
+  #define USE_WIFI_CUSTOM         false
+
+#endif
 
 #ifndef BOARD_NAME
   #define BOARD_NAME    BOARD_TYPE
