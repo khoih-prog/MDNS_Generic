@@ -1793,8 +1793,8 @@ Submit issues to: [**MDNS_Generic issues**](https://github.com/khoih-prog/MDNS_G
 15. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico** core](https://github.com/earlephilhower/arduino-pico) using WiFi / [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
 16. Add support to ESP32 boards using native ESP WiFi
 17. Add support to Generic boards, such as **MKR WiFi1010**, using [WiFi101 Library](https://github.com/arduino-libraries/WiFi101)
-18. Add support to **Portenta_H7 Ethernet** using [`Portenta_Ethernet`](https://github.com/arduino/ArduinoCore-mbed/tree/master/libraries/Ethernet) library
-19. Add support to **Portenta_H7 WiFi** using [`Portenta_WiFi`](https://github.com/arduino/ArduinoCore-mbed/tree/master/libraries/WiFi) library
+18. Add support to **Portenta_H7 Vision-shield Ethernet** using [`Portenta_Ethernet`](https://github.com/arduino/ArduinoCore-mbed/tree/master/libraries/Ethernet) library
+19. Add support to **Portenta_H7 Murata WiFi** using [`Portenta_WiFi`](https://github.com/arduino/ArduinoCore-mbed/tree/master/libraries/WiFi) library
 
 
 ---
@@ -1803,11 +1803,12 @@ Submit issues to: [**MDNS_Generic issues**](https://github.com/khoih-prog/MDNS_G
 ### Contributions and Thanks
 
 1. Based on and modified from [TrippyLighting's EthernetBonjour](https://github.com/TrippyLighting/EthernetBonjour) and [Dario Pennisi's ArduinoMDNS](https://github.com/arduino-libraries/ArduinoMDNS)
+2. Thanks to [Zuroy](https://github.com/Zuroy) to report the issue in [Portenta H7 MDNS Library compatibility #4](https://github.com/khoih-prog/MDNS_Generic/issues/4) then post an issue on [`ArduinoCore-mbed`](https://github.com/arduino/ArduinoCore-mbed) leading to a fix in [SocketWrapper: UDP: send packet on endPacket(), not on write() #337](https://github.com/arduino/ArduinoCore-mbed/pull/337) leading to the new version v1.3.0 to provide support to **Portenta_H7** using either Murata WiFi or Vision-shield Ethernet.
 
 <table>
   <tr>
     <td align="center"><a href="https://github.com/TrippyLighting"><img src="https://github.com/TrippyLighting.png" width="100px;" alt="TrippyLighting"/><br /><sub><b>⭐️ TrippyLighting</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/pnndra"><img src="https://github.com/pnndra.png" width="100px;" alt="pnndra"/><br /><sub><b>⭐️ Dario Pennisi</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Zuroy"><img src="https://github.com/Zuroy.png" width="100px;" alt="Zuroy"/><br /><sub><b>Zuroy</b></sub></a><br /></td>
   </tr> 
 </table>
 
