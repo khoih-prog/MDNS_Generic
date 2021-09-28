@@ -38,6 +38,7 @@
     * [8.1. To use BOARD_NAME](#81-to-use-board_name)
     * [8.2. To avoid compile error relating to microsecondsToClockCycles](#82-to-avoid-compile-error-relating-to-microsecondstoclockcycles)
   * [9. For Portenta_H7 boards using Arduino IDE in Linux](#9-for-portenta_h7-boards-using-arduino-ide-in-linux)
+  * [10. For Portenta_H7 boards](#10-for-portenta_h7-boards)
 * [Libraries' Patches](#libraries-patches)
   * [1. For application requiring 2K+ HTML page](#1-for-application-requiring-2k-html-page)
   * [2. For Ethernet library](#2-for-ethernet-library)
@@ -82,6 +83,10 @@
     * [ 9.1 PING Terminal](#91-ping-terminal)
   * [10. RegisteringServices on NRF52840_FEATHER with W5x00 using EthernetLarge Library](#10-registeringservices-on-nrf52840_feather-with-w5x00-using-ethernetlarge-library)
     * [10.1 PING Terminal](#101-ping-terminal)
+  * [11. WiFiRegisteringServices on PORTENTA_H7_M7](#11-wifiregisteringservices-on-PORTENTA_H7_M7)
+    * [11.1 PING Terminal](#111-ping-terminal)
+  * [12. RegisteringServices on PORTENTA_H7_M7 using Ethernet using Portenta_Ethernet Library](#12-registeringservices-on-PORTENTA_H7_M7-using-Ethernet-using-Portenta_Ethernet-Library)
+    * [12.1 PING Terminal](#121-ping-terminal)
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
 * [Issues](#issues)
@@ -97,12 +102,12 @@
 
 ### Important Notes about Portenta_H7
 
-**Still not working in v1.3.0-beta1**, just for preliminary tests. Check 
+**Already working in v1.3.0**. Check 
 
 * 1.1 [**Portenta H7 UDP Multicast not working - mbed v2.4.1** #321](https://github.com/arduino/ArduinoCore-mbed/issues/321)
 * 1.2 [**Portenta H7 MDNS Library compatibility** #4](https://github.com/khoih-prog/MDNS_Generic/issues/4)
 
-for latest situation.
+Please use the [Packages' Patches for mbed_portenta](https://github.com/khoih-prog/MDNS_Generic/tree/master/Packages_Patches/arduino/hardware/mbed_portenta)
 
 ### Why do we need this [MDNS_Generic library](https://github.com/khoih-prog/MDNS_Generic)
 
@@ -168,16 +173,16 @@ This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is b
  
 ## Prerequisites
 
- 1. [`Arduino IDE v1.8.15+`](https://www.arduino.cc/en/Main/Software)
+ 1. [`Arduino IDE v1.8.16+`](https://www.arduino.cc/en/Main/Software)
  2. [`Arduino AVR core 1.8.3+`](https://github.com/arduino/ArduinoCore-avr) for Arduino (Use Arduino Board Manager) for AVR boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-avr.svg)](https://github.com/arduino/ArduinoCore-avr/releases/latest)
- 3. [`Teensy core v1.54+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.1, 4.0, 3.6, 3.5, 3,2, 3.1, 3.0) boards.
+ 3. [`Teensy core v1.55+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.1, 4.0, 3.6, 3.5, 3,2, 3.1, 3.0) boards.
  4. [`Arduino SAM DUE core v1.6.12+`](https://github.com/arduino/ArduinoCore-sam) for SAM DUE ARM Cortex-M3 boards.
  5. [`Arduino SAMD core 1.8.11+`](https://github.com/arduino/ArduinoCore-samd) for SAMD ARM Cortex-M0+ boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-samd.svg)](https://github.com/arduino/ArduinoCore-samd/releases/latest)
  6. [`Adafruit SAMD core 1.7.5+`](https://github.com/adafruit/ArduinoCore-samd) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.). [![GitHub release](https://img.shields.io/github/release/adafruit/ArduinoCore-samd.svg)](https://github.com/adafruit/ArduinoCore-samd/releases/latest)
  7. [`Seeeduino SAMD core 1.8.1+`](https://github.com/Seeed-Studio/ArduinoCore-samd) for SAMD21/SAMD51 boards (XIAO M0, Wio Terminal, etc.). [![Latest release](https://img.shields.io/github/release/Seeed-Studio/ArduinoCore-samd.svg)](https://github.com/Seeed-Studio/ArduinoCore-samd/releases/latest/)
- 8. [`Adafruit nRF52 v1.0.0`](https://github.com/adafruit/Adafruit_nRF52_Arduino) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, **NINA_B302_ublox**, etc. [![GitHub release](https://img.shields.io/github/release/adafruit/Adafruit_nRF52_Arduino.svg)](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/latest) 
- 9. [`ArduinoCore-mbed mbed_rp2040, mbed_nano, mbed_portenta core 2.4.1+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino (Use Arduino Board Manager) **Portenta_H7, RP2040-based boards, such as Nano_RP2040_Connect, RASPBERRY_PI_PICO**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
-10. [`Earle Philhower's arduino-pico core v1.9.4+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest) 
+ 8. [`Adafruit nRF52 v1.1.0`](https://github.com/adafruit/Adafruit_nRF52_Arduino) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, **NINA_B302_ublox**, etc. [![GitHub release](https://img.shields.io/github/release/adafruit/Adafruit_nRF52_Arduino.svg)](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/latest) 
+ 9. [`ArduinoCore-mbed mbed_rp2040, mbed_nano, mbed_portenta core 2.5.2+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino (Use Arduino Board Manager) **Portenta_H7, RP2040-based boards, such as Nano_RP2040_Connect, RASPBERRY_PI_PICO**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
+10. [`Earle Philhower's arduino-pico core v1.9.5+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest) 
 11. [`Arduino Core for STM32 v2.0.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32F/L/H/G/WB/MP1 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
 12. [`ESP32 Core 2.0.0+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
  
@@ -187,9 +192,9 @@ This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is b
    - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500. [![GitHub release](https://img.shields.io/github/release/adafruit/Ethernet2.svg)](https://github.com/adafruit/Ethernet2/releases/latest)
    - [`Ethernet3 library v1.5.5+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip. [![GitHub release](https://img.shields.io/github/release/sstaub/Ethernet3.svg)](https://github.com/sstaub/Ethernet3/releases/latest)
    
-14. [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/STM32Ethernet.svg)](https://github.com/stm32duino/STM32Ethernet/releases/latest). To be used with [`LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP). [![GitHub release](https://img.shields.io/github/release/stm32duino/LwIP.svg)](https://github.com/stm32duino/LwIP/releases/latest). **Not yet ready** in v1.2.0.
+14. [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/STM32Ethernet.svg)](https://github.com/stm32duino/STM32Ethernet/releases/latest). To be used with [`LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP). [![GitHub release](https://img.shields.io/github/release/stm32duino/LwIP.svg)](https://github.com/stm32duino/LwIP/releases/latest). **Not yet ready** in v1.3.0.
    
-15. [`WiFiNINA_Generic library v1.8.13+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc. **Ready** from v1.2.0.
+15. [`WiFiNINA_Generic library v1.8.13+`](https://github.com/khoih-prog/WiFiNINA_Generic). To install. check [![arduino-library-badge](https://www.ardu-badge.com/badge/WiFiNINA_Generic.svg?)](https://www.ardu-badge.com/WiFiNINA_Generic) if using WiFiNINA for boards such as Nano 33 IoT, nRF52, Teensy, etc.
 16. [`WiFi101 library v0.16.1+`](https://github.com/arduino-libraries/WiFi101) if using WINC1500/WiFi101 shields (MKR1000, MKR1010, etc.). [![GitHub release](https://img.shields.io/github/release/arduino-libraries/WiFi101.svg)](https://github.com/arduino-libraries/WiFi101/releases/latest)
 17. [`WiFiEspAT library v1.3.1+`](https://github.com/jandrassy/WiFiEspAT) if using ESP8288/ESP32-AT shields. [![GitHub release](https://img.shields.io/github/release/jandrassy/WiFiEspAT.svg)](https://github.com/jandrassy/WiFiEspAT/releases/latest)
 
@@ -446,6 +451,15 @@ Whenever a new version is installed, remember to copy this files into the new ve
 This file must be copied into the directory:
 
 - `~/.arduino15/packages/arduino/hardware/mbed_portenta/x.yy.zz/portenta_post_install.sh`
+
+#### 10. For Portenta_H7 boards
+
+To fix `Portenta H7 MDNS Library compatibility`, please use the [Packages' Patches for mbed_portenta](https://github.com/khoih-prog/MDNS_Generic/tree/master/Packages_Patches/arduino/hardware/mbed_portenta)
+
+For more info, check 
+
+* 1.1 [**Portenta H7 UDP Multicast not working - mbed v2.4.1** #321](https://github.com/arduino/ArduinoCore-mbed/issues/321)
+* 1.2 [**Portenta H7 MDNS Library compatibility** #4](https://github.com/khoih-prog/MDNS_Generic/issues/4)
 
 ---
 
@@ -1229,7 +1243,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on NRF52840_FEATHER with W5x00 using Ethernet2 Library
-MDNS_Generic v1.3.0-b1
+MDNS_Generic v1.3.0
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1265,7 +1279,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Starting DiscoveringServices on NRF52840_FEATHER with W5x00 using EthernetLarge Library
-MDNS_Generic v1.3.0-b1
+MDNS_Generic v1.3.0
 =========================
 Default SPI pinout:
 MOSI:25
@@ -1306,7 +1320,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on SEEED_XIAO_M0 with W5x00 using EthernetLarge Library
-MDNS_Generic v1.3.0-b1
+MDNS_Generic v1.3.0
 =========================
 Default SPI pinout:
 MOSI:10
@@ -1345,7 +1359,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Starting DiscoveringServices on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
-MDNS_Generic v1.3.0-b1
+MDNS_Generic v1.3.0
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1381,7 +1395,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
-MDNS_Generic v1.3.0-b1
+MDNS_Generic v1.3.0
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1417,7 +1431,7 @@ This is terminal debug output when running [ResolvingHostNames](examples/Etherne
 
 ```
 Starting ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library
-MDNS_Generic v1.3.0-b1
+MDNS_Generic v1.3.0
 =========================
 Default SPI pinout:
 MOSI:19
@@ -1456,7 +1470,7 @@ This is terminal debug output when running [DiscoveringServices](examples/Ethern
 
 ```
 Start DiscoveringServices on MBED RASPBERRY_PI_PICO using W5x00 using EthernetLarge Library
-MDNS_Generic v1.3.0-b1
+MDNS_Generic v1.3.0
 =========================
 Default SPI pinout:
 MOSI:3
@@ -1494,7 +1508,7 @@ This is terminal debug output when running [WiFiRegisteringServices](examples/Wi
 
 ```
 Start WiFiRegisteringServices on MBED NANO_RP2040_CONNECT
-MDNS_Generic v1.3.0-b1
+MDNS_Generic v1.3.0
 Used/default SPI pinout:
 MOSI:11
 MISO:12
@@ -1536,7 +1550,7 @@ This is terminal debug output when running [WiFiRegisteringServices](examples/Wi
 
 ```
 Start WiFiRegisteringServices on ESP32_DEV
-MDNS_Generic v1.3.0-b1
+MDNS_Generic v1.3.0
 Attempting to connect to SSID: HueNet1
 SSID: HueNet1
 Local IP address: 192.168.2.80
@@ -1577,7 +1591,7 @@ This is terminal debug output when running [RegisteringServices](examples/WiFi/R
 
 ```
 Start RegisteringServices on NRF52840_FEATHER using W5x00 using EthernetLarge Library
-MDNS_Generic v1.3.0-b1
+MDNS_Generic v1.3.0
 =========================
 Default SPI pinout:
 MOSI:25
@@ -1616,6 +1630,105 @@ PING NRF52840_FEATHER_11.local (192.168.2.106) 56(84) bytes of data.
 ...
 ```
 
+---
+
+---
+
+#### 11. WiFiRegisteringServices on PORTENTA_H7_M7
+
+This is terminal debug output when running [RegisteringServices](examples/WiFi/RegisteringServices) on **PORTENTA_H7_M7 Murata WiFi**
+
+
+```
+Start WiFiRegisteringServices on PORTENTA_H7_M7
+MDNS_Generic v1.3.0
+Attempting to connect to SSID: HueNet1
+SSID: HueNet1
+Local IP address: 192.168.2.94
+Signal strength (RSSI):-35 dBm
+Registering mDNS hostname: portenta-h7-m7
+To access, using portenta-h7-m7.local
+[MDNS] ::begin: UDP beginMulticast statusCode= OK
+[MDNS] ::_sendMDNSMessage: xid= 0
+[MDNS] ::_sendMDNSMessage: queryCount= 0
+[MDNS] ::_sendMDNSMessage: answerCount= 1024
+[MDNS] ::_sendMDNSMessage: authorityCount= 0
+[MDNS] ::_sendMDNSMessage: additionalCount= 256
+[MDNS] ::_sendMDNSMessage: statusCode = 1
+```
+
+
+##### 11.1 PING Terminal
+
+```
+kh@kh-Inspiron-3593:~$ ping portenta-h7-m7.local
+PING portenta-h7-m7.local (192.168.2.94) 56(84) bytes of data.
+64 bytes from 192.168.2.94 (192.168.2.94): icmp_seq=1 ttl=255 time=49.4 ms
+64 bytes from 192.168.2.94 (192.168.2.94): icmp_seq=2 ttl=255 time=153 ms
+64 bytes from 192.168.2.94 (192.168.2.94): icmp_seq=3 ttl=255 time=73.4 ms
+64 bytes from 192.168.2.94 (192.168.2.94): icmp_seq=4 ttl=255 time=95.7 ms
+64 bytes from 192.168.2.94 (192.168.2.94): icmp_seq=5 ttl=255 time=119 ms
+64 bytes from 192.168.2.94 (192.168.2.94): icmp_seq=6 ttl=255 time=22.0 ms
+64 bytes from 192.168.2.94 (192.168.2.94): icmp_seq=7 ttl=255 time=30.4 ms
+64 bytes from 192.168.2.94 (192.168.2.94): icmp_seq=8 ttl=255 time=47.7 m
+...
+```
+
+---
+
+#### 12. RegisteringServices on PORTENTA_H7_M7 using Ethernet using Portenta_Ethernet Library
+
+This is terminal debug output when running [RegisteringServices](examples/WiFi/RegisteringServices) on **PORTENTA_H7_M7 using Ethernet using Portenta_Ethernet Library**
+
+
+```
+Start RegisteringServices on PORTENTA_H7_M7 using Ethernet using Portenta_Ethernet Library
+MDNS_Generic v1.3.0
+=========================
+Default SPI pinout:
+MOSI:8
+MISO:10
+SCK:9
+SS:7
+=========================
+[MDNS] Board : PORTENTA_H7_M7 , setCsPin: 10
+=========================
+Currently Used SPI pinout:
+MOSI:8
+MISO:10
+SCK:9
+SS:7
+=========================
+Using mac index = 11
+Connected! IP address: 192.168.2.87
+Registering mDNS hostname: portenta-h7-m7-15
+To access, using portenta-h7-m7-11.local
+[MDNS] ::begin: UDP beginMulticast statusCode= OK
+AddService : PORTENTA_H7_M7_mDNS_Webserver._http
+[MDNS] ::_sendMDNSMessage: xid= 0
+[MDNS] ::_sendMDNSMessage: queryCount= 0
+[MDNS] ::_sendMDNSMessage: answerCount= 1024
+[MDNS] ::_sendMDNSMessage: authorityCount= 0
+[MDNS] ::_sendMDNSMessage: additionalCount= 256
+[MDNS] ::_sendMDNSMessage: statusCode = 1
+```
+
+
+##### 12.1 PING Terminal
+
+```
+kh@kh-Inspiron-3593:~$ ping portenta-h7-m7-15.local
+PING portenta-h7-m7-15.local (192.168.2.87) 56(84) bytes of data.
+64 bytes from 192.168.2.87 (192.168.2.87): icmp_seq=1 ttl=255 time=0.964 ms
+64 bytes from 192.168.2.87 (192.168.2.87): icmp_seq=2 ttl=255 time=0.216 ms
+64 bytes from 192.168.2.87 (192.168.2.87): icmp_seq=3 ttl=255 time=1.07 ms
+64 bytes from 192.168.2.87 (192.168.2.87): icmp_seq=4 ttl=255 time=4.40 ms
+64 bytes from 192.168.2.87 (192.168.2.87): icmp_seq=5 ttl=255 time=0.314 ms
+64 bytes from 192.168.2.87 (192.168.2.87): icmp_seq=6 ttl=255 time=0.635 ms
+64 bytes from 192.168.2.87 (192.168.2.87): icmp_seq=7 ttl=255 time=0.996 ms
+64 bytes from 192.168.2.87 (192.168.2.87): icmp_seq=8 ttl=255 time=4.47 ms
+...
+```
 ---
 ---
 
@@ -1680,6 +1793,9 @@ Submit issues to: [**MDNS_Generic issues**](https://github.com/khoih-prog/MDNS_G
 15. Add support to RP2040-based boards, such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, using [**Earle Philhower's arduino-pico** core](https://github.com/earlephilhower/arduino-pico) using WiFi / [WiFiNINA_Generic Library](https://github.com/khoih-prog/WiFiNINA_Generic)
 16. Add support to ESP32 boards using native ESP WiFi
 17. Add support to Generic boards, such as **MKR WiFi1010**, using [WiFi101 Library](https://github.com/arduino-libraries/WiFi101)
+18. Add support to **Portenta_H7 Ethernet** using [`Portenta_Ethernet`](https://github.com/arduino/ArduinoCore-mbed/tree/master/libraries/Ethernet) library
+19. Add support to **Portenta_H7 WiFi** using [`Portenta_WiFi`](https://github.com/arduino/ArduinoCore-mbed/tree/master/libraries/WiFi) library
+
 
 ---
 ---

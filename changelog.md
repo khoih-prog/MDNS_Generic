@@ -13,6 +13,7 @@
 ## Table of Contents
 
 * [Changelog](#changelog)
+  * [Releases v1.3.0](#releases-v130)
   * [Releases v1.3.0-beta1](#releases-v130-beta1)
   * [Releases v1.2.1](#releases-v121)
   * [Releases v1.2.0](#releases-v120)
@@ -24,6 +25,12 @@
 ---
 
 ## Changelog
+
+### Releases v1.3.0
+
+1. Add support to Portenta_H7, using WiFi or Ethernet. **Already working**.
+
+Please use the [Packages' Patches for mbed_portenta](https://github.com/khoih-prog/MDNS_Generic/tree/master/Packages_Patches/arduino/hardware/mbed_portenta)
 
 ### Releases v1.3.0-beta1
 
