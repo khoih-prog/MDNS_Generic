@@ -13,6 +13,7 @@
 ## Table of Contents
 
 * [Changelog](#changelog)
+  * [Releases v1.3.1](#releases-v131)
   * [Releases v1.3.0](#releases-v130)
   * [Releases v1.3.0-beta1](#releases-v130-beta1)
   * [Releases v1.2.1](#releases-v121)
@@ -25,6 +26,11 @@
 ---
 
 ## Changelog
+
+### Releases v1.3.1
+
+1. Update `platform.ini` and `library.json` to use original `khoih-prog` instead of `khoih.prog` after PIO fix
+2. Update `Packages' Patches`
 
 ### Releases v1.3.0
 

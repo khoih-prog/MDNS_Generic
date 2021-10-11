@@ -19,19 +19,6 @@
 
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
-
-  Version: 1.3.0
-  
-  Version  Modified By   Date      Comments
-  -------  -----------  ---------- -----------
-  1.0.0    K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
-                                  Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
-  1.0.1    K Hoang      02/10/2020 Add support to W5x00 using Ethernet2, Ethernet3 libraries
-  1.1.0    K Hoang      12/06/2021 Add support to RP2040-based boards
-  1.2.0    K Hoang      01/09/2021 Add support to generic boards using WiFi or WiFiNINA
-  1.2.1    K Hoang      02/09/2021 Remove support to ESP8266 to use native ESP8266mDNS library
-  1.3.0-b1 K Hoang      13/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
-  1.3.0    K Hoang      28/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
  *****************************************************************************************************************************/
 
 //  Illustrates how to resolve host names via MDNS (Multicast DNS)

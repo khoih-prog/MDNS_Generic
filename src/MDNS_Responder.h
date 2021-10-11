@@ -19,7 +19,7 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.3.0
+  Version: 1.3.1
   
   Version  Modified By   Date      Comments
   -------  -----------  ---------- -----------
@@ -31,6 +31,7 @@
   1.2.1    K Hoang      02/09/2021 Remove support to ESP8266 to use native ESP8266mDNS library
   1.3.0-b1 K Hoang      13/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
   1.3.0    K Hoang      28/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
+  1.3.1    K Hoang      10/10/2021 Update `platform.ini` and `library.json`
  *****************************************************************************************************************************/
 // Port of CC3000 MDNS Responder to WINC1500.
 // Author: Tony DiCola

@@ -19,8 +19,6 @@
 
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
-
-  Version: 1.3.0
  *****************************************************************************************************************************/
 
 //  Illustrates how to register a Bonjour service.
