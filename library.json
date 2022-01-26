@@ -1,6 +1,6 @@
 {
   "name": "MDNS_Generic",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "keywords": "Communication, mDNS, dns-sd, mbed, apple-bonjour, Ethernet, Teensy, samd, nrf52, stm32, nano-rp2040-connect, rp2040, rpi-pico, Portenta-H7, SAM DUE, Mega, AVR, W5100, W5500, w5x00, Ethernet shield",
   "description": "mDNS Library for ESP32, ESP8266, nRF52, SAMD21, SAMD51, SAM DUE, STM32F/L/H/G/WB/MP1, Portenta_H7, AVR Mega, RP2040-based boards, etc. using Ethernet W5x00, ESP WiFi, WiFiNINA or ESP8266-AT shields. Supports mDNS (Registering Services) and DNS-SD (Service Discovery)",
   "authors": [
@@ -34,19 +34,17 @@
     {
       "owner": "khoih-prog",
       "name": "WiFiNINA_Generic",
-      "version": ">=1.8.13",
+      "version": ">=1.8.14-3",
       "platforms": ["*"]
     },
     {
-      "owner": "arduino-libraries",
       "name": "WiFi101",
-      "version": ">=0.16.1",
-      "platforms": ["*"]
+      "version": "https://github.com/khoih-prog/WiFi101"
     },
     {
       "owner": "jandrassy",
       "name": "WiFiEspAT",
-      "version": ">=1.3.1",
+      "version": ">=1.3.2",
       "platforms": ["*"]
     },
     {
@@ -74,7 +72,9 @@
       "platforms": ["*"]
     }
   ],
+  "license": "MIT",
   "frameworks": "*",
   "platforms": "*",
-  "examples": "examples/*/*/*.ino"
+  "examples": "examples/*/*/*.ino",
+  "headers": ["MDNS_Generic.h", "MDNS_Generic.hpp"]
 }

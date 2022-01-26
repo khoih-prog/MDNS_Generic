@@ -1,6 +1,5 @@
 /****************************************************************************************************************************
-  MDNS_EthernetUtil_Impl.h
-
+  MDNS_Responder.hpp
   mDNS library to support mDNS (registering services) and DNS-SD (service discovery).
 
   Based on and modified from https://github.com/arduino-libraries/ArduinoMDNS
@@ -35,80 +34,62 @@
   1.3.1    K Hoang      10/10/2021 Update `platform.ini` and `library.json`
   1.4.0    K Hoang      26/01/2022 Fix `multiple-definitions` linker error
  *****************************************************************************************************************************/
+// Port of CC3000 MDNS Responder to WINC1500.
+// Author: Tony DiCola
+//
+// This MDNSResponder class implements just enough MDNS functionality to respond
+// to name requests, for example 'foo.local'.  This does not implement any other
+// MDNS or Bonjour functionality like services, etc.
+//
+// Copyright (c) 2016 Adafruit Industries.  All right reserved.
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef __MDNS_ETHERNET_UTIL_IMPL_H__
-#define __MDNS_ETHERNET_UTIL_IMPL_H__
+#ifndef MDNS_RESPONDER_HPP
+#define MDNS_RESPONDER_HPP
 
-#define __ETHERNET_UTIL_BONJOUR__
+#include "MDNS_Generic_Debug.h"
 
-#include <inttypes.h>
-
-#if defined(__ETHERNET_UTIL_BONJOUR__)
-
-uint16_t ethutil_swaps(uint16_t i);
-uint32_t ethutil_swapl(uint32_t l);
-
-extern uint16_t ethutil_htons(unsigned short hostshort)
+class MDNS_Responder 
 {
-#if ( SYSTEM_ENDIAN == _ENDIAN_LITTLE_ )
-  return ethutil_swaps(hostshort);
-#else
-  return hostshort;
-#endif
-}
-
-extern int32_t ethutil_htonl(unsigned long hostlong)
-{
-#if ( SYSTEM_ENDIAN == _ENDIAN_LITTLE_ )
-  return ethutil_swapl(hostlong);
-#else
-  return hostlong;
-#endif
-}
-
-extern uint16_t ethutil_ntohs(unsigned short netshort)
-{
-#if ( SYSTEM_ENDIAN == _ENDIAN_LITTLE_ )
-  return ethutil_swaps(netshort);
-#else
-  return netshort;
-#endif
-}
-
-extern uint32_t ethutil_ntohl(unsigned long netlong)
-{
-#if ( SYSTEM_ENDIAN == _ENDIAN_LITTLE_ )
-  return ethutil_swapl(netlong);
-#else
-  return netlong;
-#endif
-}
-
-// #pragma mark -
-// #pragma mark Private
-
-uint16_t ethutil_swaps(uint16_t i)
-{
-  uint16_t ret = 0;
+public:
+  MDNS_Responder(UDP& udp);
+  ~MDNS_Responder();
+  bool begin(const IPAddress& ip, const char* _name, const uint32_t& _ttlSeconds = 3600);
+  void poll();
   
-  ret = (i & 0xFF) << 8;
-  ret |= ((i >> 8) & 0xFF);
-  
-  return ret;
-}
+  //KH Add
+  void updateLocalIP(const IPAddress& localIP)
+  {
+    _localIP = localIP;
+  };
+  //////
 
-uint32_t ethutil_swapl(uint32_t l)
-{
-  uint32_t ret = 0;
-  
-  ret = (l & 0xFF) << 24;
-  ret |= ((l >> 8) & 0xFF) << 16;
-  ret |= ((l >> 16) & 0xFF) << 8;
-  ret |= ((l >> 24) & 0xFF);
-  
-  return ret;
-}
+private:
+  bool parseRequest();
+  void replyToRequest();
 
-#endif    // __ETHERNET_UTIL_BONJOUR__
+private:
+  String name;
+  uint32_t ttlSeconds;
 
-#endif    // __MDNS_ETHERNET_UTIL_IMPL_H__
+  int minimumExpectedRequestLength;
+
+  // UDP socket for receiving/sending MDNS data.
+  UDP*      _udp;
+  IPAddress _localIP = IPAddress(0,0,0,0);
+};
+
+#endif    // MDNS_RESPONDER_HPP

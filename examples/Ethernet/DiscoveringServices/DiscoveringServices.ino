@@ -26,6 +26,7 @@
 
 #include "defines.h"
 
+// To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
 #include <MDNS_Generic.h>
 
 EthernetUDP udp;

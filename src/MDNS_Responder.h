@@ -19,7 +19,7 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.3.1
+  Version: 1.4.0
   
   Version  Modified By   Date      Comments
   -------  -----------  ---------- -----------
@@ -32,6 +32,7 @@
   1.3.0-b1 K Hoang      13/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
   1.3.0    K Hoang      28/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
   1.3.1    K Hoang      10/10/2021 Update `platform.ini` and `library.json`
+  1.4.0    K Hoang      26/01/2022 Fix `multiple-definitions` linker error
  *****************************************************************************************************************************/
 // Port of CC3000 MDNS Responder to WINC1500.
 // Author: Tony DiCola
@@ -59,38 +60,7 @@
 #ifndef MDNS_RESPONDER_H
 #define MDNS_RESPONDER_H
 
-#include "MDNS_Generic_Debug.h"
-
-class MDNS_Responder 
-{
-public:
-  MDNS_Responder(UDP& udp);
-  ~MDNS_Responder();
-  bool begin(const IPAddress& ip, const char* _name, uint32_t _ttlSeconds = 3600);
-  void poll();
-  
-  //KH Add
-  void updateLocalIP(IPAddress localIP)
-  {
-    _localIP = localIP;
-  };
-  //////
-
-private:
-  bool parseRequest();
-  void replyToRequest();
-
-private:
-  String name;
-  uint32_t ttlSeconds;
-
-  int minimumExpectedRequestLength;
-
-  // UDP socket for receiving/sending MDNS data.
-  UDP*      _udp;
-  IPAddress _localIP = (0,0,0,0);
-};
-
+#include "MDNS_Responder.hpp"
 #include "MDNS_Responder_Impl.h"
 
 #endif

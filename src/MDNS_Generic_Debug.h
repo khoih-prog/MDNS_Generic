@@ -20,7 +20,7 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.3.1
+  Version: 1.4.0
   
   Version  Modified By   Date      Comments
   -------  -----------  ---------- -----------
@@ -33,6 +33,7 @@
   1.3.0-b1 K Hoang      13/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
   1.3.0    K Hoang      28/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
   1.3.1    K Hoang      10/10/2021 Update `platform.ini` and `library.json`
+  1.4.0    K Hoang      26/01/2022 Fix `multiple-definitions` linker error
  *****************************************************************************************************************************/
 
 #ifndef MDNS_Debug_H

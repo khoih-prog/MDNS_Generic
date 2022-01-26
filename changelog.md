@@ -5,7 +5,7 @@
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/khoih-prog/MDNS_Generic/blob/master/LICENSE)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/MDNS_Generic.svg)](http://github.com/khoih-prog/MDNS_Generic/issues)
-[![star this repo](https://githubbadges.com/star.svg?user=khoih-prog&repo=MDNS_Generic)](https://github.com/khoih-prog/MDNS_Generic)
+
 
 ---
 ---
@@ -13,6 +13,7 @@
 ## Table of Contents
 
 * [Changelog](#changelog)
+  * [Releases v1.4.0](#releases-v140)
   * [Releases v1.3.1](#releases-v131)
   * [Releases v1.3.0](#releases-v130)
   * [Releases v1.3.0-beta1](#releases-v130-beta1)
@@ -26,6 +27,13 @@
 ---
 
 ## Changelog
+
+### Releases v1.4.0
+
+1. Fix `multiple-definitions` linker error.
+2. Add example [multiFileProject](examples/Ethernet/multiFileProject)and [WiFiMultiFileProject](examples/WiFi/WiFiMultiFileProject)to demo for multiple-file project.
+3. Fix bug
+4. Update `Packages' Patches`
 
 ### Releases v1.3.1
 
