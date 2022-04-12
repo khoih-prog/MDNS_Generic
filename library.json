@@ -1,8 +1,8 @@
 {
   "name": "MDNS_Generic",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "keywords": "Communication, mDNS, dns-sd, mbed, apple-bonjour, Ethernet, Teensy, samd, nrf52, stm32, nano-rp2040-connect, rp2040, rpi-pico, Portenta-H7, SAM DUE, Mega, AVR, W5100, W5500, w5x00, Ethernet shield",
-  "description": "mDNS Library for ESP32, ESP8266, nRF52, SAMD21, SAMD51, SAM DUE, STM32F/L/H/G/WB/MP1, Portenta_H7, AVR Mega, RP2040-based boards, etc. using Ethernet W5x00, ESP WiFi, WiFiNINA or ESP8266-AT shields. Supports mDNS (Registering Services) and DNS-SD (Service Discovery)",
+  "description": "mDNS Library for ESP32, ESP8266, nRF52, SAMD21, SAMD51, SAM DUE, STM32F/L/H/G/WB/MP1, Portenta_H7, AVR Mega, RP2040-based boards, etc. using Ethernet W5x00, ESP WiFi, WiFiNINA or ESP8266-AT shields. Supports mDNS (Registering Services) and DNS-SD (Service Discovery). Ethernet_Generic library is used as default for W5x00",
   "authors": [
     {
       "name":  "Georg Kaindl",
@@ -48,28 +48,9 @@
       "platforms": ["*"]
     },
     {
-      "owner": "adafruit",
-      "name": "Ethernet2",
-      "version": "^1.0.4",
-      "platforms": ["*"]
-    },
-    {
-      "owner": "sstaub",
-      "name": "Ethernet3",
-      "version": "^1.5.5",
-      "platforms": ["*"]
-    },
-    {
-      "owner": "arduino-libraries",
-      "name": "Ethernet",
-      "version": "^2.0.0",
-      "platforms": ["*"]
-    },
-    {
-      "owner": "openslab-osu",
-      "name": "EthernetLarge",
-      "version": "^2.0.0",
-      "platforms": ["*"]
+      "owner": "khoih-prog",
+      "name": "Ethernet_Generic",
+      "version": "^2.0.1"
     }
   ],
   "license": "MIT",

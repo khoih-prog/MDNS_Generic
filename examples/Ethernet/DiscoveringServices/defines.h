@@ -26,7 +26,7 @@
 #define MDNS_DEBUG_PORT       Serial
 
 // Debug Level from 0 to 4
-#define _MDNS_LOGLEVEL_       1
+#define _MDNS_LOGLEVEL_       2
 
 #if    ( defined(ARDUINO_SAMD_ZERO) || defined(ARDUINO_SAMD_MKR1000) || defined(ARDUINO_SAMD_MKRWIFI1010) \
       || defined(ARDUINO_SAMD_NANO_33_IOT) || defined(ARDUINO_SAMD_MKRFox1200) || defined(ARDUINO_SAMD_MKRWAN1300) || defined(ARDUINO_SAMD_MKRWAN1310) \
@@ -69,8 +69,12 @@
     #undef ETHERNET_USE_RP2040
   #endif
   #define ETHERNET_USE_RP2040      true
-#endif
 
+  #if defined(ETHERNET_USE_RPIPICO)
+    #undef ETHERNET_USE_RPIPICO
+  #endif
+  #define ETHERNET_USE_RPIPICO      true
+#endif
 
 #if ( defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4) )
 
@@ -88,6 +92,8 @@
 
 #elif defined(ETHERNET_USE_SAMD)
   // For SAMD
+  // Default pin 10 to SS/CS
+  #define USE_THIS_SS_PIN       10
   
   #if ( defined(ARDUINO_SAMD_ZERO) && !defined(SEEED_XIAO_M0) )
     #define BOARD_TYPE      "SAMD Zero"
@@ -131,6 +137,7 @@
     #define BOARD_TYPE      "SAMD51 ADAFRUIT_FEATHER_M4_EXPRESS"
   #elif defined(ADAFRUIT_ITSYBITSY_M4_EXPRESS)
     #define BOARD_TYPE      "SAMD51 ADAFRUIT_ITSYBITSY_M4_EXPRESS"
+    #define USE_THIS_SS_PIN       10
   #elif defined(ADAFRUIT_TRELLIS_M4_EXPRESS)
     #define BOARD_TYPE      "SAMD51 ADAFRUIT_TRELLIS_M4_EXPRESS"
   #elif defined(ADAFRUIT_PYPORTAL)
@@ -157,6 +164,9 @@
     #define BOARD_TYPE      "SAMD SEEED_FEMTO_M0"
   #elif defined(SEEED_XIAO_M0)
     #define BOARD_TYPE      "SAMD SEEED_XIAO_M0"
+    #ifdef USE_THIS_SS_PIN
+      #undef USE_THIS_SS_PIN
+    #endif
     #define USE_THIS_SS_PIN       A1
     #warning define SEEED_XIAO_M0 USE_THIS_SS_PIN == A1
   #elif defined(Wio_Lite_MG126)
@@ -190,9 +200,13 @@
   #endif
 
 #elif (ETHERNET_USE_SAM_DUE)
+  // Default pin 10 to SS/CS
+  #define USE_THIS_SS_PIN       10
   #define BOARD_TYPE      "SAM DUE"
 
 #elif (ETHERNET_USE_NRF528XX)
+  // Default pin 10 to SS/CS
+  #define USE_THIS_SS_PIN       10
 
   #if defined(NRF52840_FEATHER)
     #define BOARD_TYPE      "NRF52840_FEATHER"
@@ -202,6 +216,7 @@
     #define BOARD_TYPE      "NRF52840_FEATHER_SENSE"
   #elif defined(NRF52840_ITSYBITSY)
     #define BOARD_TYPE      "NRF52840_ITSYBITSY"
+    #define USE_THIS_SS_PIN   10    // For other boards
   #elif defined(NRF52840_CIRCUITPLAY)
     #define BOARD_TYPE      "NRF52840_CIRCUITPLAY"
   #elif defined(NRF52840_CLUE)
@@ -223,9 +238,20 @@
   #endif
 
 #elif ( defined(CORE_TEENSY) )
+  // Default pin 10 to SS/CS
+  #define USE_THIS_SS_PIN       10
+  
   #if defined(__IMXRT1062__)
     // For Teensy 4.1/4.0
-    #define BOARD_TYPE      "TEENSY 4.1/4.0"
+    #if defined(ARDUINO_TEENSY41)
+      #define BOARD_TYPE      "TEENSY 4.1"
+      // Use true for NativeEthernet Library, false if using other Ethernet libraries
+      #define USE_NATIVE_ETHERNET     true
+    #elif defined(ARDUINO_TEENSY40)
+      #define BOARD_TYPE      "TEENSY 4.0"
+    #else
+      #define BOARD_TYPE      "TEENSY 4.x"
+    #endif      
   #elif defined(__MK66FX1M0__)
     #define BOARD_TYPE "Teensy 3.6"
   #elif defined(__MK64FX512__)
@@ -278,25 +304,23 @@
     #define BOARD_TYPE  "STM32 Unknown"
   #endif
 
-#elif ETHERNET_USE_RP2040
+#elif (ETHERNET_USE_RP2040 || ETHERNET_USE_RPIPICO)
   
   // Default pin 5 (in Mbed) or 17 to SS/CS
   #if defined(ARDUINO_ARCH_MBED)
     // For RPI Pico using Arduino Mbed RP2040 core
     // SCK: GPIO2,  MOSI: GPIO3, MISO: GPIO4, SS/CS: GPIO5
     
-    #define USE_THIS_SS_PIN       5
+    #define USE_THIS_SS_PIN       17
 
     #if defined(BOARD_NAME)
       #undef BOARD_NAME
     #endif
 
-    #if defined(ARDUINO_NANO_RP2040_CONNECT)
-      #define BOARD_TYPE      "MBED NANO_RP2040_CONNECT"
-    #elif defined(ARDUINO_RASPBERRY_PI_PICO) 
+    #if defined(ARDUINO_RASPBERRY_PI_PICO) 
       #define BOARD_TYPE      "MBED RASPBERRY_PI_PICO"
     #elif defined(ARDUINO_ADAFRUIT_FEATHER_RP2040)
-      #define BOARD_TYPE      "MBED ADAFRUIT_FEATHER_RP2040"
+      #define BOARD_TYPE      "MBED DAFRUIT_FEATHER_RP2040"
     #elif defined(ARDUINO_GENERIC_RP2040)
       #define BOARD_TYPE      "MBED GENERIC_RP2040"
     #else
@@ -304,12 +328,20 @@
     #endif
     
   #else
+  
+    //#define USING_SPI2              true
+    
     // For RPI Pico using E. Philhower RP2040 core
-    // SCK: GPIO18,  MOSI: GPIO19, MISO: GPIO16, SS/CS: GPIO17
-    #define USE_THIS_SS_PIN       17
+    #if (USING_SPI2)
+      // SCK: GPIO14,  MOSI: GPIO15, MISO: GPIO12, SS/CS: GPIO13 for SPI1
+      #define USE_THIS_SS_PIN       13
+    #else
+      // SCK: GPIO18,  MOSI: GPIO19, MISO: GPIO16, SS/CS: GPIO17 for SPI0
+      #define USE_THIS_SS_PIN       17
+    #endif
 
   #endif
-    
+   
   #define SS_PIN_DEFAULT        USE_THIS_SS_PIN
 
   // For RPI Pico
@@ -317,7 +349,13 @@
 
 #else
   // For Mega
-  #define BOARD_TYPE      "AVR Mega"
+  // Default pin 10 to SS/CS
+  #define USE_THIS_SS_PIN       10
+
+  // Reduce size for Mega
+  #define SENDCONTENT_P_BUFFER_SZ     512
+  
+  #define BOARD_TYPE            "AVR Mega"
 #endif
 
 #if defined(ARDUINO_BOARD)
@@ -336,11 +374,8 @@
 //#define USE_THIS_SS_PIN   22  //21  //5 //4 //2 //15
 
 // Only one if the following to be true
-#define USE_ETHERNET              false //true
-#define USE_ETHERNET2             false //true
-#define USE_ETHERNET3             false //true
-#define USE_ETHERNET_LARGE        false
-#define USE_ETHERNET_PORTENTA_H7  true
+#define USE_ETHERNET_GENERIC      true
+#define USE_ETHERNET_PORTENTA_H7  false
 
 #if USE_ETHERNET_PORTENTA_H7
   //#include "PortentaEthernet.h"
@@ -348,12 +383,16 @@
   #include "EthernetUdp.h"
   #warning Using Portenta_Ethernet lib for Portenta_H7.
   #define SHIELD_TYPE       "Ethernet using Portenta_Ethernet Library"
-
+#elif USE_ETHERNET_GENERIC
+  #include "Ethernet_Generic.h"
+  #include "EthernetUdp.h"
+  #warning Use Ethernet_Generic lib
+  #define SHIELD_TYPE           "W5x00 using Ethernet_Generic Library"
 #elif USE_ETHERNET
   #include "Ethernet.h"
   #include "EthernetUdp.h"
   #warning Use Ethernet lib
-  #define SHIELD_TYPE           "W5x00 using Ethernet Library" 
+  #define SHIELD_TYPE           "W5x00 using Ethernet Library"  
 #elif USE_ETHERNET_LARGE
   #include "EthernetLarge.h"
   #include "EthernetUdp.h"
@@ -370,10 +409,11 @@
   #warning Use Ethernet3 lib   
   #define SHIELD_TYPE           "W5x00 using Ethernet3 Library" 
 #else
-  #define USE_ETHERNET          true
-  #include "Ethernet.h"
-  #warning Use Ethernet lib
-  #define SHIELD_TYPE           "W5x00 using Ethernet Library"
+  #define USE_ETHERNET_GENERIC          true
+  #include "Ethernet_Generic.h"
+  #include "EthernetUdp.h"
+  #warning Use Ethernet_Generic lib
+  #define SHIELD_TYPE           "W5x00 using default Ethernet_Generic Library"
 #endif
 
 // Enter a MAC address and IP address for your controller below.

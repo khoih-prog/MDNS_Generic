@@ -39,7 +39,9 @@
     * [8.1. To use BOARD_NAME](#81-to-use-board_name)
     * [8.2. To avoid compile error relating to microsecondsToClockCycles](#82-to-avoid-compile-error-relating-to-microsecondstoclockcycles)
   * [9. For Portenta_H7 boards using Arduino IDE in Linux](#9-for-portenta_h7-boards-using-arduino-ide-in-linux)
-  * [10. For Portenta_H7 boards](#10-for-portenta_h7-boards)
+  * [10. For RTL8720DN boards using AmebaD core](#10-for-rtl8720dn-boards-using-amebad-core)
+  * [11. For SAMD21 and SAMD51 boards using ArduinoCore-fab-sam core](#11-For-SAMD21-and-SAMD51-boards-using-ArduinoCore-fab-sam-core)
+  * [12. For Seeeduino RP2040 boards](#12-For-Seeeduino-RP2040-boards)
 * [Libraries' Patches](#libraries-patches)
   * [1. For application requiring 2K+ HTML page](#1-for-application-requiring-2k-html-page)
   * [2. For Ethernet library](#2-for-ethernet-library)
@@ -74,18 +76,18 @@
   * [1. File ResolvingHostNames.ino](#1-file-resolvinghostnamesino)
   * [2. File defines.h](#2-file-definesh) 
 * [Debug Terminal Output Samples](#debug-terminal-output-samples)
-  * [ 1. ResolvingHostNames on nRF52 Adafruit NRF52840_FEATHER EXPRESS with W5500 using Ethernet2 library](#1-resolvinghostnames-on-nrf52-adafruit-nrf52840_feather-express-with-w5500-using-ethernet2-library)
-  * [ 2. DiscoveringServices on nRF52 Adafruit NRF52840_FEATHER EXPRESS with W5500 using EthernetLarge library](#2-discoveringservices-on-nrf52-adafruit-nrf52840_feather-express-with-w5500-using-ethernetlarge-library)
-  * [ 3. ResolvingHostNames on SAMD21 Seeeduino SEEED_XIAO_M0 with W5500 using EthernetLarge library](#3-resolvinghostnames-on-samd21-seeeduino-seeed_xiao_m0-with-w5500-using-ethernetlarge-library)
-  * [ 4. DiscoveringServices on NUCLEO_F767ZI with W5x00 using Ethernet2 Library](#4-discoveringservices-on-nucleo_f767zi-with-w5x00-using-ethernet2-library)
-  * [ 5. ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet2 Library](#5-resolvinghostnames-on-nucleo_f767zi-with-w5x00-using-ethernet2-library)
-  * [ 6. ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library](#6-resolvinghostnames-on-raspberry_pi_pico-with-w5x00-using-ethernetlarge-library)
-  * [ 7. DiscoveringServices on MBED RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library](#7-discoveringservices-on-mbed-raspberry_pi_pico-with-w5x00-using-ethernetlarge-library)
+  * [ 1. ResolvingHostNames on nRF52 Adafruit NRF52840_FEATHER EXPRESS with W5500 using Ethernet_Generic library](#1-resolvinghostnames-on-nrf52-adafruit-nrf52840_feather-express-with-w5500-using-Ethernet_Generic-library)
+  * [ 2. DiscoveringServices on nRF52 Adafruit NRF52840_FEATHER EXPRESS with W5500 using Ethernet_Generic library](#2-discoveringservices-on-nrf52-adafruit-nrf52840_feather-express-with-w5500-using-Ethernet_Generic-library)
+  * [ 3. ResolvingHostNames on SAMD21 Seeeduino SEEED_XIAO_M0 with W5500 using Ethernet_Generic library](#3-resolvinghostnames-on-samd21-seeeduino-seeed_xiao_m0-with-w5500-using-Ethernet_Generic-library)
+  * [ 4. DiscoveringServices on NUCLEO_F767ZI with W5x00 using Ethernet_Generic Library](#4-discoveringservices-on-nucleo_f767zi-with-w5x00-using-Ethernet_Generic-library)
+  * [ 5. ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet_Generic Library](#5-resolvinghostnames-on-nucleo_f767zi-with-w5x00-using-Ethernet_Generic-library)
+  * [ 6. ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using Ethernet_Generic Library](#6-resolvinghostnames-on-raspberry_pi_pico-with-w5x00-using-Ethernet_Generic-library)
+  * [ 7. DiscoveringServices on MBED RASPBERRY_PI_PICO with W5x00 using Ethernet_Generic Library](#7-discoveringservices-on-mbed-raspberry_pi_pico-with-w5x00-using-Ethernet_Generic-library)
   * [ 8. WiFiRegisteringServices on MBED NANO_RP2040_CONNECT](#8-wifiregisteringservices-on-mbed-nano_rp2040_connect)
     * [ 8.1 PING Terminal](#81-ping-terminal)
   * [ 9. WiFiRegisteringServices on ESP32_DEV](#9-wifiregisteringservices-on-esp32_dev)
     * [ 9.1 PING Terminal](#91-ping-terminal)
-  * [10. RegisteringServices on NRF52840_FEATHER with W5x00 using EthernetLarge Library](#10-registeringservices-on-nrf52840_feather-with-w5x00-using-ethernetlarge-library)
+  * [10. RegisteringServices on NRF52840_FEATHER with W5x00 using Ethernet_Generic Library](#10-registeringservices-on-nrf52840_feather-with-w5x00-using-Ethernet_Generic-library)
     * [10.1 PING Terminal](#101-ping-terminal)
   * [11. WiFiRegisteringServices on PORTENTA_H7_M7](#11-wifiregisteringservices-on-PORTENTA_H7_M7)
     * [11.1 PING Terminal](#111-ping-terminal)
@@ -163,11 +165,12 @@ This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is b
   
 #### Currently supported Ethernet shields/modules
 
-  1. **W5x00's using Ethernet, EthernetLarge or Ethernet3 Library.**
-  2. **Ethernet2 Library is also supported only after applying the fix to add Multicast feature**. See [Libraries' Patches](https://github.com/khoih-prog/EthernetWebServer#libraries-patches)
-  3. ENC28J60 using EthernetENC and UIPEthernet library is not supported as UDP Multicast is not available by design.
-  4. LAN8742A using STM32Ethernet / STM32 LwIP libraries is not supported as UDP Multicast is not enabled by design, unless you modify the code to add support.
-  5. Portenta_H7 Ethernet using [`Portenta_Ethernet`](https://github.com/arduino/ArduinoCore-mbed/tree/master/libraries/Ethernet) library
+  1. **W5x00** using [`Ethernet_Generic`](https://github.com/khoih-prog/Ethernet_Generic) library
+  2. **W5x00's using Ethernet, EthernetLarge or Ethernet3 Library.**
+  3. **Ethernet2 Library is also supported only after applying the fix to add Multicast feature**. See [Libraries' Patches](https://github.com/khoih-prog/EthernetWebServer#libraries-patches)
+  4. ENC28J60 using EthernetENC and UIPEthernet library is **not supported** as UDP Multicast is not available by design.
+  5. LAN8742A using STM32Ethernet / STM32 LwIP libraries is **not supported** as UDP Multicast is not enabled by design, unless you modify the code to add support.
+  6. Portenta_H7 Ethernet using [`Portenta_Ethernet`](https://github.com/arduino/ArduinoCore-mbed/tree/master/libraries/Ethernet) library
   
 #### Currently supported WiFi shields/modules
 
@@ -185,23 +188,20 @@ This [**MDNS_Generic library**](https://github.com/khoih-prog/MDNS_Generic) is b
 ## Prerequisites
 
  1. [`Arduino IDE 1.8.19+` for Arduino](https://github.com/arduino/Arduino). [![GitHub release](https://img.shields.io/github/release/arduino/Arduino.svg)](https://github.com/arduino/Arduino/releases/latest)
- 2. [`Arduino AVR core 1.8.3+`](https://github.com/arduino/ArduinoCore-avr) for Arduino (Use Arduino Board Manager) for AVR boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-avr.svg)](https://github.com/arduino/ArduinoCore-avr/releases/latest)
+ 2. [`Arduino AVR core 1.8.5+`](https://github.com/arduino/ArduinoCore-avr) for Arduino (Use Arduino Board Manager) for AVR boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-avr.svg)](https://github.com/arduino/ArduinoCore-avr/releases/latest)
  3. [`Teensy core v1.56+`](https://www.pjrc.com/teensy/td_download.html) for Teensy (4.1, 4.0, 3.6, 3.5, 3,2, 3.1, 3.0) boards.
  4. [`Arduino SAM DUE core v1.6.12+`](https://github.com/arduino/ArduinoCore-sam) for SAM DUE ARM Cortex-M3 boards.
  5. [`Arduino SAMD core 1.8.12+`](https://github.com/arduino/ArduinoCore-samd) for SAMD ARM Cortex-M0+ boards. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-samd.svg)](https://github.com/arduino/ArduinoCore-samd/releases/latest)
- 6. [`Adafruit SAMD core 1.7.7+`](https://github.com/adafruit/ArduinoCore-samd) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.). [![GitHub release](https://img.shields.io/github/release/adafruit/ArduinoCore-samd.svg)](https://github.com/adafruit/ArduinoCore-samd/releases/latest)
+ 6. [`Adafruit SAMD core 1.7.10+`](https://github.com/adafruit/ArduinoCore-samd) for SAMD ARM Cortex-M0+ and M4 boards (Nano 33 IoT, etc.). [![GitHub release](https://img.shields.io/github/release/adafruit/ArduinoCore-samd.svg)](https://github.com/adafruit/ArduinoCore-samd/releases/latest)
  7. [`Seeeduino SAMD core 1.8.2+`](https://github.com/Seeed-Studio/ArduinoCore-samd) for SAMD21/SAMD51 boards (XIAO M0, Wio Terminal, etc.). [![Latest release](https://img.shields.io/github/release/Seeed-Studio/ArduinoCore-samd.svg)](https://github.com/Seeed-Studio/ArduinoCore-samd/releases/latest/)
  8. [`Adafruit nRF52 v1.3.0`](https://github.com/adafruit/Adafruit_nRF52_Arduino) for nRF52 boards such as Adafruit NRF52840_FEATHER, NRF52832_FEATHER, NRF52840_FEATHER_SENSE, NRF52840_ITSYBITSY, NRF52840_CIRCUITPLAY, NRF52840_CLUE, NRF52840_METRO, NRF52840_PCA10056, PARTICLE_XENON, **NINA_B302_ublox**, etc. [![GitHub release](https://img.shields.io/github/release/adafruit/Adafruit_nRF52_Arduino.svg)](https://github.com/adafruit/Adafruit_nRF52_Arduino/releases/latest) 
- 9. [`ArduinoCore-mbed mbed_rp2040, mbed_nano, mbed_portenta core 2.6.1+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino (Use Arduino Board Manager) **Portenta_H7, RP2040-based boards, such as Nano_RP2040_Connect, RASPBERRY_PI_PICO**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
-10. [`Earle Philhower's arduino-pico core v1.9.14+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest) 
+ 9. [`ArduinoCore-mbed mbed_rp2040, mbed_nano, mbed_portenta core 3.0.1+`](https://github.com/arduino/ArduinoCore-mbed) for Arduino (Use Arduino Board Manager) **Portenta_H7, RP2040-based boards, such as Nano_RP2040_Connect, RASPBERRY_PI_PICO**. [![GitHub release](https://img.shields.io/github/release/arduino/ArduinoCore-mbed.svg)](https://github.com/arduino/ArduinoCore-mbed/releases/latest)
+10. [`Earle Philhower's arduino-pico core v1.13.1+`](https://github.com/earlephilhower/arduino-pico) for RP2040-based boards such as **RASPBERRY_PI_PICO, ADAFRUIT_FEATHER_RP2040 and GENERIC_RP2040**, etc. [![GitHub release](https://img.shields.io/github/release/earlephilhower/arduino-pico.svg)](https://github.com/earlephilhower/arduino-pico/releases/latest) 
 11. [`Arduino Core for STM32 v2.2.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32F/L/H/G/WB/MP1 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
 12. [`ESP32 Core 2.0.2+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
  
 13. Depending on which Ethernet module/shield you're using :
-   - [`Ethernet library v2.0.0+`](https://github.com/arduino-libraries/Ethernet) for W5100, W5200 and W5500.  [![GitHub release](https://img.shields.io/github/release/arduino-libraries/Ethernet.svg)](https://github.com/arduino-libraries/Ethernet/releases/latest)
-   - [`EthernetLarge library v2.0.0+`](https://github.com/OPEnSLab-OSU/EthernetLarge) for W5100, W5200 and W5500.
-   - [`Ethernet2 library v1.0.4+`](https://github.com/khoih-prog/Ethernet2) for W5500. [![GitHub release](https://img.shields.io/github/release/adafruit/Ethernet2.svg)](https://github.com/adafruit/Ethernet2/releases/latest)
-   - [`Ethernet3 library v1.5.5+`](https://github.com/sstaub/Ethernet3) for W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip. [![GitHub release](https://img.shields.io/github/release/sstaub/Ethernet3.svg)](https://github.com/sstaub/Ethernet3/releases/latest)
+   - [`Ethernet_Generic library v2.0.1+`](https://github.com/khoih-prog/Ethernet_Generic) for W5100, W5200 and W5500/WIZ550io/WIZ850io/USR-ES1 with Wiznet W5500 chip.  [![GitHub release](https://img.shields.io/github/release/khoih-prog/Ethernet_Generic.svg)](https://github.com/khoih-prog/Ethernet_Generic/releases/latest)
    
 14. [`STM32Ethernet library v1.2.0+`](https://github.com/stm32duino/STM32Ethernet) for built-in LAN8742A Ethernet on (Nucleo-144, Discovery). [![GitHub release](https://img.shields.io/github/release/stm32duino/STM32Ethernet.svg)](https://github.com/stm32duino/STM32Ethernet/releases/latest). To be used with [`LwIP library v2.1.2+`](https://github.com/stm32duino/LwIP). [![GitHub release](https://img.shields.io/github/release/stm32duino/LwIP.svg)](https://github.com/stm32duino/LwIP/releases/latest). **Not yet ready** in v1.4.0.
    
@@ -232,7 +232,7 @@ Another way to install is to:
 
 1. Install [VS Code](https://code.visualstudio.com/)
 2. Install [PlatformIO](https://platformio.org/platformio-ide)
-3. Install [**MDNS_Generic** library](https://platformio.org/lib/show/11238/MDNS_Generic) by using [Library Manager](https://platformio.org/lib/show/11238/MDNS_Generic/installation). Search for **MDNS_Generic** in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
+3. Install [**MDNS_Generic** library](https://registry.platformio.org/libraries/khoih-prog/MDNS_Generic) by using [Library Manager](https://registry.platformio.org/libraries/khoih-prog/MDNS_Generic/installation). Search for **MDNS_Generic** in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
 4. Use included [platformio.ini](platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automatically. Please visit documentation for the other options and examples at [Project Configuration File](https://docs.platformio.org/page/projectconf.html)
 
 ---
@@ -304,13 +304,13 @@ This file must be copied into the directory:
 
 #### 4. For Arduino SAMD boards
  
- ***To be able to compile, run and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards***, you have to copy the whole [Arduino SAMD Packages_Patches](Packages_Patches/arduino/hardware/samd/1.8.12) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.12).
+ ***To be able to compile, run and automatically detect and display BOARD_NAME on Arduino SAMD (Nano-33-IoT, etc) boards***, you have to copy the whole [Arduino SAMD Packages_Patches](Packages_Patches/arduino/hardware/samd/1.8.13) directory into Arduino SAMD directory (~/.arduino15/packages/arduino/hardware/samd/1.8.13).
  
 #### For core version v1.8.10+
 
-Supposing the Arduino SAMD version is 1.8.12. Now only one file must be copied into the directory:
+Supposing the Arduino SAMD version is 1.8.13. Now only one file must be copied into the directory:
 
-- `~/.arduino15/packages/arduino/hardware/samd/1.8.12/platform.txt`
+- `~/.arduino15/packages/arduino/hardware/samd/1.8.13/platform.txt`
 
 Whenever a new version is installed, remember to copy this files into the new version directory. For example, new version is x.yy.zz
 
@@ -343,13 +343,13 @@ Whenever the above-mentioned compiler error issue is fixed with the new Arduino 
 
 #### 5. For Adafruit SAMD boards
  
- ***To be able to compile, run and automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards***, you have to copy the whole [Adafruit SAMD Packages_Patches](Packages_Patches/adafruit/hardware/samd/1.7.6) directory into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.7.6). 
+ ***To be able to compile, run and automatically detect and display BOARD_NAME on Adafruit SAMD (Itsy-Bitsy M4, etc) boards***, you have to copy the whole [Adafruit SAMD Packages_Patches](Packages_Patches/adafruit/hardware/samd/1.7.9) directory into Adafruit samd directory (~/.arduino15/packages/adafruit/hardware/samd/1.7.9). 
 
-Supposing the Adafruit SAMD core version is 1.7.6. This file must be copied into the directory:
+Supposing the Adafruit SAMD core version is 1.7.9. This file must be copied into the directory:
 
-- `~/.arduino15/packages/adafruit/hardware/samd/1.7.6/platform.txt`
-- `~/.arduino15/packages/adafruit/hardware/samd/1.7.6/cores/arduino/Print.h`
-- `~/.arduino15/packages/adafruit/hardware/samd/1.7.6/cores/arduino/Print.cpp`
+- `~/.arduino15/packages/adafruit/hardware/samd/1.7.9/platform.txt`
+- `~/.arduino15/packages/adafruit/hardware/samd/1.7.9/cores/arduino/Print.h`
+- `~/.arduino15/packages/adafruit/hardware/samd/1.7.9/cores/arduino/Print.cpp`
 
 Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
 This file must be copied into the directory:
@@ -451,12 +451,12 @@ With core after v1.5.0, this step is not necessary anymore thanks to the PR [Add
 
 #### 9. For Portenta_H7 boards using Arduino IDE in Linux
 
-  **To be able to upload firmware to Portenta_H7 using Arduino IDE in Linux (Ubuntu, etc.)**, you have to copy the file [portenta_post_install.sh](Packages_Patches/arduino/hardware/mbed_portenta/2.6.1/portenta_post_install.sh) into mbed_portenta directory (~/.arduino15/packages/arduino/hardware/mbed_portenta/2.6.1/portenta_post_install.sh). 
+  **To be able to upload firmware to Portenta_H7 using Arduino IDE in Linux (Ubuntu, etc.)**, you have to copy the file [portenta_post_install.sh](Packages_Patches/arduino/hardware/mbed_portenta/3.0.0/portenta_post_install.sh) into mbed_portenta directory (~/.arduino15/packages/arduino/hardware/mbed_portenta/3.0.0/portenta_post_install.sh). 
   
   Then run the following command using `sudo`
   
 ```
-$ cd ~/.arduino15/packages/arduino/hardware/mbed_portenta/2.6.1
+$ cd ~/.arduino15/packages/arduino/hardware/mbed_portenta/3.0.0
 $ chmod 755 portenta_post_install.sh
 $ sudo ./portenta_post_install.sh
 ```
@@ -469,9 +469,9 @@ This will create the file `/etc/udev/rules.d/49-portenta_h7.rules` as follows:
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="035b", GROUP="plugdev", MODE="0666"
 ```
 
-Supposing the ArduinoCore-mbed core version is 2.6.1. Now only one file must be copied into the directory:
+Supposing the ArduinoCore-mbed core version is 3.0.0. Now only one file must be copied into the directory:
 
-- `~/.arduino15/packages/arduino/hardware/mbed_portenta/2.6.1/portenta_post_install.sh`
+- `~/.arduino15/packages/arduino/hardware/mbed_portenta/3.0.0/portenta_post_install.sh`
 
 Whenever a new version is installed, remember to copy this files into the new version directory. For example, new version is x.yy.zz
 
@@ -480,15 +480,48 @@ This file must be copied into the directory:
 - `~/.arduino15/packages/arduino/hardware/mbed_portenta/x.yy.zz/portenta_post_install.sh`
 
 
-#### 10. For Portenta_H7 boards
+#### 10. For RTL8720DN boards using AmebaD core
+ 
+ To avoid compile error relating to PROGMEM, you have to copy the file [Realtek AmebaD core pgmspace.h](Packages_Patches/realtek/hardware/AmebaD/3.1.2/cores/arduino/avr/pgmspace.h) into Realtek AmebaD directory (~/.arduino15/packages/realtek/hardware/AmebaD/3.1.2/cores/arduino/avr/pgmspace.h). 
 
-To fix `Portenta H7 MDNS Library compatibility`, please use the [Packages' Patches for mbed_portenta](https://github.com/khoih-prog/MDNS_Generic/tree/master/Packages_Patches/arduino/hardware/mbed_portenta)
+Supposing the Realtek AmebaD core version is 3.1.2. This file must be copied into the directory:
 
-For more info, check 
+- `~/.arduino15/packages/realtek/hardware/AmebaD/3.1.2/cores/arduino/avr/pgmspace.h`
 
-* 1.1 [**Portenta H7 UDP Multicast not working - mbed v2.4.1** #321](https://github.com/arduino/ArduinoCore-mbed/issues/321)
-* 1.2 [**Portenta H7 MDNS Library compatibility** #4](https://github.com/khoih-prog/MDNS_Generic/issues/4)
-* 1.3 [**EthernetBonjour MDNS message length limited to 550**](https://forum.arduino.cc/t/ethernetbonjour-mdns-message-length-limited-to-550/911968)
+Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
+This file must be copied into the directory:
+
+- `~/.arduino15/packages/realtek/hardware/AmebaD/x.yy.zz/cores/arduino/avr/pgmspace.h`
+
+
+#### 11. For SAMD21 and SAMD51 boards using ArduinoCore-fab-sam core
+ 
+ To avoid compile error relating to SAMD21/SAMD51, you have to copy the file [ArduinoCore-fab-sam core pgmspace.h](Packages_Patches/Fab_SAM_Arduino/hardware/samd/1.6.18-alpha2/boards.txt) into `ArduinoCore-fab-sam` samd directory (~/.arduino15/packages/Fab_SAM_Arduino/hardware/samd/1.6.18-alpha2/boards.txt). 
+
+Supposing the `ArduinoCore-fab-sam` samd core version is 1.6.18-alpha2. This file must be copied into the directory:
+
+- `~/.arduino15/packages/Fab_SAM_Arduino/hardware/samd/1.6.18-alpha2/boards.txt`
+
+Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
+This file must be copied into the directory:
+
+- `~/.arduino15/packages/Fab_SAM_Arduino/hardware/samd/x.yy.zz/boards.txt`
+
+
+#### 12. For Seeeduino RP2040 boards
+ 
+ ***To be able to compile, run and automatically detect and display BOARD_NAME on Seeeduino RP2040 (XIAO RP2040, Wio RP2040 Mini) boards***, you have to copy the whole [Seeeduino RP2040 Packages_Patches](Packages_Patches/Seeeduino/hardware/rp2040/2.7.2) directory into Seeeduino samd directory (~/.arduino15/packages/Seeeduino/hardware/rp2040/2.7.2). 
+
+Supposing the Seeeduino SAMD core version is 2.7.2. This file must be copied into the directory:
+
+- `~/.arduino15/packages/Seeeduino/hardware/rp2040/2.7.2/boards.txt`
+- `~/.arduino15/packages/Seeeduino/hardware/rp2040/2.7.2/variants/Seeed_XIAO_RP2040/pins_arduino.h`
+
+Whenever a new version is installed, remember to copy this file into the new version directory. For example, new version is x.yy.zz
+This file must be copied into the directory:
+
+- `~/.arduino15/packages/Seeeduino/hardware/samd/x.yy.zz/boards.txt`
+- `~/.arduino15/packages/Seeeduino/hardware/samd/x.yy.zz/variants/Seeed_XIAO_RP2040/pins_arduino.h`
 
 ---
 
@@ -1299,33 +1332,33 @@ IPAddress ip(192, 168, 2, 222);
 
 ### Debug Terminal Output Samples
 
-#### 1. ResolvingHostNames on nRF52 Adafruit NRF52840_FEATHER EXPRESS with W5500 using Ethernet2 library
+#### 1. ResolvingHostNames on nRF52 Adafruit NRF52840_FEATHER EXPRESS with W5500 using Ethernet_Generic library
 
-This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on nRF52 **Adafruit NRF52840_FEATHER EXPRESS with W5500 Ethernet module using Ethernet2 library.**
+This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on nRF52 **Adafruit NRF52840_FEATHER EXPRESS with W5500 Ethernet module using Ethernet_Generic library.**
 
 
 ```
-Starting ResolvingHostNames on NRF52840_FEATHER with W5x00 using Ethernet2 Library
-MDNS_Generic v1.4.0
-=========================
-Default SPI pinout:
-MOSI:11
-MISO:12
-SCK:13
-SS:10
-=========================
+Starting ResolvingHostNames on NRF52840_FEATHER with W5x00 using Ethernet_Generic Library
+MDNS_Generic v1.4.1
+[MDNS] =========== USE_ETHERNET_GENERIC ===========
+[MDNS] Default SPI pinout:
+[MDNS] MOSI: 25
+[MDNS] MISO: 24
+[MDNS] SCK: 26
+[MDNS] SS: 5
+[MDNS] =========================
 [MDNS] Board : NRF52840_FEATHER , setCsPin: 10
-=========================
-Currently Used SPI pinout:
-MOSI:11
-MISO:12
-SCK:13
-SS:10
-=========================
-Using mac index = 15
-Connected! IP address: 192.168.2.158
-Registering mDNS hostname: NRF52840_FEATHER_15
-To access, using NRF52840_FEATHER_15.local
+[MDNS] =========================
+[MDNS] Currently Used SPI pinout:
+[MDNS] MOSI: 25
+[MDNS] MISO: 24
+[MDNS] SCK: 26
+[MDNS] SS: 5
+[MDNS] =========================
+Using mac index = 4
+Connected! IP address: 192.168.2.118
+Registering mDNS hostname: nrf52840-feather-4
+To access, using nrf52840-feather-4.local
 Enter a mDNS host name via the Arduino Serial Monitor to have it resolved.
 Do not postfix the name with ".local"
 Resolving 'raspberrypi-02' via Multicast DNS (Bonjour)...
@@ -1336,35 +1369,32 @@ The IP address for 'raspberrypi-01' is 192.168.2.120
 
 ---
 
-#### 2. DiscoveringServices on nRF52 Adafruit NRF52840_FEATHER EXPRESS with W5500 using EthernetLarge library
+#### 2. DiscoveringServices on nRF52 Adafruit NRF52840_FEATHER EXPRESS with W5500 using Ethernet_Generic library
 
-This is terminal debug output when running [DiscoveringServices](examples/Ethernet/DiscoveringServices) on nRF52 **Adafruit NRF52840_FEATHER EXPRESS with W5500 Ethernet module using EthernetLarge library.**
+This is terminal debug output when running [DiscoveringServices](examples/Ethernet/DiscoveringServices) on nRF52 **Adafruit NRF52840_FEATHER EXPRESS with W5500 Ethernet module using Ethernet_Generic library.**
 
 ```
-Starting DiscoveringServices on NRF52840_FEATHER with W5x00 using EthernetLarge Library
-MDNS_Generic v1.4.0
-=========================
-Default SPI pinout:
-MOSI:25
-MISO:24
-SCK:26
-SS:5
-=========================
+Start DiscoveringServices on NRF52840_FEATHER using W5x00 using Ethernet_Generic Library
+MDNS_Generic v1.4.1
+[MDNS] =========== USE_ETHERNET_GENERIC ===========
+[MDNS] Default SPI pinout:
+[MDNS] MOSI: 25
+[MDNS] MISO: 24
+[MDNS] SCK: 26
+[MDNS] SS: 5
+[MDNS] =========================
 [MDNS] Board : NRF52840_FEATHER , setCsPin: 10
-_pinCS = 0
-W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
-W5100::init: W5500, SSIZE =8192
-=========================
-Currently Used SPI pinout:
-MOSI:25
-MISO:24
-SCK:26
-SS:5
-=========================
-Using mac index = 16
-Connected! IP address: 192.168.2.160
-Registering mDNS hostname: NRF52840_FEATHER_16
-To access, using NRF52840_FEATHER_16.local
+[MDNS] =========================
+[MDNS] Currently Used SPI pinout:
+[MDNS] MOSI: 25
+[MDNS] MISO: 24
+[MDNS] SCK: 26
+[MDNS] SS: 5
+[MDNS] =========================
+Using mac index = 4
+Connected! IP address: 192.168.2.118
+Registering mDNS hostname: nrf52840-feather-4
+To access, using nrf52840-feather-4.local
 Enter a mDNS service name via Serial Monitor to discover instances on the network.
 Examples are "_http", "_afpovertcp" or "_ssh" (Note the underscores).
 Discovering services of type '_http' via Multi-Cast DNS (Bonjour)...
@@ -1372,18 +1402,17 @@ Found: 'Arduino Bonjour Webserver Example' at 192.168.2.156, port 4 (TCP)
 Found: 'Arduino mDNS Webserver Example, Page 2' at 192.168.2.156, port 4 (TCP)
 Found: 'Linksys07265' at 192.168.2.12, port 80 (TCP)
 Finished discovering services of type _http
-
 ```
 
 ---
 
-#### 3. ResolvingHostNames on SAMD21 Seeeduino SEEED_XIAO_M0 with W5500 using EthernetLarge library
+#### 3. ResolvingHostNames on SAMD21 Seeeduino SEEED_XIAO_M0 with W5500 using Ethernet_Generic library
 
-This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on SAMD21 **Seeeduino SEEED_XIAO_M0 with W5500 Ethernet module using EthernetLarge library.**
+This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on SAMD21 **Seeeduino SEEED_XIAO_M0 with W5500 Ethernet module using Ethernet_Generic library.**
 
 ```
-Starting ResolvingHostNames on SEEED_XIAO_M0 with W5x00 using EthernetLarge Library
-MDNS_Generic v1.4.0
+Starting ResolvingHostNames on SEEED_XIAO_M0 with W5x00 using Ethernet_Generic Library
+MDNS_Generic v1.4.1
 =========================
 Default SPI pinout:
 MOSI:10
@@ -1392,9 +1421,6 @@ SCK:8
 SS:4
 =========================
 [MDNS] Board : SEEED_XIAO_M0 , setCsPin: 1
-_pinCS = 0
-W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 1
-W5100::init: W5500, SSIZE =8192
 =========================
 Currently Used SPI pinout:
 MOSI:10
@@ -1404,8 +1430,8 @@ SS:4
 =========================
 Using mac index = 0
 Connected! IP address: 192.168.2.165
-Registering mDNS hostname: SEEED_XIAO_M0_0
-To access, using SEEED_XIAO_M0_0.local
+Registering mDNS hostname: seeed-xiao-m0-0
+To access, using seeed-xiao-m0-0.local
 Enter a mDNS host name via the Arduino Serial Monitor to have it resolved.
 Do not postfix the name with ".local"
 Resolving 'raspberrypi-01' via Multicast DNS (Bonjour)...
@@ -1416,13 +1442,13 @@ The IP address for 'raspberrypi-02' is 192.168.2.112
 
 ---
 
-#### 4. DiscoveringServices on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
+#### 4. DiscoveringServices on NUCLEO_F767ZI with W5x00 using Ethernet_Generic Library
 
-This is terminal debug output when running [DiscoveringServices](examples/Ethernet/DiscoveringServices) on STM32 **Nucleo-144 NUCLEO_F767ZI with W5x00 using Ethernet2 Library.**
+This is terminal debug output when running [DiscoveringServices](examples/Ethernet/DiscoveringServices) on STM32 **Nucleo-144 NUCLEO_F767ZI with W5x00 using Ethernet_Generic Library.**
 
 ```
-Starting DiscoveringServices on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
-MDNS_Generic v1.4.0
+Starting DiscoveringServices on NUCLEO_F767ZI with W5x00 using Ethernet_Generic Library
+MDNS_Generic v1.4.1
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1440,8 +1466,8 @@ SS:10
 =========================
 Using mac index = 15
 Connected! IP address: 192.168.2.98
-Registering mDNS hostname: NUCLEO_F767ZI_15
-To access, using NUCLEO_F767ZI_15.local
+Registering mDNS hostname: nucleo-f767zi-15
+To access, using nucleo-f767zi-15.local
 Enter a mDNS service name via Serial Monitor to discover instances on the network.
 Examples are "_http", "_afpovertcp" or "_ssh" (Note the underscores).
 Discovering services of type '_http' via Multi-Cast DNS (Bonjour)...
@@ -1452,13 +1478,13 @@ Finished discovering services of type _http
 
 ---
 
-#### 5. ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
+#### 5. ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet_Generic Library
 
-This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on STM32 **Nucleo-144 NUCLEO_F767ZI with W5x00 using Ethernet2 Library.**
+This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on STM32 **Nucleo-144 NUCLEO_F767ZI with W5x00 using Ethernet_Generic Library.**
 
 ```
-Starting ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet2 Library
-MDNS_Generic v1.4.0
+Starting ResolvingHostNames on NUCLEO_F767ZI with W5x00 using Ethernet_Generic Library
+MDNS_Generic v1.4.1
 =========================
 Default SPI pinout:
 MOSI:11
@@ -1476,8 +1502,8 @@ SS:10
 =========================
 Using mac index = 15
 Connected! IP address: 192.168.2.98
-Registering mDNS hostname: NUCLEO_F767ZI_15
-To access, using NUCLEO_F767ZI_15.local
+Registering mDNS hostname: nucleo-f767zi-15
+To access, using nucleo-f767zi-15.local
 Enter a mDNS host name via the Arduino Serial Monitor to have it resolved.
 Do not postfix the name with ".local"
 Resolving 'raspberrypi-02' via Multicast DNS (Bonjour)...
@@ -1488,13 +1514,13 @@ The IP address for 'raspberrypi-01' is 192.168.2.110
 
 ---
 
-#### 6. ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library
+#### 6. ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using Ethernet_Generic Library
 
-This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on **RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library.**
+This is terminal debug output when running [ResolvingHostNames](examples/Ethernet/ResolvingHostNames) on **RASPBERRY_PI_PICO with W5x00 using Ethernet_Generic Library.**
 
 ```
-Starting ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library
-MDNS_Generic v1.4.0
+Starting ResolvingHostNames on RASPBERRY_PI_PICO with W5x00 using Ethernet_Generic Library
+MDNS_Generic v1.4.1
 =========================
 Default SPI pinout:
 MOSI:19
@@ -1502,10 +1528,7 @@ MISO:16
 SCK:18
 SS:17
 =========================
-[MDNS] Board : RASPBERRY_PI_PICO , setCsPin: 17
-_pinCS = 0
-W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 17
-W5100::init: W5500, SSIZE =8192
+[MDNS] RPIPICO setCsPin: 17
 =========================
 Currently Used SPI pinout:
 MOSI:19
@@ -1515,8 +1538,8 @@ SS:17
 =========================
 Using mac index = 6
 Connected! IP address: 192.168.2.115
-Registering mDNS hostname: MBED_RASPBERRY_PI_PICO_6
-To access, using MBED_RASPBERRY_PI_PICO_6.local
+Registering mDNS hostname: raspberry-pi-pico-6
+To access, using raspberry-pi-pico-6.local
 Enter a mDNS host name via the Arduino Serial Monitor to have it resolved.
 Do not postfix the name with ".local"
 Resolving 'raspberrypi-01' via Multicast DNS (Bonjour)...
@@ -1527,35 +1550,32 @@ The IP address for 'raspberrypi-02' is 192.168.2.122
 
 ---
 
-#### 7. DiscoveringServices on MBED RASPBERRY_PI_PICO with W5x00 using EthernetLarge Library
+#### 7. DiscoveringServices on MBED RASPBERRY_PI_PICO with W5x00 using Ethernet_Generic Library
 
-This is terminal debug output when running [DiscoveringServices](examples/Ethernet/DiscoveringServices) on **MBED RASPBERRY_PI_PICO using W5x00 using EthernetLarge Library.**
+This is terminal debug output when running [DiscoveringServices](examples/Ethernet/DiscoveringServices) on **MBED RASPBERRY_PI_PICO using W5x00 using Ethernet_Generic Library.**
 
 ```
-Start DiscoveringServices on MBED RASPBERRY_PI_PICO using W5x00 using EthernetLarge Library
-MDNS_Generic v1.4.0
+Start DiscoveringServices on MBED RASPBERRY_PI_PICO using W5x00 using Ethernet_Generic Library
+MDNS_Generic v1.4.1
 =========================
 Default SPI pinout:
-MOSI:3
-MISO:4
-SCK:2
-SS:5
+MOSI:19
+MISO:16
+SCK:18
+SS:17
 =========================
-[MDNS] Board : MBED RASPBERRY_PI_PICO , setCsPin: 5
-_pinCS = 0
-W5100 init, using SS_PIN_DEFAULT = 5, new ss_pin = 10, W5100Class::ss_pin = 5
-W5100::init: W5500, SSIZE =8192
+[MDNS] RPIPICO setCsPin: 17
 =========================
 Currently Used SPI pinout:
-MOSI:3
-MISO:4
-SCK:2
-SS:5
+MOSI:19
+MISO:16
+SCK:18
+SS:17
 =========================
 Using mac index = 13
 Connected! IP address: 192.168.2.93
-Registering mDNS hostname: MBED_RASPBERRY_PI_PICO_13
-To access, using MBED_RASPBERRY_PI_PICO_13.local
+Registering mDNS hostname: mbed_raspberry-pi-pico-13
+To access, using mbed_raspberry-pi-pico-13.local
 Enter a mDNS service name via Serial Monitor to discover instances on the network.
 Examples are "_http", "_afpovertcp" or "_ssh" (Note the underscores).
 Discovering services of type '_http' via Multi-Cast DNS (Bonjour)...
@@ -1571,7 +1591,7 @@ This is terminal debug output when running [WiFiRegisteringServices](examples/Wi
 
 ```
 Start WiFiRegisteringServices on MBED NANO_RP2040_CONNECT
-MDNS_Generic v1.4.0
+MDNS_Generic v1.4.1
 Used/default SPI pinout:
 MOSI:11
 MISO:12
@@ -1581,14 +1601,14 @@ Attempting to connect to SSID: HueNet1
 SSID: HueNet1
 Local IP address: 192.168.2.111
 Signal strength (RSSI):-21 dBm
-Registering mDNS hostname: MBED-NANO_RP2040_CONNECT
-To access, using MBED-NANO_RP2040_CONNECT.local
+Registering mDNS hostname: mbed-nano-rp2040-connect
+To access, using mbed-nano-rp2040-connect.local
 ```
 
 ##### 8.1 PING Terminal
 
 ```
-kh@kh-Inspiron-3593:~$ ping MBED-NANO_RP2040_CONNECT.local
+kh@kh-Inspiron-3593:~$ ping mbed-nano-rp2040-connect.local
 PING arduino.local (192.168.2.111) 56(84) bytes of data.
 64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=1 ttl=255 time=65.1 ms
 64 bytes from arduino-1f98 (192.168.2.111): icmp_seq=2 ttl=255 time=48.6 ms
@@ -1613,19 +1633,19 @@ This is terminal debug output when running [WiFiRegisteringServices](examples/Wi
 
 ```
 Start WiFiRegisteringServices on ESP32_DEV
-MDNS_Generic v1.4.0
+MDNS_Generic v1.4.1
 Attempting to connect to SSID: HueNet1
 SSID: HueNet1
 Local IP address: 192.168.2.80
 Signal strength (RSSI):-25 dBm
-Registering mDNS hostname: ESP_9ABF498
-To access, using ESP_9ABF498.local
+Registering mDNS hostname: esp-9abf498
+To access, using esp-9abf498.local
 ```
 
 ##### 9.1 PING Terminal
 
 ```
-kh@kh-Inspiron-3593:~$ ping ESP_9ABF498.local
+kh@kh-Inspiron-3593:~$ ping esp-9abf498.local
 PING arduino.local (192.168.2.80) 56(84) bytes of data.
 64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=1 ttl=255 time=29.4 ms
 64 bytes from esp32-090ADC (192.168.2.80): icmp_seq=2 ttl=255 time=49.3 ms
@@ -1647,36 +1667,33 @@ PING arduino.local (192.168.2.80) 56(84) bytes of data.
 
 ---
 
-#### 10. RegisteringServices on NRF52840_FEATHER with W5x00 using EthernetLarge Library
+#### 10. RegisteringServices on NRF52840_FEATHER with W5x00 using Ethernet_Generic Library
 
-This is terminal debug output when running [RegisteringServices](examples/WiFi/RegisteringServices) on **NRF52840_FEATHER with W5x00 using EthernetLarge Library**
+This is terminal debug output when running [RegisteringServices](examples/WiFi/RegisteringServices) on **NRF52840_FEATHER with W5x00 using Ethernet_Generic Library**
 
 
 ```
-Start RegisteringServices on NRF52840_FEATHER using W5x00 using EthernetLarge Library
-MDNS_Generic v1.4.0
-=========================
-Default SPI pinout:
-MOSI:25
-MISO:24
-SCK:26
-SS:5
-=========================
+Start RegisteringServices on NRF52840_FEATHER using W5x00 using Ethernet_Generic Library
+MDNS_Generic v1.4.1
+[MDNS] =========== USE_ETHERNET_GENERIC ===========
+[MDNS] Default SPI pinout:
+[MDNS] MOSI: 25
+[MDNS] MISO: 24
+[MDNS] SCK: 26
+[MDNS] SS: 5
+[MDNS] =========================
 [MDNS] Board : NRF52840_FEATHER , setCsPin: 10
-_pinCS = 0
-W5100 init, using SS_PIN_DEFAULT = 10, new ss_pin = 10, W5100Class::ss_pin = 10
-W5100::init: W5500, SSIZE =8192
-=========================
-Currently Used SPI pinout:
-MOSI:25
-MISO:24
-SCK:26
-SS:5
-=========================
+[MDNS] =========================
+[MDNS] Currently Used SPI pinout:
+[MDNS] MOSI: 25
+[MDNS] MISO: 24
+[MDNS] SCK: 26
+[MDNS] SS: 5
+[MDNS] =========================
 Using mac index = 11
 Connected! IP address: 192.168.2.106
-Registering mDNS hostname: NRF52840_FEATHER_11
-To access, using NRF52840_FEATHER_11.local
+Registering mDNS hostname: nrf52840-feather-11
+To access, using nrf52840-feather-11.local
 AddService : NRF52840_FEATHER_mDNS_Webserver._http
 ```
 
@@ -1684,7 +1701,7 @@ AddService : NRF52840_FEATHER_mDNS_Webserver._http
 ##### 10.1 PING Terminal
 
 ```
-kh@kh-Inspiron-3593:~$ ping NRF52840_FEATHER_11.local
+kh@kh-Inspiron-3593:~$ ping nrf52840-feather-11.local
 PING NRF52840_FEATHER_11.local (192.168.2.106) 56(84) bytes of data.
 64 bytes from WIZnetEFBE0C (192.168.2.106): icmp_seq=1 ttl=128 time=0.253 ms
 64 bytes from WIZnetEFBE0C (192.168.2.106): icmp_seq=2 ttl=128 time=0.303 ms
@@ -1704,7 +1721,7 @@ This is terminal debug output when running [RegisteringServices](examples/WiFi/R
 
 ```
 Start WiFiRegisteringServices on PORTENTA_H7_M7
-MDNS_Generic v1.4.0
+MDNS_Generic v1.4.1
 Attempting to connect to SSID: HueNet1
 SSID: HueNet1
 Local IP address: 192.168.2.94
@@ -1746,7 +1763,7 @@ This is terminal debug output when running [RegisteringServices](examples/WiFi/R
 
 ```
 Start RegisteringServices on PORTENTA_H7_M7 using Ethernet using Portenta_Ethernet Library
-MDNS_Generic v1.4.0
+MDNS_Generic v1.4.1
 =========================
 Default SPI pinout:
 MOSI:8
@@ -1859,6 +1876,9 @@ Submit issues to: [**MDNS_Generic issues**](https://github.com/khoih-prog/MDNS_G
 18. Add support to **Portenta_H7 Vision-shield Ethernet** using [`Portenta_Ethernet`](https://github.com/arduino/ArduinoCore-mbed/tree/master/libraries/Ethernet) library
 19. Add support to **Portenta_H7 Murata WiFi** using [`Portenta_WiFi`](https://github.com/arduino/ArduinoCore-mbed/tree/master/libraries/WiFi) library
 20. Fix `multiple-definitions` linker error. 
+21. Use new [Ethernet_Generic library](https://github.com/khoih-prog/Ethernet_Generic) as default for W5x00.
+22. Add support to SPI1 for RP2040 using [arduino-pico core](https://github.com/earlephilhower/arduino-pico)
+
 
 ---
 ---
