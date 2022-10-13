@@ -15,7 +15,8 @@ If you don't find anything, please [open a new issue](https://github.com/khoih-p
 Please ensure to specify the following:
 
 * Arduino IDE version (e.g. 1.8.19) or Platform.io version
-* Board Core Version (e.g. Arduino SAMDUE core v1.6.12, ESP32 core v2.0.2, ESP8266 core v3.0.2, ArduinoCore-mbed v3.0.1, etc.)
+* `RP2040` Core Version (e.g. RP2040 core v2.6.0)
+* `RP2040W` Board type (e.g. RASPBERRY_PI_PICO_W)
 * Contextual information (e.g. what you were trying to achieve)
 * Simplest possible steps to reproduce
 * Anything that might be relevant in your opinion, such as:
@@ -27,13 +28,13 @@ Please ensure to specify the following:
 
 ```
 Arduino IDE version: 1.8.19
-RASPBERRY_PI_PICO board
-ArduinoCore-mbed v3.0.1
+RP2040 core v2.6.0
+RASPBERRY_PI_PICO_W Module
 OS: Ubuntu 20.04 LTS
-Linux xy-Inspiron-3593 5.13.0-39-generic #44~20.04.1-Ubuntu SMP Thu Mar 24 16:43:35 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+Linux xy-Inspiron-3593 5.15.0-48-generic #54~20.04.1-Ubuntu SMP Thu Sep 1 16:17:26 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
 
 Context:
-The board couldn't autoreconnect to Local Blynk Server after router power recycling.
+I encountered a crash while using this library
 
 Steps to reproduce:
 1. ...

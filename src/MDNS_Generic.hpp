@@ -20,41 +20,49 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.4.1
+  Version: 1.4.2
   
   Version  Modified By   Date      Comments
   -------  -----------  ---------- -----------
   1.0.0    K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
-                                  Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
+                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
   ...
   1.3.0    K Hoang      28/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
   1.3.1    K Hoang      10/10/2021 Update `platform.ini` and `library.json`
   1.4.0    K Hoang      26/01/2022 Fix `multiple-definitions` linker error
   1.4.1    K Hoang      11/04/2022 Use Ethernet_Generic library as default. Support SPI1/SPI2 for RP2040/ESP32
+  1.4.2    K Hoang      12/10/2022 Fix bugs in UDP length check and in WiFi example
  *****************************************************************************************************************************/
 
 #ifndef __MDNS_GENERIC_HPP__
 #define __MDNS_GENERIC_HPP__
 
+////////////////////////////////////////
+
 #ifndef MDNS_GENERIC_VERSION
-  #define MDNS_GENERIC_VERSION            "MDNS_Generic v1.4.1"
+  #define MDNS_GENERIC_VERSION            "MDNS_Generic v1.4.2"
 
   #define MDNS_GENERIC_VERSION_MAJOR      1
   #define MDNS_GENERIC_VERSION_MINOR      4
-  #define MDNS_GENERIC_VERSION_PATCH      1
+  #define MDNS_GENERIC_VERSION_PATCH      2
 
-#define MDNS_GENERIC_VERSION_INT        1004001
-
+  #define MDNS_GENERIC_VERSION_INT        1004002
 #endif
+
+////////////////////////////////////////
 
 extern "C"
 {
   #include <inttypes.h>
 }
 
+////////////////////////////////////////
+
 #include <Arduino.h>
 
 #include "MDNS_Generic_Debug.h"
+
+////////////////////////////////////////
 
 #if (_MDNS_LOGLEVEL_ > 2)
   #if ( SYSTEM_ENDIAN == _ENDIAN_LITTLE_ )
@@ -63,6 +71,8 @@ extern "C"
     #warning SYSTEM_ENDIAN == _ENDIAN_BIG_
   #endif
 #endif
+
+////////////////////////////////////////
 
 typedef uint8_t byte;
 
@@ -112,7 +122,11 @@ typedef struct _MDNSServiceRecord_t
 typedef void (*MDNSNameFoundCallback)(const char*, IPAddress);
 typedef void (*MDNSServiceFoundCallback)(const char*, MDNSServiceProtocol_t, const char*, IPAddress, unsigned short, const char*);
 
+////////////////////////////////////////
+
 #define  NumMDNSServiceRecords   (8)
+
+////////////////////////////////////////
 
 //class MDNS
 class MDNS

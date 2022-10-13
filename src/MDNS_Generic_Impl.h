@@ -20,17 +20,18 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.4.1
+  Version: 1.4.2
   
   Version  Modified By   Date      Comments
   -------  -----------  ---------- -----------
   1.0.0    K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
-                                  Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
+                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
   ...
   1.3.0    K Hoang      28/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
   1.3.1    K Hoang      10/10/2021 Update `platform.ini` and `library.json`
   1.4.0    K Hoang      26/01/2022 Fix `multiple-definitions` linker error
   1.4.1    K Hoang      11/04/2022 Use Ethernet_Generic library as default. Support SPI1/SPI2 for RP2040/ESP32
+  1.4.2    K Hoang      12/10/2022 Fix bugs in UDP length check and in WiFi example
  *****************************************************************************************************************************/
 
 #ifndef __MDNS_GENERIC_IMPL_H__
@@ -38,6 +39,8 @@
 
 #define  HAS_SERVICE_REGISTRATION     1  // disabling saves about 1.25 kilobytes
 #define  HAS_NAME_BROWSING            1  // disable together with above, additionally saves about 4.3 kilobytes
+
+////////////////////////////////////////
 
 #include <string.h>
 #include <stdlib.h>
@@ -49,6 +52,8 @@
 #endif
 
 #include "MDNS_EthernetUtil_Impl.h"
+
+////////////////////////////////////////
 
 #define  MDNS_DEFAULT_NAME       "arduino"
 #define  MDNS_TLD                ".local"
@@ -63,11 +68,15 @@
 //#define  _BROKEN_MALLOC_   1
 #undef _USE_MALLOC_
 
+////////////////////////////////////////
+
 //static uint8_t mdnsMulticastIPAddr[] = { 224, 0, 0, 251 };
 
 static IPAddress mdnsMulticastIPAddr = IPAddress(224, 0, 0, 251);
 
 //static uint8_t mdnsHWAddr[] = { 0x01, 0x00, 0x5e, 0x00, 0x00, 0xfb };
+
+////////////////////////////////////////
 
 typedef enum _MDNSPacketType_t 
 {
@@ -78,6 +87,8 @@ typedef enum _MDNSPacketType_t
   MDNSPacketTypeNameQuery,
   MDNSPacketTypeServiceQuery,
 } MDNSPacketType_t;
+
+////////////////////////////////////////
 
 typedef struct _DNSHeader_t 
 {
@@ -98,6 +109,8 @@ typedef struct _DNSHeader_t
   uint16_t    additionalCount;
 } __attribute__((__packed__)) DNSHeader_t;
 
+////////////////////////////////////////
+
 typedef enum _DNSOpCode_t 
 {
   DNSOpQuery     = 0,
@@ -106,6 +119,8 @@ typedef enum _DNSOpCode_t
   DNSOpNotify    = 4,
   DNSOpUpdate    = 5
 } DNSOpCode_t;
+
+////////////////////////////////////////
 
 // for some reason, I get data corruption issues with normal malloc() on arduino 0017
 void* my_malloc(unsigned s)
@@ -122,6 +137,8 @@ void* my_malloc(unsigned s)
 #endif
 }
 
+////////////////////////////////////////
+
 void my_free(void* ptr)
 {
 #if defined(_BROKEN_MALLOC_)
@@ -135,6 +152,9 @@ void my_free(void* ptr)
   free(ptr);
 #endif
 }
+
+////////////////////////////////////////
+////////////////////////////////////////
 
 MDNS::MDNS(UDP& udp)
 {
@@ -152,10 +172,14 @@ MDNS::MDNS(UDP& udp)
   this->_lastAnnounceMillis = 0;
 }
 
+////////////////////////////////////////
+
 MDNS::~MDNS()
 {
   this->_udp->stop();
 }
+
+////////////////////////////////////////
 
 // return values:
 // 1 on success
@@ -178,12 +202,13 @@ int MDNS::begin(const IPAddress& ip, const char* name)
   {
     statusCode = this->_udp->beginMulticast(mdnsMulticastIPAddr, MDNS_SERVER_PORT);
     
-    // KH debug
     MDNS_LOGDEBUG1("::begin: UDP beginMulticast statusCode=", (statusCode == 1) ? "OK" : "Error");    
   }
 
   return statusCode;
 }
+
+////////////////////////////////////////
 
 // return values:
 // 1 on success
@@ -192,6 +217,8 @@ int MDNS::begin(const IPAddress& ip)
 {
   return this->begin(ip, MDNS_DEFAULT_NAME);
 }
+
+////////////////////////////////////////
 
 // return values:
 // 1 on success
@@ -219,6 +246,8 @@ int MDNS::_initQuery(uint8_t idx, const char* name, unsigned long timeout)
   return statusCode;
 }
 
+////////////////////////////////////////
+
 void MDNS::_cancelQuery(uint8_t idx)
 {
   if (NULL != this->_resolveNames[idx]) 
@@ -227,6 +256,8 @@ void MDNS::_cancelQuery(uint8_t idx)
     this->_resolveNames[idx] = NULL;
   }
 }
+
+////////////////////////////////////////
 
 // return values:
 // 1 on success
@@ -243,31 +274,40 @@ int MDNS::resolveName(const char* name, unsigned long timeout)
   strcpy(n, name);
   strcat(n, MDNS_TLD);
   
-  // KH debug
   MDNS_LOGINFO1("::resolveName: name=", n);
 
   return this->_initQuery(0, n, timeout);
 }
+
+////////////////////////////////////////
 
 void MDNS::setNameResolvedCallback(MDNSNameFoundCallback newCallback)
 {
   this->_nameFoundCallback = newCallback;
 }
 
+////////////////////////////////////////
+
 void MDNS::cancelResolveName()
 {
   this->_cancelQuery(0);
 }
+
+////////////////////////////////////////
 
 int MDNS::isResolvingName()
 {
   return (NULL != this->_resolveNames[0]);
 }
 
+////////////////////////////////////////
+
 void MDNS::setServiceFoundCallback(MDNSServiceFoundCallback newCallback)
 {
   this->_serviceFoundCallback = newCallback;
 }
+
+////////////////////////////////////////
 
 // return values:
 // 1 on success
@@ -293,15 +333,21 @@ int MDNS::startDiscoveringService(const char* serviceName, MDNSServiceProtocol_t
   return this->_initQuery(1, n, timeout);
 }
 
+////////////////////////////////////////
+
 void MDNS::stopDiscoveringService()
 {
   this->_cancelQuery(1);
 }
 
+////////////////////////////////////////
+
 int MDNS::isDiscoveringService()
 {
   return (NULL != this->_resolveNames[1]);
 }
+
+////////////////////////////////////////
 
 // return value:
 // A DNSError_t (DNSSuccess on success, something else otherwise)
@@ -364,7 +410,6 @@ MDNSError_t MDNS::_sendMDNSMessage(uint32_t /*peerAddress*/, uint32_t xid, int t
   this->_udp->beginPacket(mdnsMulticastIPAddr, MDNS_SERVER_PORT);
   this->_udp->write((uint8_t*)dnsHeader, sizeof(DNSHeader_t));
   
-  // KH debug
   MDNS_LOGDEBUG1("::_sendMDNSMessage: xid=", dnsHeader->xid);
   MDNS_LOGDEBUG1("::_sendMDNSMessage: queryCount=", dnsHeader->queryCount);
   MDNS_LOGDEBUG1("::_sendMDNSMessage: answerCount=", dnsHeader->answerCount);
@@ -542,11 +587,12 @@ errorReturn:
     my_free(dnsHeader);
 #endif
 
-  // KH debug
   MDNS_LOGDEBUG1("::_sendMDNSMessage: statusCode =", statusCode);
   
   return statusCode;
 }
+
+////////////////////////////////////////
 
 // return value:
 // A DNSError_t (DNSSuccess on success, something else otherwise)
@@ -579,7 +625,6 @@ MDNSError_t MDNS::_processMDNSQuery()
   
   //MDNS_LOGDEBUG1("::_processMDNSQuery: UDP parsePacket len=", udp_len);
   
-  // KH Debug
   if (udp_len != 0)
   {
     MDNS_LOGINFO1("::_processMDNSQuery: UDP parsePacket len=", udp_len);
@@ -605,10 +650,9 @@ MDNSError_t MDNS::_processMDNSQuery()
   
   this->_udp->read((uint8_t*) udpBuffer, udp_len);//read _remaining UDP packet from W5100/W5200 into memory
   
-  // KH
   MDNS_LOGINFO1("::_processMDNSQuery: UDP parsePacket len=", udp_len);
-
   MDNS_LOGINFO("buffer======");
+  
   for (int i = 0; i < udp_len; i++)
   {
     MDNS_LOGINFO0(String(udpBuffer[i], HEX));
@@ -620,7 +664,6 @@ MDNSError_t MDNS::_processMDNSQuery()
   
   MDNS_LOGINFO0("\n");
   MDNS_LOGINFO("=====");
-  //////
   
   ptr = (uintptr_t)udpBuffer;
 
@@ -691,6 +734,7 @@ MDNSError_t MDNS::_processMDNSQuery()
       }
 
       tLen = 0;
+      
       do 
       {
         memcpy((uint8_t*)buf, (uint16_t*)(ptr + offset) , 1);
@@ -956,18 +1000,11 @@ MDNSError_t MDNS::_processMDNSQuery()
                 {
                   // ok, this is the IP address. report it via callback.
 
-                  memcpy((uint8_t*)buf, (uint16_t*)(ptr + offset) , 4);
+                  memcpy((uint8_t*)buf, (uint16_t*)(ptr + offset), 4);
+                            
+                  MDNS_LOGINFO1("::_processMDNSQuery: to report IP, buf =", String((uint8_t) buf[0]));
                   
-                  
-                  //KH, to report name Resolve only UDP packet has corect size of 48
-                  if (48 == udp_len)
-                  {
-                    // KH debug
-                    MDNS_LOGINFO1("::_processMDNSQuery: to report IP, buf =", String((uint8_t) buf[0]));
-                  
-                    this->_finishedResolvingName((char*)this->_resolveNames[0], (const byte*)buf);
-                  }
-
+                  this->_finishedResolvingName((char*)this->_resolveNames[0], (const byte*)buf);
                 } 
                 else if (1 == j) 
                 {
@@ -1155,7 +1192,8 @@ MDNSError_t MDNS::_processMDNSQuery()
           }
 
           // if we can't find a matching IP, we try to use the first one we found.
-          if (NULL == ipAddr) ipAddr = fallbackIpAddr;
+          if (NULL == ipAddr) 
+            ipAddr = fallbackIpAddr;
 
           if (ipAddr && this->_serviceFoundCallback) 
           {
@@ -1164,7 +1202,7 @@ MDNSError_t MDNS::_processMDNSQuery()
           }
         }
         
-      *p = '.';
+        *p = '.';
       
       }     // for
     }
@@ -1225,19 +1263,22 @@ errorReturn:
   return statusCode;
 }
 
+////////////////////////////////////////
+
 void MDNS::run()
 {
   uint8_t i;
   unsigned long now = millis();
-  
-  // KH, Debug
+
+#if 0  
   MDNSError_t statusCode = _processMDNSQuery();
   
-  if (statusCode != MDNSTryLater /*3*/)
+  if (statusCode != MDNSTryLater)
   {
-    // KH debug
-    //MDNS_LOGDEBUG1("::run: statusCode=", (int) statusCode);
+    MDNS_LOGDEBUG1("::run: statusCode=", (int) statusCode);
   }
+#endif
+  
   // first, look for MDNS queries to handle
   //(void)_processMDNSQuery();
 
@@ -1251,18 +1292,15 @@ void MDNS::run()
       {
         (void)this->_sendMDNSMessage(0, 0, (0 == i) ? MDNSPacketTypeNameQuery : MDNSPacketTypeServiceQuery, 0);
         
-        // KH debug
         MDNS_LOGDEBUG3("::run: _sendMDNSMessage, now =", now, ", _resolveLastSendMillis =", this->_resolveLastSendMillis[i] );
       }
 
       if (this->_resolveTimeouts[i] > 0 && now > this->_resolveTimeouts[i]) 
       {      
-        // KH debug
         MDNS_LOGDEBUG1("::run: _resolveTimeouts =", this->_resolveTimeouts[i]);
         
         if (i == 0)
         {
-          // KH debug
           MDNS_LOGWARN("::run: to report IP, NULL");
                   
           this->_finishedResolvingName((char*)this->_resolveNames[0], NULL);
@@ -1307,6 +1345,8 @@ void MDNS::run()
   }
 }
 
+////////////////////////////////////////
+
 // return values:
 // 1 on success
 // 0 otherwise
@@ -1329,6 +1369,8 @@ int MDNS::setName(const char* name)
   return 1;
 }
 
+////////////////////////////////////////
+
 // return values:
 // 1 on success
 // 0 otherwise
@@ -1342,6 +1384,8 @@ int MDNS::addServiceRecord(const char* name, uint16_t port, MDNSServiceProtocol_
   return this->addServiceRecord(name, port, proto, NULL); //works for Teensy 3 (32-bit Arm Cortex)
 #endif  
 }
+
+////////////////////////////////////////
 
 // return values:
 // 1 on success
@@ -1425,6 +1469,8 @@ errorReturn:
   return 0;
 }
 
+////////////////////////////////////////
+
 void MDNS::_removeServiceRecord(int idx)
 {
   if (NULL != this->_serviceRecords[idx]) 
@@ -1444,10 +1490,14 @@ void MDNS::_removeServiceRecord(int idx)
   }
 }
 
+////////////////////////////////////////
+
 void MDNS::removeServiceRecord(uint16_t port, MDNSServiceProtocol_t proto)
 {
   this->removeServiceRecord(NULL, port, proto);
 }
+
+////////////////////////////////////////
 
 void MDNS::removeServiceRecord(const char* name, uint16_t port,
                                MDNSServiceProtocol_t proto)
@@ -1465,6 +1515,8 @@ void MDNS::removeServiceRecord(const char* name, uint16_t port,
   }
 }
 
+////////////////////////////////////////
+
 void MDNS::removeAllServiceRecords()
 {
   int i;
@@ -1472,6 +1524,8 @@ void MDNS::removeAllServiceRecords()
   for (i = 0; i < NumMDNSServiceRecords; i++)
     this->_removeServiceRecord(i);
 }
+
+////////////////////////////////////////
 
 void MDNS::_writeDNSName(const uint8_t* name, uint16_t* pPtr,
                          uint8_t* buf, int bufSize, int zeroTerminate)
@@ -1529,6 +1583,8 @@ void MDNS::_writeDNSName(const uint8_t* name, uint16_t* pPtr,
   *pPtr = ptr;
 }
 
+////////////////////////////////////////
+
 void MDNS::_writeMyIPAnswerRecord(uint16_t* pPtr, uint8_t* buf, int bufSize)
 {
   uint16_t ptr = *pPtr;
@@ -1559,6 +1615,8 @@ void MDNS::_writeMyIPAnswerRecord(uint16_t* pPtr, uint8_t* buf, int bufSize)
   *pPtr = ptr;
 }
 
+////////////////////////////////////////
+
 void MDNS::_writeServiceRecordName(int recordIndex, uint16_t* pPtr, uint8_t* buf, int bufSize, int tld)
 {
   uint16_t ptr = *pPtr;
@@ -1582,6 +1640,8 @@ void MDNS::_writeServiceRecordName(int recordIndex, uint16_t* pPtr, uint8_t* buf
 
   *pPtr = ptr;
 }
+
+////////////////////////////////////////
 
 void MDNS::_writeServiceRecordPTR(int recordIndex, uint16_t* pPtr, uint8_t* buf, int bufSize, uint32_t ttl)
 {
@@ -1608,6 +1668,8 @@ void MDNS::_writeServiceRecordPTR(int recordIndex, uint16_t* pPtr, uint8_t* buf,
   *pPtr = ptr;
 }
 
+////////////////////////////////////////
+
 uint8_t* MDNS::_findFirstDotFromRight(const uint8_t* str)
 {
   const uint8_t* p = str + strlen((char*)str);
@@ -1616,6 +1678,8 @@ uint8_t* MDNS::_findFirstDotFromRight(const uint8_t* str)
   
   return (uint8_t*)&p[2];
 }
+
+////////////////////////////////////////
 
 int MDNS::_matchStringPart(const uint8_t** pCmpStr, int* pCmpLen, const uint8_t* buf,
                            int dataLen)
@@ -1636,6 +1700,8 @@ int MDNS::_matchStringPart(const uint8_t** pCmpStr, int* pCmpLen, const uint8_t*
   return matches;
 }
 
+////////////////////////////////////////
+
 const uint8_t* MDNS::_postfixForProtocol(MDNSServiceProtocol_t proto)
 {
   const uint8_t* srv_type = NULL;
@@ -1653,11 +1719,12 @@ const uint8_t* MDNS::_postfixForProtocol(MDNSServiceProtocol_t proto)
   return srv_type;
 }
 
+////////////////////////////////////////
+
 void MDNS::_finishedResolvingName(char* name, const byte ipAddr[4])
 {
   if ( (NULL != this->_nameFoundCallback) /*&& (ipAddr != NULL)*/ )
   {
-          
     if (NULL != name) 
     {
       uint8_t* n = this->_findFirstDotFromRight((const uint8_t*)name);
@@ -1671,7 +1738,6 @@ void MDNS::_finishedResolvingName(char* name, const byte ipAddr[4])
     }
     else
     {
-      // KH debug
       MDNS_LOGDEBUG3("::_finishedResolvingName: name =", name, ", IP =", IPAddress(ipAddr));
       
       this->_nameFoundCallback((const char*)name, IPAddress(ipAddr));

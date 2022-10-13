@@ -13,6 +13,7 @@
 ## Table of Contents
 
 * [Changelog](#changelog)
+  * [Releases v1.4.2](#releases-v142)
   * [Releases v1.4.1](#releases-v141)
   * [Releases v1.4.0](#releases-v140)
   * [Releases v1.3.1](#releases-v131)
@@ -28,6 +29,12 @@
 ---
 
 ## Changelog
+
+### Releases v1.4.2
+
+1. Fix bug in UDP length check and in WiFi example. Check [UDP Length check discards correct responses when resolving names - On Nano RP2040 Connect #13](https://github.com/khoih-prog/MDNS_Generic/issues/13)
+2. Fix bug in example [WiFiDiscoveringServices](https://github.com/khoih-prog/MDNS_Generic/tree/master/examples/WiFi/WiFiDiscoveringServices)
+3. Update `Packages' Patches`
 
 ### Releases v1.4.1
 

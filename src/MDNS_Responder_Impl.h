@@ -19,17 +19,18 @@
   You should have received a copy of the GNU Lesser General Public License along with EthernetBonjour.
   If not, see <http://www.gnu.org/licenses/>.
 
-  Version: 1.4.1
+  Version: 1.4.2
   
   Version  Modified By   Date      Comments
   -------  -----------  ---------- -----------
   1.0.0    K Hoang      01/08/2020 Initial coding to support W5x00 using Ethernet, EthernetLarge libraries
-                                  Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
+                                   Supported boards: nRF52, STM32, SAMD21/SAMD51, SAM DUE, Mega
   ...
   1.3.0    K Hoang      28/09/2021 Add support to Portenta_H7, using WiFi or Ethernet
   1.3.1    K Hoang      10/10/2021 Update `platform.ini` and `library.json`
   1.4.0    K Hoang      26/01/2022 Fix `multiple-definitions` linker error
   1.4.1    K Hoang      11/04/2022 Use Ethernet_Generic library as default. Support SPI1/SPI2 for RP2040/ESP32
+  1.4.2    K Hoang      12/10/2022 Fix bugs in UDP length check and in WiFi example
  *****************************************************************************************************************************/
 
 // Port of CC3000 MDNS Responder to WINC1500.
@@ -78,6 +79,8 @@
 #define TTL_OFFSET      4
 #define IP_OFFSET       10
 
+////////////////////////////////////////
+
 const uint8_t expectedRequestHeader[HEADER_SIZE] = 
 {
   0x00, 0x00,
@@ -87,6 +90,8 @@ const uint8_t expectedRequestHeader[HEADER_SIZE] =
   0x00, 0x00,
   0x00, 0x00
 };
+
+////////////////////////////////////////
 
 const uint8_t responseHeader[] = 
 {
@@ -98,6 +103,8 @@ const uint8_t responseHeader[] =
   0x00, 0x01    // Additional records = 1
 };
 
+////////////////////////////////////////
+
 // Generate positive response for IPV4 address
 const uint8_t aRecord[] = 
 {
@@ -107,6 +114,8 @@ const uint8_t aRecord[] =
   0x00, 0x04,                // Length of record
   0x00, 0x00, 0x00, 0x00     // IP address, to be filled in later
 };
+
+////////////////////////////////////////
 
 // Generate negative response for IPV6 address (CC3000 doesn't support IPV6)
 const uint8_t nsecRecord[] = 
@@ -122,17 +131,26 @@ const uint8_t nsecRecord[] =
   0x40, 0x00, 0x00, 0x00     // Bitmap value = Only first bit (A record/IPV4) is set
 };
 
+////////////////////////////////////////
+
 const uint8_t domain[] = { 'l', 'o', 'c', 'a', 'l' };
+
+////////////////////////////////////////
+////////////////////////////////////////
 
 MDNS_Responder::MDNS_Responder(UDP& udp) : minimumExpectedRequestLength(0)
 {
   this->_udp = &udp;
 }
 
+////////////////////////////////////////
+
 MDNS_Responder::~MDNS_Responder()
 {
   this->_udp->stop();
 }
+
+////////////////////////////////////////
 
 bool MDNS_Responder::begin(const IPAddress& ip, const char* _name, const uint32_t& _ttlSeconds)
 {
@@ -144,6 +162,7 @@ bool MDNS_Responder::begin(const IPAddress& ip, const char* _name, const uint32_
   {
     // Can only handle domains that are upto 255 chars in length.
     minimumExpectedRequestLength = 0;
+    
     return false;
   }
 
@@ -165,6 +184,8 @@ bool MDNS_Responder::begin(const IPAddress& ip, const char* _name, const uint32_
   return true;
 }
 
+////////////////////////////////////////
+
 void MDNS_Responder::poll()
 {
   if (parseRequest()) 
@@ -174,6 +195,8 @@ void MDNS_Responder::poll()
     replyToRequest();
   }
 }
+
+////////////////////////////////////////
 
 bool MDNS_Responder::parseRequest()
 {
@@ -243,6 +266,8 @@ bool MDNS_Responder::parseRequest()
   return false;
 }
 
+////////////////////////////////////////
+
 void MDNS_Responder::replyToRequest()
 {
   int nameLength = name.length();
@@ -300,5 +325,7 @@ void MDNS_Responder::replyToRequest()
   this->_udp->write(response, responseSize);
   this->_udp->endPacket();
 }
+
+////////////////////////////////////////
 
 #endif      // MDNS_RESPONDER_IMPL_H

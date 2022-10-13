@@ -179,13 +179,9 @@ void setup()
   
   delay(1000);
   
-  // attempt to connect to Wifi network:
-  while (status != WL_CONNECTED)
-  {    
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
-    status = WiFi.status();
-
-    delay(1000);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
   }
 
   printWifiStatus();

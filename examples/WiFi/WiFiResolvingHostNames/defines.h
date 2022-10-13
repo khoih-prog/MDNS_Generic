@@ -26,7 +26,7 @@
 #define SYSTEM_ENDIAN           _ENDIAN_BIG_
 
 #define MDNS_DEBUG_PORT         Serial
-#define _MDNS_LOGLEVEL_         4
+#define _MDNS_LOGLEVEL_         1
 
 #define DEBUG_WIFININA_PORT     Serial
 // Debug Level from 0 to 4
